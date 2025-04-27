@@ -1,0 +1,108 @@
+---
+import "../styles/global.css";
+---
+<header>
+    <nav>
+        <div class="logo">
+            <h1>
+                <a href="/"><span>~ / </span>ky </a>
+            </h1>
+        </div>
+        <ul class="underline-animation">
+            <li><a href="/about">about</a></li>
+            <li><a href="/blog">blog</a></li>
+            <li><a href="/contents">contents</a></li>
+            <li><a href="/changelog">changelog</a></li>
+        </ul>
+        <div class="socials">
+            <a
+              href="https://www.linkedin.com/in/koutaroyumiba/"
+              rel="noreferrer"
+              target="_blank"
+            >
+                <img src="src/assets/linkedin.svg" alt="linkedin" />
+            </a>
+            <a href="https://github.com/Kot6603" rel="noreferrer" target="_blank">
+                <img src="src/assets/github.svg" alt="github" />
+            </a>
+        </div>
+    </nav>
+</header>
+
+<style>
+    nav {
+        width: 100vw;
+        justify-items: center;
+        display: inline-grid;
+        grid-template-columns: 1fr 5fr 1fr;
+        margin-bottom: 20px;
+        border-bottom: 1px solid black;
+    }
+
+    nav ul {
+        padding: 5px;
+        align-content: center;
+    }
+
+    nav li {
+        display: inline;
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+
+    nav li + li::before {
+        content: "\00a0/\00a0\00a0";
+    }
+
+    nav a {
+      color: black;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      color: #374151;
+    }
+
+    h1 { 
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .logo {
+        padding: 5px;
+        align-content: center;
+    }
+
+    .logo > h1 > a {
+        font-family: "Helvetica";
+        color: #000000;
+        text-align: left;
+        padding: 5px;
+        text-decoration: none;
+    }
+
+    .logo > h1 > a > span {
+        color: #90e0ef;
+    }
+
+
+    .socials {
+        display: flex;
+        flex-direction: row;
+        align-items: end;
+        padding: 5px;
+        align-content: end;
+        column-gap: 1rem;
+    }
+
+    .socials > a {
+        text-decoration: none;
+    }
+
+    .socials > a > img {
+        width: 2rem;
+        height: 2rem;
+    }
+
+</style>
