@@ -1,0 +1,97 @@
+:root {
+    --primary-blue: #58afdd;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100vh;
+    width: 100vw;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+p {
+    font-size: 20px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    margin: 20px 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+::selection {
+    /* consider changing based on light or dark tag on <body> */
+    background-color: #ffd987;
+}
+
+span {
+    color: var(--primary-blue);
+}
+
+.sidebar {
+    border-left: 3px solid var(--primary-blue);
+    border-radius: 0px;
+    row-gap: 10px;
+    padding-left: 20px;
+}
+
+/* time { */
+/*     color: gray; */
+/*     font-style: italic; */
+/*     font-size: 75%; */
+/*     font-weight: normal; */
+/* } */
+
+/* extra styling points! */
+.code {
+    color: black;
+    font-family: monospace;
+    background-color: #cee1ff;
+    border-radius: 2px;
+    padding: 2px;
+    text-decoration: none;
+}
+
+
+/* ===================== */
+/* LINK HOVER ANIMATIONS */
+/* ===================== */
+a:hover {
+    color: var(--primary-blue);
+}
+
+.underline-animation a,
+a.underline-animation {
+    display: inline-block;
+    position: relative;
+}
+
+.underline-animation a::after,
+a.underline-animation::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0) translateY(4px);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary-blue);
+    transition: transform 0.25s ease-out;
+    transform-origin: bottom center;
+}
+
+.underline-animation a:hover::after,
+a.underline-animation:hover::after {
+    transform: scaleX(1) translateY(4px);
+}
