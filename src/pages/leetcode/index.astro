@@ -11,7 +11,7 @@ const allLeetcode = getLeetcodeEntries().reverse()
         {allLeetcode.map((leetcode: LeetcodeEntry) => {
         return (
         <li>
-            <a href={`leetcode/${leetcode.filename}`}>
+            <a href={`/leetcode/${leetcode.filename}`}>
                 {leetcode.filename.substring(0, leetcode.filename.length - 3)} -- {leetcode.frontmatter.title}
             </a>
         </li>
