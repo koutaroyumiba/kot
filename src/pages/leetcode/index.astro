@@ -3,8 +3,7 @@ import Layout from "../../layouts/Layout.astro"
 import { getLeetcodeEntries } from "../../utils/leetcodeUtils";
 import { type LeetcodeEntry } from "../../types/types"
 
-const allLeetcode = getLeetcodeEntries()
-console.log(allLeetcode);
+const allLeetcode = getLeetcodeEntries().reverse()
 ---
 <Layout>
     <p>Leetcode stuff</p>
@@ -12,7 +11,9 @@ console.log(allLeetcode);
         {allLeetcode.map((leetcode: LeetcodeEntry) => {
         return (
         <li>
-            <a href={`leetcode/${leetcode.filename}`}>{leetcode.frontmatter.title}</a>
+            <a href={`leetcode/${leetcode.filename}`}>
+                {leetcode.filename.substring(0, leetcode.filename.length - 3)} -- {leetcode.frontmatter.title}
+            </a>
         </li>
         )})}
     </ul>
