@@ -1,0 +1,39 @@
+---
+import Layout from "../../layouts/Layout.astro"
+import { getLeetcodeEntries } from "../../utils/leetcodeUtils";
+
+export async function getStaticPaths() {
+    const allLeetcode = getLeetcodeEntries()
+    const something = allLeetcode.map(leetcode => {
+        return ({
+            params: {slug: leetcode.filename}
+        })
+    });
+    return something
+}
+
+const allLeetcode = getLeetcodeEntries()
+
+const { slug } = Astro.params
+
+const currentLeetcode = allLeetcode.filter(leetcode => {
+    return leetcode.filename === slug;
+})[0];
+---
+
+<Layout>
+    <h1>{currentLeetcode.frontmatter.title}</h1>
+    <div class="frontmatter">
+        <a href={currentLeetcode.frontmatter.question_link} target="_blank">
+            Question Link
+        </a>
+        <p>Difficulty: <span>{currentLeetcode.frontmatter.difficulty}</span></p>
+    </div>
+    <currentLeetcode.Content />
+</Layout>
+
+<style>
+.frontmatter {
+    margin: 20px;
+}
+</style>

@@ -1,0 +1,19 @@
+---
+import Layout from "../../layouts/Layout.astro"
+import { getLeetcodeEntries } from "../../utils/leetcodeUtils";
+import { type LeetcodeEntry } from "../../types/types"
+
+const allLeetcode = getLeetcodeEntries()
+console.log(allLeetcode);
+---
+<Layout>
+    <p>Leetcode stuff</p>
+    <ul>
+        {allLeetcode.map((leetcode: LeetcodeEntry) => {
+        return (
+        <li>
+            <a href={`leetcode/${leetcode.filename}`}>{leetcode.frontmatter.title}</a>
+        </li>
+        )})}
+    </ul>
+</Layout>
