@@ -21,11 +21,6 @@ h4 {
     margin: 20px 0;
 }
 
-a {
-    text-decoration: none;
-}
-
-
 ::selection {
     /* consider changing based on light or dark tag on <body> */
     background-color: #ffd987;
@@ -56,6 +51,12 @@ span {
     background-color: #cee1ff;
     border-radius: 2px;
     padding: 2px;
+    text-decoration: none;
+}
+
+a:link,
+a:visited {
+    color: #0000FF;
     text-decoration: none;
 }
 

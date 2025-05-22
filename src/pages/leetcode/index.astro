@@ -14,7 +14,7 @@ const allLeetcode = getLeetcodeEntries().reverse()
         return (
         <li>
             <a href={`/leetcode/${leetcode.filename}`}>
-                {leetcode.filename.substring(0, leetcode.filename.length - 3)} -- {number} -- {leetcode.frontmatter.title}
+                {leetcode.filename.substring(0, leetcode.filename.length - 3)} / {number} / {leetcode.frontmatter.title}
             </a>
         </li>
         )})}
