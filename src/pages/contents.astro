@@ -4,5 +4,48 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout>
     <h1>Contents</h1>
-    <a href="/friends">./friends</a>
+    <h2>Internal Links:</h2>
+    <ul class="sidebar">
+        <li>
+            <a href="/">./home</a>
+            <p>&gt all about me #real</p>
+        </li>
+        <li>
+            <a href="/leetcode">./leetcode</a>
+            <p>&gt the grind never stops</p>
+        </li>
+        <li>
+            <a href="/projects">./projects</a>
+            <p>&gt some inspirational wisdom... (or a lack thereof)</p>
+        </li>
+        <li>
+            <a href="/checklist">./checklist</a>
+            <p>&gt while we wait for those future updates...</p>
+        </li>
+        <li>
+            <a href="/changelog">./changelog</a>
+            <p>&gt never miss a change on this website again!!!</p>
+        </li>
+    </ul>
+    <h2>External Links:</h2>
+    <ul class="sidebar">
+        <li>
+            <a href="https://www.linkedin.com/in/koutaroyumiba/" target="_blank">./linkedin</a>
+            <p>&gt lets connect!!</p>
+        </li>
+        <li>
+            <a href="https://github.com/Kot6603" target="_blank">./github</a>
+            <p>&gt where all the magic happens</p>
+        </li>
+    </ul>
 </Layout>
+
+<style>
+ul {
+    list-style-type: none;
+}
+
+li {
+    padding: 10px;
+}
+</style>
