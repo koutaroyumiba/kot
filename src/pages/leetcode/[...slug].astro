@@ -22,7 +22,7 @@ const currentLeetcode = allLeetcode.filter(leetcode => {
 ---
 
 <Layout>
-    <h1>{currentLeetcode.frontmatter.title}</h1>
+    <h1><span>{currentLeetcode.frontmatter.question_id}.</span> {currentLeetcode.frontmatter.title}</h1>
     <div class="frontmatter">
         <a href={currentLeetcode.frontmatter.question_link} target="_blank">
             Question Link

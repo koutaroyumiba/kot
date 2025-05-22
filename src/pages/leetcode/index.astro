@@ -9,10 +9,12 @@ const allLeetcode = getLeetcodeEntries().reverse()
     <h1>Leetcode</h1>
     <ul>
         {allLeetcode.map((leetcode: LeetcodeEntry) => {
+        let number = leetcode.frontmatter.question_id;
+        number = "_".repeat(4 - number.length) + number
         return (
         <li>
             <a href={`/leetcode/${leetcode.filename}`}>
-                {leetcode.filename.substring(0, leetcode.filename.length - 3)} -- {leetcode.frontmatter.title}
+                {leetcode.filename.substring(0, leetcode.filename.length - 3)} -- {number} -- {leetcode.frontmatter.title}
             </a>
         </li>
         )})}
