@@ -1,0 +1,48 @@
+---
+---
+<div id="themeToggle" class="underline-animation"><a>./theme</a></div>
+
+<style>
+    #themeToggle {
+        border: 0;
+        background: none;
+        color: var(--color-text);
+        font-size: 1rem;
+        font-weight: 500;
+        margin: auto;
+    }
+</style>
+
+<script is:inline>
+    const theme = (() => {
+        const localStorageTheme = localStorage?.getItem("theme") ?? "";
+        console.log("what", localStorageTheme)
+        if (["theme-dark", "theme-light"].includes(localStorageTheme)) {
+            console.log("Yes")
+            return localStorageTheme;
+        }
+
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            return "theme-dark"
+        } else {
+            return "theme-light"
+        }
+    })();
+
+    if (theme === "theme-dark") {
+        document.documentElement.classList.add("theme-dark")
+    }
+
+    window.localStorage.setItem("theme", theme)
+
+    const handleToggleClick = () => {
+        console.log("ouch!!!")
+        const element = document.documentElement
+        element.classList.toggle("theme-dark")
+
+        const isDark = element.classList.contains("theme-dark")
+        localStorage.setItem("theme", isDark ? "theme-dark" : "theme-light")
+    }
+
+    document.getElementById("themeToggle")?.addEventListener("click", handleToggleClick)
+</script>

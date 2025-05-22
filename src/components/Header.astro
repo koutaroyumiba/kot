@@ -1,4 +1,5 @@
 ---
+import ThemeToggle from "./ThemeToggle.astro";
 ---
 <header>
     <nav>
@@ -13,18 +14,7 @@
             <li><a href="/projects">projects</a></li>
             <li><a href="/contents">contents</a></li>
         </ul>
-        <div class="socials">
-            <a
-              href="https://www.linkedin.com/in/koutaroyumiba/"
-              rel="noreferrer"
-              target="_blank"
-            >
-                ./linkedin
-            </a>
-            <a href="https://github.com/Kot6603" rel="noreferrer" target="_blank">
-                ./github
-            </a>
-        </div>
+        <ThemeToggle />
     </nav>
 </header>
 
@@ -53,12 +43,12 @@
     }
 
     nav a {
-      color: black;
-      text-decoration: none;
+        color: var(--color-text);
+        text-decoration: none;
     }
 
     nav a:hover {
-        color: var(--primary-blue);
+        color: var(--color-accent);
     }
 
     h1 { 
@@ -74,14 +64,14 @@
 
     .logo > h1 > a {
         font-family: "Helvetica";
-        color: #000000;
+        color: var(--color-text);
         text-align: left;
         padding: 5px;
         text-decoration: none;
     }
 
     .logo > h1 > a > span {
-        color: var(--primary-blue);
+        color: var(--color-accent-text);
     }
 
 

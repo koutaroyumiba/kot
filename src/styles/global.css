@@ -1,17 +1,27 @@
 :root {
-    --primary-blue: #58afdd;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-}
-
-html,
-body {
-    height: 100vh;
-    width: 100vw;
     font-family: 'JetBrains Mono', monospace;
+    --color-bg: #ffffff;
+    --color-text: #000000;
+    --color-accent-text: #58afdd;
+    --color-accent: #58afdd;
+    --color-link: #0000ff;
+}
+
+.theme-dark {
+    --color-bg: #000000;
+    --color-text: #fff;
+    --color-link: #ffd987;
+}
+
+html {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+a:link,
+a:visited {
+    color: var(--color-link);
+    text-decoration: none;
 }
 
 h1,
@@ -21,43 +31,15 @@ h4 {
     margin: 20px 0;
 }
 
-::selection {
-    /* consider changing based on light or dark tag on <body> */
-    background-color: #ffd987;
-}
-
 span {
-    color: var(--primary-blue);
+    color: var(--color-accent-text);
 }
 
 .sidebar {
-    border-left: 3px solid var(--primary-blue);
+    border-left: 3px solid var(--color-accent);
     border-radius: 0px;
     row-gap: 10px;
     padding-left: 20px;
-}
-
-/* time { */
-/*     color: gray; */
-/*     font-style: italic; */
-/*     font-size: 75%; */
-/*     font-weight: normal; */
-/* } */
-
-/* extra styling points! */
-.code {
-    color: black;
-    font-family: monospace;
-    background-color: #cee1ff;
-    border-radius: 2px;
-    padding: 2px;
-    text-decoration: none;
-}
-
-a:link,
-a:visited {
-    color: #0000FF;
-    text-decoration: none;
 }
 
 
@@ -65,7 +47,7 @@ a:visited {
 /* LINK HOVER ANIMATIONS */
 /* ===================== */
 a:hover {
-    color: var(--primary-blue);
+    color: var(--color-accent);
 }
 
 .underline-animation a,
@@ -83,7 +65,7 @@ a.underline-animation::after {
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: var(--primary-blue);
+    background-color: var(--color-accent);
     transition: transform 0.25s ease-out;
     transform-origin: bottom center;
 }
