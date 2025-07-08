@@ -10,7 +10,9 @@
 .theme-dark {
     --color-bg: #000000;
     --color-text: #fff;
-    --color-link: #ffd987;
+    --color-link: #58afdd;
+    --color-accent-text: #ffd987;
+    --color-accent: #ffd987;
 }
 
 html {
