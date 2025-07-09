@@ -1,0 +1,575 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// note to self:
+// 5: must read
+// 4: good read
+// 3: average read
+// 2: maybe not recommend
+// 1: poopoo
+// 0: unread
+
+const books = [
+    {
+        author: "paulo coelho",
+        title: "the alchemist",
+        started: "08/07/2025",
+        completed: "08/07/2025",
+        rating: 5,
+        status: "read",
+    },
+    {
+        author: "victor e frankl",
+        title: "man's search for meaning",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "peter singer",
+        title: "famine, affluence, and morality",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "fyodor dostoyevsky",
+        title: "notes from underground",
+        started: "???",
+        completed: "???",
+        rating: 5,
+        status: "read",
+    },
+    {
+        author: "fyodor dostoyevsky",
+        title: "crime and punishment",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "niccolo machiavelli",
+        title: "the prince",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "franz kafka",
+        title: "metamorphosis",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "marcus aurelius",
+        title: "meditations",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "george orwell",
+        title: "1984",
+        started: "???",
+        completed: "???",
+        rating: 5,
+        status: "read",
+    },
+    {
+        author: "friedrich nietzsche",
+        title: "thus spoke zarathustra",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "friedrich nietzsche",
+        title: "the joyous science",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "friedrich nietzsche",
+        title: "twilight of the idols",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "friedrich nietzsche",
+        title: "the antichrist",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "friedrich nietzsche",
+        title: "human all too human",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "friedrich nietzsche",
+        title: "beyond good and evil",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "friedrich nietzsche",
+        title: "on the genealogy of morals",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "friedrich nietzsche",
+        title: "ecce homo",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "james clear",
+        title: "atomic habits",
+        started: "???",
+        completed: "",
+        rating: 0,
+        status: "reading",
+    },
+    {
+        author: "jordan b peterson",
+        title: "12 rules for life",
+        started: "???",
+        completed: "???",
+        rating: 5,
+        status: "read",
+    },
+    {
+        author: "jordan b peterson",
+        title: "beyond order",
+        started: "???",
+        completed: "???",
+        rating: 5,
+        status: "read",
+    },
+    {
+        author: "jordan b peterson",
+        title: "we who wrestle with god",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "j d salinger",
+        title: "the catcher in the rye",
+        started: "???",
+        completed: "???",
+        rating: 4,
+        status: "read",
+    },
+    {
+        author: "mark twain",
+        title: "adventures of huckleberry finn",
+        started: "???",
+        completed: "???",
+        rating: 2,
+        status: "read",
+    },
+    {
+        author: "david goggins",
+        title: "can't hurt me",
+        started: "???",
+        completed: "???",
+        rating: 4,
+        status: "read",
+    },
+    {
+        author: "helen pluckrose",
+        title: "cynical theories",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "hans rosling",
+        title: "factfulness",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "ts eliot",
+        title: "gerontion",
+        started: "???",
+        completed: "???",
+        rating: 5,
+        status: "read",
+    },
+    {
+        author: "ts eliot",
+        title: "the hollow men",
+        started: "???",
+        completed: "???",
+        rating: 5,
+        status: "read",
+    },
+    {
+        author: "ts eliot",
+        title: "the love song of j alfred prufrock",
+        started: "???",
+        completed: "???",
+        rating: 5,
+        status: "read",
+    },
+    {
+        author: "ts eliot",
+        title: "the wasteland",
+        started: "???",
+        completed: "???",
+        rating: 5,
+        status: "read",
+    },
+    {
+        author: "william shakespeare",
+        title: "hamlet",
+        started: "???",
+        completed: "???",
+        rating: 4,
+        status: "read",
+    },
+    {
+        author: "william shakespeare",
+        title: "julius caesar",
+        started: "???",
+        completed: "???",
+        rating: 2,
+        status: "read",
+    },
+    {
+        author: "william shakespeare",
+        title: "king lear",
+        started: "???",
+        completed: "???",
+        rating: 5,
+        status: "read",
+    },
+    {
+        author: "william shakespeare",
+        title: "macbeth",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "william shakespeare",
+        title: "othello",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "mortimer j adler",
+        title: "how to read a book",
+        started: "???",
+        completed: "???",
+        rating: 4,
+        status: "read",
+    },
+    {
+        author: "william wordsworth",
+        title: "i wandered lonely as a cloud",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "gillian clarke",
+        title: "lament",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "hone tuwhare",
+        title: "no ordinary sun",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "john keats",
+        title: "ode on a grecian urn",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "john keats",
+        title: "ode on melancholy",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "john keats",
+        title: "ode to a nightingale",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "john keats",
+        title: "to autumn",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "david hair",
+        title: "the bone tiki",
+        started: "???",
+        completed: "???",
+        rating: 2,
+        status: "read",
+    },
+    {
+        author: "james dashner",
+        title: "the maze runner",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "james dashner",
+        title: "the scorch trials",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "james dashner",
+        title: "the death cure",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "vachel lindsay",
+        title: "the flower-fed buffaloes",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "lois lowry",
+        title: "the giver",
+        started: "???",
+        completed: "???",
+        rating: 5,
+        status: "read",
+    },
+    {
+        author: "plato",
+        title: "the republic",
+        started: "???",
+        completed: "",
+        rating: 0,
+        status: "reading",
+    },
+    {
+        author: "ernest hemingway",
+        title: "the snows of kilimanjaro",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "ernest hemingway",
+        title: "the sun also rises",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "harper lee",
+        title: "to kill a mockingbird",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "colleen hoover",
+        title: "verity",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "daniel kahneman",
+        title: "thinking fast and slow",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "a c grayling",
+        title: "the history of philosophy",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "robert t kiyosaki",
+        title: "rich dad poor dad",
+        started: "???",
+        completed: "???",
+        rating: 3,
+        status: "read",
+    },
+    {
+        author: "aldous huxley",
+        title: "brave new world",
+        started: "???",
+        completed: "???",
+        rating: 4,
+        status: "read",
+    },
+    {
+        author: "aldous huxley",
+        title: "island",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "murakami haruki",
+        title: "norwegian wood",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "lani kingston",
+        title: "how to make coffee",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "yuval noah harari",
+        title: "sapiens",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+    {
+        author: "michael j sandel",
+        title: "the tyranny of merit",
+        started: "",
+        completed: "",
+        rating: 0,
+        status: "unread",
+    },
+]
+books.sort((a, b) => {
+    const fieldA = a.author
+    const fieldB = b.author
+    if (fieldA < fieldB) {
+        return -1;
+    }
+    if (fieldA > fieldB) {
+        return 1;
+    }
+    return 0;
+});
+---
+
+<Layout>
+    <h1>Books</h1>
+    <ul>
+        <li>&gt officially keeping track since 08/07/2025</li>
+    </ul>
+    <h3>all books [{books.length}]</h3>
+    <ul class="sidebar">
+        {books.map(book => {
+        if (book.status === "read") {
+return <li>- [x] <s>{book.author} :: <span>{book.title}</span></s></li>
+        } else if (book.status === "reading") {
+return <li>- [~] {book.author} :: <span>{book.title}</span></li>
+        } else {
+return <li>- [ ] {book.author} :: <span>{book.title}</span></li>
+        }
+        })}
+    </ul>
+    <h3>read [{books.filter(book => book.status === "read").length}]</h3>
+    <ul class="sidebar">
+        {books.filter(book => {return book.status === "read"}).map(book => {
+        return <li>{book.author} :: <span>{book.title}</span> :: [{book.started} - {book.completed}] :: {book.rating}/5</li>
+        })}
+    </ul>
+    <h3>reading [{books.filter(book => book.status === "reading").length}]</h3>
+    <ul class="sidebar">
+        {books.filter(book => {return book.status === "reading"}).map(book => {
+return <li>{book.author} :: <span>{book.title}</span> :: [{book.started} - x]</li>
+        })}
+    </ul>
+    <h3>unread [{books.filter(book => book.status === "unread").length}]</h3>
+    <ul class="sidebar">
+        {books.filter(book => {return book.status === "unread"}).map(book => {
+return <li>{book.author} :: <span>{book.title}</span></li>
+        })}
+    </ul>
+</Layout>
+
+<style>
+ul {
+   list-style-type: none;
+}
+li {
+    padding: 5px;
+}
+</style>
