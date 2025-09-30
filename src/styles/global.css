@@ -37,6 +37,14 @@ h4 {
     margin: 20px 0;
 }
 
+h1 {
+    font-size: 20pt;
+}
+
+.list-no-style {
+    list-style-type: none;
+}
+
 span {
     color: var(--color-accent-text);
 }

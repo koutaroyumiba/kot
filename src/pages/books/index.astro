@@ -1,5 +1,6 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from "../../layouts/Layout.astro";
+import BookList from "./BookList";
 
 // note to self:
 // 5: must read
@@ -529,47 +530,15 @@ books.sort((a, b) => {
 ---
 
 <Layout>
-    <h1>Books</h1>
-    <ul>
+    <h1><span class="span-header">~/books</span> $ info</h1>
+    <ul class="list-no-style">
         <li>&gt officially keeping track since 08/07/2025</li>
         <li>&gt check out the <a href="/books/hall-of-fame">Hall of Fame</a></li>
     </ul>
-    <h3>all books [{books.length}]</h3>
-    <ul class="sidebar">
-        {books.map(book => {
-        if (book.status === "read") {
-return <li>- [x] <s>{book.author} :: <span>{book.title}</span></s></li>
-        } else if (book.status === "reading") {
-return <li>- [~] {book.author} :: <span>{book.title}</span></li>
-        } else {
-return <li>- [ ] {book.author} :: <span>{book.title}</span></li>
-        }
-        })}
-    </ul>
-    <h3>read [{books.filter(book => book.status === "read").length}]</h3>
-    <ul class="sidebar">
-        {books.filter(book => {return book.status === "read"}).map(book => {
-        return <li>{book.author} :: <span>{book.title}</span> :: [{book.started} - {book.completed}] :: {book.rating}/5</li>
-        })}
-    </ul>
-    <h3>reading [{books.filter(book => book.status === "reading").length}]</h3>
-    <ul class="sidebar">
-        {books.filter(book => {return book.status === "reading"}).map(book => {
-return <li>{book.author} :: <span>{book.title}</span> :: [{book.started} - x]</li>
-        })}
-    </ul>
-    <h3>unread [{books.filter(book => book.status === "unread").length}]</h3>
-    <ul class="sidebar">
-        {books.filter(book => {return book.status === "unread"}).map(book => {
-return <li>{book.author} :: <span>{book.title}</span></li>
-        })}
-    </ul>
+    <BookList books={books} client:load />
 </Layout>
 
 <style>
-ul {
-   list-style-type: none;
-}
 li {
     padding: 5px;
 }
