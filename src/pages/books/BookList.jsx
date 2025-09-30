@@ -16,7 +16,7 @@ export default function BookList({ books }) {
   return (
     <>
       <h2>
-        <span className="span-header">~/books</span> $
+        <span className="span-header">~/books</span> $ ls
         <span
           className={filter === "all" ? "active-tag" : "tag"}
           onClick={() => setFilter("all")}
