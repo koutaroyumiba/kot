@@ -1,10 +1,14 @@
 :root {
     font-family: 'JetBrains Mono', monospace;
     --color-bg: #272727;
-    --color-text: #ffffff;
+    --color-text: #e0def4;
     --color-link: #58afdd;
-    --color-accent-text: #ffd987;
-    --color-accent: #ffd987;
+    /* --color-accent-text: #ffd987; */
+    --color-accent: #9ccfd8;
+    --color-accent-text: #9ccfd8;
+    /* --color-accent-text: #c4a7e7; */
+    --color-accent-text: #58afdd;
+    --color-header: #98be82;
 }
 
 .theme-light {
@@ -13,6 +17,10 @@
     --color-accent-text: #58afdd;
     --color-accent: #58afdd;
     --color-link: #0000ff;
+}
+
+.span-header {
+    color: var(--color-header);
 }
 
 html {
