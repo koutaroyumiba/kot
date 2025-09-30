@@ -49,27 +49,49 @@ export default function BookList({ books }) {
 
       <ul className="sidebar list-no-style">
         {filteredBooks.map((book) => {
-          if (book.status === "read") {
-            return (
-              <li>
-                - [x] <s>{book.author} :: <span>{book.title}</span></s>
-              </li>
-            );
-          } else if (book.status === "reading") {
-            return (
-              <li>
-                - [~] {book.author} :: <span>{book.title}</span>
-              </li>
-            );
+          if (filter === "all") {
+            if (book.status === "read") {
+              return (
+                <li>
+                  - [x] <s>{book.author} :: <span>{book.title}</span></s>
+                </li>
+              );
+            } else if (book.status === "reading") {
+              return (
+                <li>
+                  - [~] {book.author} :: <span>{book.title}</span>
+                </li>
+              );
+            } else {
+              return (
+                <li>
+                  - [ ] {book.author} :: <span>{book.title}</span>
+                </li>
+              );
+            }
           } else {
-            return (
-              <li>
-                - [ ] {book.author} :: <span>{book.title}</span>
-              </li>
-            );
+            if (book.status === "read") {
+              return (
+                <li>
+                  - [x] {book.author} :: <span>{book.title}</span> :: [{book.started} - {book.completed}] :: {book.rating}/5
+                </li>
+              );
+            } else if (book.status === "reading") {
+              return (
+                <li>
+                  - [~] {book.author} :: <span>{book.title}</span> :: [{book.started} - x]
+                </li>
+              );
+            } else {
+              return (
+                <li>
+                  - [ ] {book.author} :: <span>{book.title}</span>
+                </li>
+              );
+            }
           }
         })}
-      </ul>
+      </ul >
       <style>
         {`
 .active-tag, .tag {cursor: pointer; }
