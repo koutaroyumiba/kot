@@ -2,25 +2,21 @@
     font-family: 'JetBrains Mono', monospace;
     --color-bg: #272727;
     --color-text: #e0def4;
-    --color-link: #58afdd;
-    /* --color-accent-text: #ffd987; */
-    --color-accent: #9ccfd8;
-    --color-accent-text: #9ccfd8;
-    /* --color-accent-text: #c4a7e7; */
-    --color-accent-text: #58afdd;
+    --color-link: #9ccfd8;
+    --color-link-hover: #c4a7e7;
+    --color-accent: #31748f;
+    --color-accent-text: #ebbcba;
     --color-header: #98be82;
 }
 
 .theme-light {
-    --color-bg: #ffffff;
-    --color-text: #000000;
-    --color-accent-text: #58afdd;
-    --color-accent: #58afdd;
-    --color-link: #0000ff;
-}
-
-.span-header {
-    color: var(--color-header);
+    --color-bg: #faf4ed;
+    --color-text: #575279;
+    --color-link: #56949f;
+    --color-link-hover: #907aa9;
+    --color-accent: #286983;
+    --color-accent-text: #d7827e;
+    --color-header: #5a7d4f;
 }
 
 html {
@@ -45,6 +41,14 @@ span {
     color: var(--color-accent-text);
 }
 
+.span-accent {
+    color: var(--color-accent-text);
+}
+
+.span-header {
+    color: var(--color-header);
+}
+
 .sidebar {
     border-left: 3px solid var(--color-accent);
     border-radius: 0px;
@@ -57,7 +61,7 @@ span {
 /* LINK HOVER ANIMATIONS */
 /* ===================== */
 a:hover {
-    color: var(--color-accent);
+    color: var(--color-link-hover);
 }
 
 .underline-animation a,
