@@ -33,8 +33,8 @@
         }
     })();
 
-    if (theme === "theme-dark") {
-        document.documentElement.classList.add("theme-dark")
+    if (theme === "theme-light") {
+        document.documentElement.classList.add("theme-light")
     }
 
     window.localStorage.setItem("theme", theme)
@@ -42,10 +42,10 @@
     const handleToggleClick = () => {
         console.log("ouch!!!")
         const element = document.documentElement
-        element.classList.toggle("theme-dark")
+        element.classList.toggle("theme-light")
 
-        const isDark = element.classList.contains("theme-dark")
-        localStorage.setItem("theme", isDark ? "theme-dark" : "theme-light")
+        const isLight = element.classList.contains("theme-light")
+        localStorage.setItem("theme", isLight ? "theme-light" : "theme-dark")
     }
 
     document.getElementById("themeToggle")?.addEventListener("click", handleToggleClick)
