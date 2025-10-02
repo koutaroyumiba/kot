@@ -4,8 +4,9 @@
     --color-text: #e0def4;
     --color-link: #9ccfd8;
     --color-link-hover: #c4a7e7;
-    --color-accent: #31748f;
-    --color-accent-text: #ebbcba;
+    --color-accent-pine: #31748f;
+    --color-accent-rose: #ebbcba;
+    --color-accent-gold: #f6c177;
     --color-header: #98be82;
 }
 
@@ -14,8 +15,9 @@
     --color-text: #575279;
     --color-link: #56949f;
     --color-link-hover: #907aa9;
-    --color-accent: #286983;
-    --color-accent-text: #d7827e;
+    --color-accent-pine: #286983;
+    --color-accent-rose: #d7827e;
+    --color-accent-gold: #f6c177;
     --color-header: #5a7d4f;
 }
 
@@ -46,19 +48,19 @@ h1 {
 }
 
 span {
-    color: var(--color-accent-text);
-}
-
-.span-accent {
-    color: var(--color-accent-text);
+    color: var(--color-accent-gold);
 }
 
 .span-header {
     color: var(--color-header);
 }
 
+.span-command {
+    color: var(--color-accent-rose);
+}
+
 .sidebar {
-    border-left: 3px solid var(--color-accent);
+    border-left: 3px solid var(--color-accent-pine);
     border-radius: 0px;
     row-gap: 10px;
     padding-left: 20px;
@@ -87,7 +89,7 @@ a.underline-animation::after {
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: var(--color-accent);
+    background-color: var(--color-accent-pine);
     transition: transform 0.25s ease-out;
     transform-origin: bottom center;
 }
