@@ -6,7 +6,7 @@ import { type LeetcodeEntry } from "../../types/types"
 const allLeetcode = getLeetcodeEntries().reverse()
 ---
 <Layout>
-    <h1><span class="span-header">~/leetcode</span> $ ls</h1>
+    <h1><span class="span-header">~/leetcode</span> $ <span class="span-command">ls</span></h1>
     <ul>
         {allLeetcode.map((leetcode: LeetcodeEntry) => {
         let number = leetcode.frontmatter.question_id;

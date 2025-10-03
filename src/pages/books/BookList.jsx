@@ -16,7 +16,7 @@ export default function BookList({ books }) {
   return (
     <>
       <h2>
-        <span className="span-header">~/books</span> $ ls
+        <span className="span-header">~/books</span> $ <span class="span-command">ls</span>
         <span
           className={filter === "all" ? "active-tag" : "tag"}
           onClick={() => setFilter("all")}
@@ -95,6 +95,7 @@ export default function BookList({ books }) {
       <style>
         {`
 .active-tag, .tag {cursor: pointer; }
+.active-tag { color: var(--color-accent-gold);}
 .tag { color: var(--color-link); }
 .tag:hover { color: var(--color-link-hover); }
 `}
