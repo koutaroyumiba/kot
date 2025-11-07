@@ -5,4 +5,4 @@
 A little fun project to showcase all my other projects and log my experiences...
 Hopefully, I can start a blog page or something to talk about some of the cool things I find
 
-Heavily inspired by: <a href="https://ericzheng.nz" target="_blank">Eric Zheng</a>
+![LeetCode Stats](https://leetcard.jacoblin.cool/Kot66?theme=dark&font=Ubuntu%20Mono&ext=heatmap)
