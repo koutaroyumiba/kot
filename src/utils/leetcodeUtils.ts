@@ -5,7 +5,8 @@ export function getLeetcodeEntries(): LeetcodeEntry[] {
 
     return Object.entries(modules).map(([path, mod]) => {
         const parts = path.split("/");
-        const filename = parts[parts.length - 1];
+        const tmp = parts[parts.length - 1];
+        const filename = tmp.substring(0, tmp.length - 3)
 
         return {
             ...(mod as any),
