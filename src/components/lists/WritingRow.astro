@@ -1,0 +1,137 @@
+---
+interface Props {
+  index: number;
+  title: string;
+  href: string;
+  description: string;
+  topic: string;
+  readingMinutes: number;
+  publishedAt: Date;
+}
+
+const { index, title, href, description, topic, readingMinutes, publishedAt } =
+  Astro.props;
+
+const formattedIndex = String(index).padStart(2, "0");
+const machineDate = publishedAt.toISOString().slice(0, 10);
+const displayDate = new Intl.DateTimeFormat("en-NZ", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+  timeZone: "UTC",
+}).format(publishedAt);
+---
+
+<li class="structured-row writing-row">
+  <a class="structured-row__link writing-row__link" href={href}>
+    <span class="writing-row__index" aria-hidden="true">
+      {formattedIndex}
+    </span>
+
+    <span class="writing-row__content">
+      <strong class="writing-row__title">
+        {title}
+      </strong>
+
+      <span class="writing-row__description">
+        {description}
+      </span>
+    </span>
+
+    <span class="writing-row__metadata">
+      <span class="writing-row__topic">
+        {topic}
+      </span>
+
+      <span class="writing-row__details">
+        <span>{readingMinutes} min read</span>
+        <span aria-hidden="true">·</span>
+        <time datetime={machineDate}>
+          {displayDate}
+        </time>
+      </span>
+    </span>
+
+    <span class="structured-row__arrow writing-row__arrow" aria-hidden="true">
+      &#8594;
+    </span>
+  </a>
+</li>
+
+<style>
+  .writing-row__link {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr) minmax(10rem, auto) 1.5rem;
+    grid-template-areas: "index content metadata arrow";
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .writing-row__index {
+    grid-area: index;
+    color: var(--color-text-faint);
+    font-size: var(--font-size-small);
+  }
+
+  .writing-row__content {
+    grid-area: content;
+    min-width: 0;
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .writing-row__title {
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+
+  .writing-row__description {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    overflow-wrap: anywhere;
+  }
+
+  .writing-row__metadata {
+    grid-area: metadata;
+    justify-self: end;
+    display: grid;
+    gap: var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    text-align: right;
+  }
+
+  .writing-row__topic {
+    color: var(--color-command);
+  }
+
+  .writing-row__details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-1);
+  }
+
+  .writing-row__arrow {
+    grid-area: arrow;
+    justify-self: end;
+  }
+
+  @media (max-width: 37.5rem) {
+    .writing-row__link {
+      grid-template-columns: 2rem minmax(0, 1fr) 1rem;
+      grid-template-areas: "index content arrow" ". metadata .";
+      align-items: start;
+      gap: var(--space-2);
+    }
+
+    .writing-row__metadata {
+      justify-self: start;
+      text-align: left;
+    }
+
+    .writing-row__details {
+      justify-content: flex-start;
+    }
+  }
+</style>
