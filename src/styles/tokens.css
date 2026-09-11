@@ -82,13 +82,13 @@
   --color-text-muted: #625e78;
   --color-text-faint: #716c84;
   --color-border: #cecacd;
-  --color-path: #286983;
+  --color-path: #5a7d4f;
   --color-command: #d7827e;
-  --color-argument: #b4631a;
-  --color-link: #286983;
+  --color-argument: #ea9d34;
+  --color-link: #56949f;
   --color-accent-violet: #79558f;
   --color-focus: #907aa9;
   --color-success: #56949f;
-  --color-warning: #b4631a;
+  --color-warning: #ea9d34;
   --color-error: #b42318;
 }
