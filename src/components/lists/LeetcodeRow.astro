@@ -1,0 +1,107 @@
+---
+type Difficulty = "Easy" | "Medium" | "Hard";
+
+interface Props {
+  solvedAt: Date;
+  questionId: string;
+  title: string;
+  difficulty: Difficulty;
+  href: string;
+}
+
+const { solvedAt, questionId, title, difficulty, href } = Astro.props;
+
+const formattedQuestionId = questionId.padStart(4, "_");
+const machineDate = solvedAt.toISOString().slice(0, 10);
+const displayDate = new Intl.DateTimeFormat("en-NZ", {
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+  timeZone: "UTC",
+}).format(solvedAt);
+const difficultyClass = `leetcode-row__difficulty--${difficulty.toLowerCase()}`;
+---
+
+<li class="structured-row leetcode-row">
+  <a class="structured-row__link leetcode-row__link" href={href}>
+    <time class="leetcode-row__date" datetime={machineDate}>
+      {displayDate}
+    </time>
+    <span class="leetcode-row__question-id">{formattedQuestionId}</span>
+    <strong class="leetcode-row__title">{title}</strong>
+    <span class:list={["leetcode-row__difficulty", difficultyClass]}>
+      {difficulty}
+    </span>
+    <span class="structured-row__arrow leetcode-row__arrow" aria-hidden="true">
+      &#8594;
+    </span>
+  </a>
+</li>
+
+<style>
+  .leetcode-row__link {
+    display: grid;
+    grid-template-columns: 8rem 4.5rem minmax(0, 1fr) 5.5rem 1.5rem;
+    grid-template-areas: "date question title difficulty arrow";
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .leetcode-row__date {
+    grid-area: date;
+    color: var(--color-text-faint);
+    font-size: var(--font-size-small);
+    white-space: nowrap;
+  }
+
+  .leetcode-row__question-id {
+    grid-area: question;
+    color: var(--color-link);
+    font-size: var(--font-size-small);
+    white-space: nowrap;
+  }
+
+  .leetcode-row__title {
+    grid-area: title;
+    min-width: 0;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+
+  .leetcode-row__difficulty {
+    grid-area: difficulty;
+    justify-self: end;
+    font-size: var(--font-size-small);
+    font-weight: 500;
+  }
+
+  .leetcode-row__difficulty--easy {
+    color: var(--color-success);
+  }
+
+  .leetcode-row__difficulty--medium {
+    color: var(--color-warning);
+  }
+
+  .leetcode-row__difficulty--hard {
+    color: var(--color-error);
+  }
+
+  .leetcode-row__arrow {
+    grid-area: arrow;
+    justify-self: end;
+  }
+
+  @media (max-width: 37.5rem) {
+    .leetcode-row__link {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-areas: "date date difficulty" "question title arrow";
+      align-items: start;
+      gap: var(--space-2);
+    }
+
+    .leetcode-row__difficulty {
+      justify-self: end;
+    }
+  }
+</style>
