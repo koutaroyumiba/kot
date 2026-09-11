@@ -1,0 +1,94 @@
+/* DESIGN TOKENS
+ *
+ * CSS variables used throughout the site
+ * Components should consume these variables instead of
+ * declaring their own colours, spacing, or dimensions
+ */
+
+:root {
+  /* Tell the browser that this is a dark theme */
+  color-scheme: dark;
+
+  /* Main page background */
+  --color-bg: #171817;
+  /* Background for contained elements (e.g. code blocks) */
+  --color-surface: #1e201e;
+  /* Surface background shown during hover/focus */
+  --color-surface-hover: #222522;
+  /* Primary text used for headings and body */
+  --color-text: #dedbd2;
+  /* Secondary text used for metadata, dates */
+  --color-text-muted: #8f948b;
+  /* Tertiary, low priority text */
+  --color-text-faint: #7c8279;
+  /* Subtle borders between sections, rows, and containers */
+  --color-border: #353a34;
+  /* Paths in command headings */
+  --color-path: #9fca87;
+  /* Commands in command headings */
+  --color-command: #e09a8d;
+  /* Command arguments, highlights */
+  --color-argument: #e6b86f;
+  /* Standard links and interactive text */
+  --color-link: #9ccfd8;
+  /* Restrained accent used for secondary categories */
+  --color-accent-violet: #c4a7e7;
+  /* Visible keyboard focus outlines */
+  --color-focus: #9fca87;
+  /* Positive states such as completed or successful */
+  --color-success: #98be82;
+  /* Warning states */
+  --color-warning: #f6c177;
+  /* Error and destructive states */
+  --color-error: #eb6f92;
+
+  /* Primary font stack */
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  /* Maximum width of the main site shell: 900px */
+  --content-width: 56.25rem;
+  /* Narrower width for essays and writings */
+  --reading-width: 44rem;
+
+  /* Consistent spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+
+  /* Standard width for borders and dividers */
+  --border-width: 1px;
+  /* Corner radius for code blocks */
+  --radius-small: 0.25rem;
+  /* Standard duration and easing for transitions */
+  --transition-fast: 150ms ease;
+}
+
+/* LIGHT THEME OVERRIDES
+ *
+ * Only theme-dependent tokens need to be repeated and overridden
+ */
+:root[data-theme="light"],
+:root.theme-light {
+  color-scheme: light;
+
+  --color-bg: #faf4ed;
+  --color-surface: #f2e9e1;
+  --color-surface-hover: #e8ded5;
+  --color-text: #575279;
+  --color-text-muted: #625e78;
+  --color-text-faint: #716c84;
+  --color-border: #cecacd;
+  --color-path: #286983;
+  --color-command: #d7827e;
+  --color-argument: #b4631a;
+  --color-link: #286983;
+  --color-accent-violet: #79558f;
+  --color-focus: #907aa9;
+  --color-success: #56949f;
+  --color-warning: #b4631a;
+  --color-error: #b42318;
+}
