@@ -1,0 +1,118 @@
+---
+interface FooterLink {
+  label: string;
+  href: string;
+  external: boolean;
+}
+
+const footerLinks: FooterLink[] = [
+  {
+    label: "github",
+    href: "https://github.com/koutaroyumiba",
+    external: true,
+  },
+  {
+    label: "linkedin",
+    href: "https://www.linkedin.com/in/koutaroyumiba",
+    external: true,
+  },
+  {
+    label: "changelog",
+    href: "/changelog",
+    external: false,
+  },
+  {
+    label: "contents",
+    href: "/contents",
+    external: false,
+  },
+];
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <p class="site-footer__summary">
+      &copy;{" " + currentYear + " "}koutaro yumiba · built with astro
+    </p>
+
+    <nav aria-label="Footer navigation">
+      <ul class="site-footer__links">
+        {footerLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noopener noreferrer" : undefined}
+            >
+              {link.label}
+              {link.external && <span aria-hidden="true">&#8599;</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    width: 100%;
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .site-footer__inner {
+    width: 100%;
+    min-height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-4) clamp(var(--space-4), 4vw, var(--space-12));
+  }
+
+  .site-footer__summary {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  .site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer a {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    text-decoration-color: var(--color-border);
+  }
+
+  .site-footer a:hover {
+    color: var(--color-link);
+    text-decoration-color: currentColor;
+  }
+
+  .site-footer a span {
+    color: var(--color-link);
+  }
+
+  @media (max-width: 37.5rem) {
+    .site-footer__inner {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-3);
+      padding-block: var(--space-6);
+    }
+
+    .site-footer__links {
+      gap: var(--space-3);
+    }
+  }
+</style>
