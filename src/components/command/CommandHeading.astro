@@ -1,0 +1,92 @@
+---
+type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+
+interface Props {
+  level: HeadingLevel;
+  label: string;
+  path: string;
+  command: string;
+  args?: string;
+  prompt?: string;
+  prefix?: string;
+  id?: string;
+}
+
+const {
+  level,
+  label,
+  path,
+  command,
+  args,
+  prompt = "$",
+  prefix,
+  id,
+} = Astro.props;
+
+type HeadingTag = `h${HeadingLevel}`;
+const Heading = `h${level}` as HeadingTag;
+---
+
+<Heading id={id} class="command-heading" data-level={level} aria-label={label}>
+  {prefix && <span class="command-heading__prefix">{prefix}</span>}
+  <span class="command-heading__path">{path}</span>
+  <span class="command-heading__prompt">{prompt}</span>
+  <span class="command-heading__command">{command}</span>
+  {args && <span class="command-heading__args">{args}</span>}
+</Heading>
+
+<style>
+  .command-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.6ch;
+    row-gap: var(--space-1);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-4);
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+  }
+
+  .command-heading[data-level="1"] {
+    font-size: clamp(1.5rem, 4vw, 1.75rem);
+  }
+
+  .command-heading[data-level="2"] {
+    font-size: 1.375rem;
+  }
+
+  .command-heading[data-level="3"] {
+    font-size: 1.1875rem;
+  }
+
+  .command-heading[data-level="4"],
+  .command-heading[data-level="5"],
+  .command-heading[data-level="6"] {
+    font-size: 1rem;
+  }
+
+  .command-heading__prefix {
+    color: var(--color-link);
+  }
+
+  .command-heading__path {
+    color: var(--color-path);
+    overflow-wrap: anywhere;
+  }
+
+  .command-heading__prompt {
+    color: var(--color-text-muted);
+  }
+
+  .command-heading__command {
+    color: var(--color-command);
+    overflow-wrap: anywhere;
+  }
+
+  .command-heading__args {
+    color: var(--color-argument);
+    overflow-wrap: anywhere;
+  }
+</style>
