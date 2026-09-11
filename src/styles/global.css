@@ -1,100 +1,178 @@
-:root {
-    font-family: 'JetBrains Mono', monospace;
-    --color-bg: #272727;
-    --color-text: #e0def4;
-    --color-link: #9ccfd8;
-    --color-link-hover: #c4a7e7;
-    --color-accent-pine: #31748f;
-    --color-accent-rose: #ebbcba;
-    --color-accent-gold: #f6c177;
-    --color-header: #98be82;
-}
+@import "./tokens.css";
 
-.theme-light {
-    --color-bg: #faf4ed;
-    --color-text: #575279;
-    --color-link: #56949f;
-    --color-link-hover: #907aa9;
-    --color-accent-pine: #286983;
-    --color-accent-rose: #d7827e;
-    --color-accent-gold: #ea9d34;
-    --color-header: #5a7d4f;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 html {
     background-color: var(--color-bg);
     color: var(--color-text);
+    font-family: var(--font-mono);
+    line-height: 1.7;
+    scroll-behavior: smooth;
 }
 
-a:link,
-a:visited {
-    color: var(--color-link);
-    text-decoration: none;
+body {
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
-h1,
-h2,
-h3,
-h4 {
-    margin: 20px 0;
+h1, h2, h3, h4 {
+  margin-block: var(--space-6);
+  color: var(--color-text);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 h1 {
-    font-size: 20pt;
+  font-size: clamp(1.25rem, 4vw, 1.5rem);
+}
+
+p, ul, ol {
+  margin-block: var(--space-4);
+}
+
+a {
+  color: var(--color-link);
+  text-decoration-color: currentColor;
+  text-decoration-thickness: var(--border-width);
+  text-underline-offset: 0.2rem;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+img, svg, video {
+  display: block;
+  max-width: 100%;
+}
+
+img, video {
+  height: auto;
 }
 
 .list-no-style {
-    list-style-type: none;
-}
-
-span {
-    color: var(--color-accent-gold);
+  list-style-type: none;
 }
 
 .span-header {
-    color: var(--color-header);
+  color: var(--color-path);
 }
 
 .span-command {
-    color: var(--color-accent-rose);
+  color: var(--color-command);
+}
+
+.span-accent {
+  color: var(--color-argument);
 }
 
 .sidebar {
-    border-left: 3px solid var(--color-accent-pine);
-    border-radius: 0px;
-    row-gap: 10px;
-    padding-left: 20px;
+  padding-left: var(--space-4);
+  border-left: 3px solid var(--color-path);
 }
-
 
 /* ===================== */
 /* LINK HOVER ANIMATIONS */
 /* ===================== */
 a:hover {
-    color: var(--color-link-hover);
+    color: var(--color-accent-violet);
 }
 
 .underline-animation a,
 a.underline-animation {
-    display: inline-block;
-    position: relative;
+  position: relative;
+  display: inline-block;
 }
 
 .underline-animation a::after,
 a.underline-animation::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    transform: scaleX(0) translateY(4px);
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--color-accent-pine);
-    transition: transform 0.25s ease-out;
-    transform-origin: bottom center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  content: "";
+  background-color: var(--color-path);
+  transform: scaleX(0) translateY(4px);
+  transform-origin: bottom center;
+  transition: transform var(--transition-fast);
 }
 
 .underline-animation a:hover::after,
 a.underline-animation:hover::after {
     transform: scaleX(1) translateY(4px);
+}
+
+
+/* ========= */
+/* UTILITIES */
+/* ========= */
+/* site-width utility */
+.site-shell {
+  width: min(var(--content-width), calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+/* keyboard focus */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+::selection {
+  background-color: var(--color-path);
+  color: var(--color-bg);
+}
+
+/* skip-link utility */
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: var(--space-2);
+  left: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-bg);
+  background-color: var(--color-focus);
+  transform: translateY(-150%);
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* for screen-readers (hide visually) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reduced motion support for gamers */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
 }
