@@ -5,14 +5,57 @@ import "@fontsource/iosevka/500.css";
 import "@fontsource/iosevka/600.css";
 import "../styles/global.css";
 import "../styles/prose.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  image?: string;
+  noindex?: boolean;
+  prose?: boolean;
+}
+
+const {
+  title,
+  description = "Software engineer, teacher, reader, and community builder based in Auckland.",
+  canonicalPath = Astro.url.pathname,
+  image,
+  noindex = false,
+  prose = false,
+} = Astro.props;
+
+const siteName = "Koutaro Yumiba";
+const pageTitle = title
+  ? `${title} | ${siteName}`
+  : siteName;
+const siteUrl = Astro.site ?? Astro.url.origin;
+const canonicalUrl = new URL(canonicalPath, siteUrl);
+const imageUrl = image ? new URL(image, siteUrl) : undefined;
 ---
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title>Koutaro Yumiba</title>
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl.href} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl.href} />
+
+    {imageUrl && (
+    <meta property="og:image" content={imageUrl.href} />
+    )}
+
+    {noindex && (
+    <meta name="robots" content="noindex" />
+    )}
   </head>
 
   <body>
@@ -22,7 +65,7 @@ import "../styles/prose.css";
 
     <Header />
 
-    <main id="main-content" class="site-shell site-main">
+    <main id="main-content" class:list={["site-shell", "site-main", { prose }]}>
       <slot />
     </main>
   </body>
