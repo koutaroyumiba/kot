@@ -1,0 +1,159 @@
+---
+interface Props {
+  index: number;
+  title: string;
+  href: string;
+  description?: string;
+  technologies?: string[];
+  featured?: boolean;
+}
+
+const {
+  index,
+  title,
+  href,
+  description,
+  technologies = [],
+  featured = false,
+} = Astro.props;
+
+const formattedIndex = String(index).padStart(2, "0");
+const technologyLabel = technologies.join(" · ");
+---
+
+<li class:list={["project-row", { "project-row--featured": featured }]}>
+  <a class="project-row__link" href={href}>
+    <span class="project-row__index" aria-hidden="true">
+      {formattedIndex}
+    </span>
+
+    <span class="project-row__content">
+      <span class="project-row__title-line">
+        <strong class="project-row__title">{title}</strong>
+        {featured && <span class="project-row__featured">featured</span>}
+      </span>
+
+      {description && (
+        <span class="project-row__description">{description}</span>
+      )}
+    </span>
+
+    {technologyLabel && (
+      <span class="project-row__technologies">{technologyLabel}</span>
+    )}
+
+    <span class="project-row__arrow" aria-hidden="true">
+      &#8594;
+    </span>
+  </a>
+</li>
+
+<style>
+  .project-row {
+    position: relative;
+    border-bottom: var(--border-width) solid var(--color-border);
+    transition: background-color var(--transition-fast);
+  }
+
+  .project-row:hover,
+  .project-row:focus-within {
+    background-color: var(--color-surface-hover);
+  }
+
+  .project-row__link {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr) minmax(7rem, auto) 1.5rem;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-2);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: transform var(--transition-fast);
+  }
+
+  .project-row__link:hover,
+  .project-row__link:focus-visible {
+    color: var(--color-text);
+    transform: translateX(var(--space-1));
+  }
+
+  .project-row__index {
+    color: var(--color-text-faint);
+    font-size: var(--font-size-small);
+  }
+
+  .project-row__content {
+    min-width: 0;
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .project-row__title-line {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .project-row__title {
+    overflow-wrap: anywhere;
+    font-weight: 500;
+  }
+
+  .project-row__description {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    overflow-wrap: anywhere;
+  }
+
+  .project-row__featured {
+    padding: 0 var(--space-1);
+    color: var(--color-bg);
+    background-color: var(--color-argument);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .project-row__technologies {
+    grid-column: 3;
+    justify-self: end;
+    color: var(--color-link);
+    font-size: var(--font-size-small);
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+
+  .project-row__arrow {
+    grid-column: 4;
+    justify-self: end;
+    color: var(--color-text-faint);
+  }
+
+  .project-row:hover .project-row__arrow,
+  .project-row:focus-within .project-row__arrow {
+    color: var(--color-path);
+  }
+
+  @media (max-width: 37.5rem) {
+    .project-row__link {
+      grid-template-columns: 2rem minmax(0, 1fr) 1rem;
+      gap: var(--space-2);
+    }
+
+    .project-row__technologies {
+      display: none;
+    }
+
+    .project-row__arrow {
+      grid-column: 3;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-row__link:hover,
+    .project-row__link:focus-visible {
+      transform: none;
+    }
+  }
+</style>
