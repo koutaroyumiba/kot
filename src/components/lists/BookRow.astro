@@ -1,0 +1,174 @@
+---
+type BookStatus = "unread" | "reading" | "read";
+type BookRating = 1 | 2 | 3 | 4 | 5;
+
+interface Props {
+  title: string;
+  author: string;
+  status: BookStatus;
+  rating?: BookRating;
+  completedAt?: Date;
+  favourite?: boolean;
+  note?: string;
+}
+
+const {
+  title,
+  author,
+  status,
+  rating,
+  completedAt,
+  favourite = false,
+  note,
+} = Astro.props;
+
+const machineDate = completedAt
+  ? completedAt.toISOString().slice(0, 10)
+  : undefined;
+const displayDate = completedAt
+  ? new Intl.DateTimeFormat("en-NZ", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      timeZone: "UTC",
+    }).format(completedAt)
+  : undefined;
+
+const ratingLabel = rating ? `${rating} out of 5 stars` : "Not rated";
+const visibleRating = rating
+  ? "*".repeat(rating) + ".".repeat(5 - rating)
+  : "[nil]";
+---
+
+<li
+  class="structured-row book-row"
+  data-status={status}
+  data-favourite={String(favourite)}
+>
+  <span class:list={["book-row__status", `book-row__status--${status}`]}>
+    <span aria-hidden="true">&middot;</span>
+    {status}
+  </span>
+
+  <span class="book-row__title-line">
+    <strong class="book-row__title">{title}</strong>
+
+    {favourite && <span class="book-row__favourite">favourite</span>}
+  </span>
+
+  <span class="book-row__author">{author}</span>
+  <span class="book-row__rating" aria-label={ratingLabel}>
+    <span aria-hidden="true">{visibleRating}</span>
+  </span>
+
+  {machineDate && displayDate ? (
+    <time class="book-row__date" datetime={machineDate}>
+      {displayDate}
+    </time>
+  ) : (
+    <span class="book-row__date" aria-label="No completion date">
+      [undefined]
+    </span>
+  )}
+
+  {note && <span class="book-row__note">{note}</span>}
+</li>
+
+<style>
+  .book-row {
+    display: grid;
+    grid-template-columns:
+      6.5rem minmax(10rem, 1.2fr) minmax(8rem, 0.8fr)
+      6.5rem 7rem;
+    grid-template-areas: "status title author rating date" ". note note note note";
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-4) var(--space-2);
+  }
+
+  .book-row__status {
+    grid-area: status;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  .book-row__status--read {
+    color: var(--color-path);
+  }
+
+  .book-row__status--reading {
+    color: var(--color-argument);
+  }
+
+  .book-row__status--unread {
+    color: var(--color-text-muted);
+  }
+
+  .book-row__title-line {
+    grid-area: title;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .book-row__title {
+    overflow-wrap: anywhere;
+    font-weight: 500;
+  }
+
+  .book-row__favourite {
+    padding-inline: var(--space-1);
+    color: var(--color-bg);
+    background-color: var(--color-argument);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .book-row__author {
+    grid-area: author;
+    min-width: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    overflow-wrap: anywhere;
+  }
+
+  .book-row__rating {
+    grid-area: rating;
+    color: var(--color-argument);
+    font-size: var(--font-size-small);
+    white-space: nowrap;
+  }
+
+  .book-row__date {
+    grid-area: date;
+    justify-self: end;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    white-space: nowrap;
+  }
+
+  .book-row__note {
+    grid-area: note;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    font-style: italic;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 43.75rem) {
+    .book-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: "status rating" "title title" "author date" "note note";
+      gap: var(--space-2);
+    }
+
+    .book-row__date {
+      justify-self: end;
+    }
+  }
+</style>

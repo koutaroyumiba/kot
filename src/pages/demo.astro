@@ -1,39 +1,42 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CommandHeading from "../components/command/CommandHeading.astro";
-import WritingRow from "../components/lists/WritingRow.astro";
+import BookRow from "../components/lists/BookRow.astro";
 
-const firstDate = new Date("2025-10-18T00:00:00Z");
-const secondDate = new Date("2025-11-02T00:00:00Z");
+const completionDate = new Date("2025-11-02T00:00:00Z");
 ---
 
 <Layout title="demo" description="womp womp" noindex>
   <CommandHeading
     level={1}
-    label="writing demo"
+    label="book demo"
     path="~/demo"
     command="test"
-    args="writing-row"
+    args="book-row"
   />
 
   <ul class="structured-list">
-    <WritingRow
-      index={1}
-      title="On the difficulty of pursuing truth"
-      href="/thoughts"
-      description="Notes on uncertainty, evidence, and intellectual honesty"
-      topic="philosophy"
-      readingMinutes={6}
-      publishedAt={firstDate}
+    <BookRow
+      title="brave new world"
+      author="aldous huxley"
+      status="reading"
+      rating={3}
+      favourite
+      note="Rereading; previously completed in 2025."
     />
-    <WritingRow
-      index={2}
-      title="An intentionally extremely long essay title that must wrap safely on narrow screens"
-      href="/thoughts"
-      description="A deliberately long abstract used to test how this component responds when both its title and description need multiple lines"
-      topic="software and community"
-      readingMinutes={12}
-      publishedAt={secondDate}
+    <BookRow
+      title="the alchemist"
+      author="paulo coelho"
+      status="read"
+      rating={5}
+      completedAt={completionDate}
+      favourite
+      note="A reminder to pursue your Personal Legend"
+    />
+    <BookRow
+      title="an intentionally extremely long title that must wrap safely on narrow screens"
+      author="paulo coelho"
+      status="unread"
     />
   </ul>
 </Layout>
