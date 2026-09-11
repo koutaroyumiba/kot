@@ -17,6 +17,8 @@ html {
 body {
   min-height: 100vh;
   min-height: 100svh;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   background-color: var(--color-bg);
   color: var(--color-text);
@@ -122,6 +124,7 @@ a:hover {
 }
 
 .site-main {
+  flex: 1;
   padding-block: var(--space-8) var(--space-12);
 }
 

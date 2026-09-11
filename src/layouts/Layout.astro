@@ -1,5 +1,6 @@
 ---
 import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 import "@fontsource/iosevka/400.css";
 import "@fontsource/iosevka/500.css";
 import "@fontsource/iosevka/600.css";
@@ -89,5 +90,7 @@ const imageUrl = image ? new URL(image, siteUrl) : undefined;
     <main id="main-content" class:list={["site-shell", "site-main", { prose }]}>
       <slot />
     </main>
+
+    <Footer />
   </body>
 </html>
