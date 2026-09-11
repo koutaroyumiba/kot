@@ -29,26 +29,16 @@ const displayDate = new Intl.DateTimeFormat("en-NZ", {
     </span>
 
     <span class="writing-row__content">
-      <strong class="writing-row__title">
-        {title}
-      </strong>
-
-      <span class="writing-row__description">
-        {description}
-      </span>
+      <strong class="writing-row__title">{title}</strong>
+      <span class="writing-row__description">{description}</span>
     </span>
 
     <span class="writing-row__metadata">
-      <span class="writing-row__topic">
-        {topic}
-      </span>
-
+      <span class="writing-row__topic">{topic}</span>
       <span class="writing-row__details">
         <span>{readingMinutes} min read</span>
         <span aria-hidden="true">·</span>
-        <time datetime={machineDate}>
-          {displayDate}
-        </time>
+        <time datetime={machineDate}>{displayDate}</time>
       </span>
     </span>
 
