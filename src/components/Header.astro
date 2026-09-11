@@ -1,92 +1,106 @@
 ---
 import ThemeToggle from "./ThemeToggle.astro";
 ---
+
 <header>
-    <nav>
-        <div class="logo">
-            <h1>
-                <a href="/"><span class="span-header">~ / </span>ky </a>
-            </h1>
-        </div>
-        <ul class="underline-animation">
-            <li><a href="/">home</a></li>
-            <li><a href="/projects">projects</a></li>
-            <li><a href="/books">books</a></li>
-            <li><a href="/contents">contents</a></li>
-        </ul>
-        <ThemeToggle />
-    </nav>
+  <nav>
+    <div class="logo">
+      <h1>
+        <a href="/">
+          <span class="span-header">~ /</span>ky
+        </a>
+      </h1>
+    </div>
+    <ul>
+      <li>
+        <a class="underline-animation" href="/">
+          home
+        </a>
+      </li>
+      <li>
+        <a class="underline-animation" href="/projects">
+          projects
+        </a>
+      </li>
+      <li>
+        <a class="underline-animation" href="/books">
+          books
+        </a>
+      </li>
+      <li>
+        <a class="underline-animation" href="/contents">
+          contents
+        </a>
+      </li>
+    </ul>
+    <ThemeToggle />
+  </nav>
 </header>
 
 <style>
-    nav {
-        width: 100vw;
-        justify-items: center;
-        display: inline-grid;
-        grid-template-columns: 1fr 5fr 1fr;
-        margin-bottom: 20px;
-    }
+  nav {
+    width: 100vw;
+    justify-items: center;
+    display: inline-grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    margin-bottom: 20px;
+  }
 
-    nav ul {
-        padding: 5px;
-        align-content: center;
-    }
+  nav ul {
+    padding: 5px;
+    align-content: center;
+  }
 
-    nav li {
-        display: inline;
-        font-size: 1rem;
-        font-weight: 500;
-    }
+  nav li {
+    display: inline;
+    font-size: 1rem;
+    font-weight: 500;
+  }
 
-    nav li + li::before {
-        content: "\00a0/\00a0\00a0";
-    }
+  nav li + li::before {
+    content: "\00a0/\00a0\00a0";
+  }
 
-    nav a {
-        color: var(--color-text);
-        text-decoration: none;
-    }
+  nav a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
 
-    nav a:hover {
-        color: var(--color-accent);
-    }
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+  }
 
-    h1 { 
-        font-size: 2rem;
-        font-weight: 700;
-        margin: 0;
-    }
+  .logo {
+    padding: 5px;
+    align-content: center;
+  }
 
-    .logo {
-        padding: 5px;
-        align-content: center;
-    }
+  .logo > h1 > a {
+    font-family: "Helvetica";
+    color: var(--color-text);
+    text-align: left;
+    padding: 5px;
+    text-decoration: none;
+  }
 
-    .logo > h1 > a {
-        font-family: "Helvetica";
-        color: var(--color-text);
-        text-align: left;
-        padding: 5px;
-        text-decoration: none;
-    }
+  .socials {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px;
+    align-content: end;
+    column-gap: 1rem;
+    margin-right: 5px;
+  }
 
-    .socials {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding: 5px;
-        align-content: end;
-        column-gap: 1rem;
-        margin-right: 5px;
-    }
+  .socials > a {
+    text-decoration: none;
+  }
 
-    .socials > a {
-        text-decoration: none;
-    }
-
-    .socials > a > img {
-        width: 2rem;
-        height: 2rem;
-    }
-
+  .socials > a > img {
+    width: 2rem;
+    height: 2rem;
+  }
 </style>
