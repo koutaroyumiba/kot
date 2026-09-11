@@ -1,52 +1,69 @@
 ---
 ---
-<div id="themeToggle" class="underline-animation">./theme</div>
+
+<button
+  id="theme-toggle"
+  class="theme-toggle underline-animation"
+  type="button"
+  aria-label="switch to light theme"
+  aria-pressed="false"
+>
+  <span aria-hidden="true">./theme</span>
+</button>
 
 <style>
-    #themeToggle {
-        border: 0;
-        background: none;
-        color: var(--color-text);
-        font-size: 1rem;
-        font-weight: 500;
-        margin: auto;
-    }
+  .theme-toggle {
+    --underline-bottom: var(--space-2);
 
-    #themeToggle:hover {
-        cursor: pointer;
-    }
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    margin: auto;
+    padding: var(--space-2);
+    color: var(--color-text);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-link);
+  }
 </style>
 
-<script is:inline>
-    const theme = (() => {
-        const localStorageTheme = localStorage?.getItem("theme") ?? "";
-        console.log("what", localStorageTheme)
-        if (["theme-dark", "theme-light"].includes(localStorageTheme)) {
-            console.log("Yes")
-            return localStorageTheme;
-        }
+<script>
+  const root = document.documentElement;
+  const button = document.querySelector("#theme-toggle");
 
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            return "theme-dark"
-        } else {
-            return "theme-light"
-        }
-    })();
+  if (button instanceof HTMLButtonElement) {
+    const getCurrentTheme = () => {
+      return root.dataset.theme === "light" ? "light" : "dark";
+    };
 
-    if (theme === "theme-light") {
-        document.documentElement.classList.add("theme-light")
-    }
+    const updateButton = () => {
+      const currentTheme = getCurrentTheme();
+      const nextTheme = currentTheme === "light" ? "dark" : "light";
+      button.setAttribute("aria-pressed", String(currentTheme === "light"));
+      button.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
+    };
 
-    window.localStorage.setItem("theme", theme)
+    const saveTheme = (theme: "light" | "dark") => {
+      try {
+        window.localStorage.setItem("theme", theme);
+      } catch {
+        // storage is unavailable; just change the theme
+      }
+    };
 
-    const handleToggleClick = () => {
-        console.log("ouch!!!")
-        const element = document.documentElement
-        element.classList.toggle("theme-light")
+    button.addEventListener("click", () => {
+      const currentTheme = getCurrentTheme();
+      const nextTheme = currentTheme === "light" ? "dark" : "light";
+      root.dataset.theme = nextTheme;
+      saveTheme(nextTheme);
+      updateButton();
+    });
 
-        const isLight = element.classList.contains("theme-light")
-        localStorage.setItem("theme", isLight ? "theme-light" : "theme-dark")
-    }
-
-    document.getElementById("themeToggle")?.addEventListener("click", handleToggleClick)
+    updateButton();
+  }
 </script>

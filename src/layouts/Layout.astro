@@ -25,9 +25,7 @@ const {
 } = Astro.props;
 
 const siteName = "Koutaro Yumiba";
-const pageTitle = title
-  ? `${title} | ${siteName}`
-  : siteName;
+const pageTitle = title ? `${title} | ${siteName}` : siteName;
 const siteUrl = Astro.site ?? Astro.url.origin;
 const canonicalUrl = new URL(canonicalPath, siteUrl);
 const imageUrl = image ? new URL(image, siteUrl) : undefined;
@@ -40,6 +38,33 @@ const imageUrl = image ? new URL(image, siteUrl) : undefined;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
 
+    <script is:inline>
+      (() => {
+        const systemTheme = window.matchMedia("(prefers-color-scheme: light)")
+          .matches
+          ? "light"
+          : "dark";
+
+        let theme = systemTheme;
+
+        try {
+          const storedTheme = window.localStorage.getItem("theme");
+          if (storedTheme === "light" || storedTheme === "dark") {
+            theme = storedTheme;
+          } else if (
+            storedTheme === "theme-light" ||
+            storedTheme === "theme-dark"
+          ) {
+            theme = storedTheme === "theme-light" ? "light" : "dark";
+            window.localStorage.setItem("theme", theme);
+          }
+        } catch {
+          // storage is unavailable; continue using the system theme
+        }
+
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl.href} />
@@ -49,13 +74,9 @@ const imageUrl = image ? new URL(image, siteUrl) : undefined;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl.href} />
 
-    {imageUrl && (
-    <meta property="og:image" content={imageUrl.href} />
-    )}
+    {imageUrl && <meta property="og:image" content={imageUrl.href} />}
 
-    {noindex && (
-    <meta name="robots" content="noindex" />
-    )}
+    {noindex && <meta name="robots" content="noindex" />}
   </head>
 
   <body>

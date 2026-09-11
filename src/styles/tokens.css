@@ -71,8 +71,7 @@
  *
  * Only theme-dependent tokens need to be repeated and overridden
  */
-:root[data-theme="light"],
-:root.theme-light {
+:root[data-theme="light"] {
   color-scheme: light;
 
   --color-bg: #faf4ed;
