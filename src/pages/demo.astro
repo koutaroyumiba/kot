@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CommandHeading from "../components/command/CommandHeading.astro";
+import WritingRow from "../components/lists/WritingRow.astro";
+
+const firstDate = new Date("2025-10-18T00:00:00Z");
+const secondDate = new Date("2025-11-02T00:00:00Z");
+---
+
+<Layout title="demo" description="womp womp" noindex>
+  <CommandHeading
+    level={1}
+    label="writing demo"
+    path="~/demo"
+    command="test"
+    args="writing-row"
+  />
+
+  <ul class="structured-list">
+    <WritingRow
+      index={1}
+      title="On the difficulty of pursuing truth"
+      href="/thoughts"
+      description="Notes on uncertainty, evidence, and intellectual honesty"
+      topic="philosophy"
+      readingMinutes={6}
+      publishedAt={firstDate}
+    />
+    <WritingRow
+      index={2}
+      title="An intentionally extremely long essay title that must wrap safely on narrow screens"
+      href="/thoughts"
+      description="A deliberately long abstract used to test how this component responds when both its title and description need multiple lines"
+      topic="software and community"
+      readingMinutes={12}
+      publishedAt={secondDate}
+    />
+  </ul>
+</Layout>
