@@ -1,0 +1,131 @@
+.prose {
+  width: 100%;
+  max-width: var(--reading-width);
+  margin-inline: auto;
+  overflow-wrap: break-word;
+}
+
+/* note: > selects a direct child */
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose > :last-child {
+  margin-bottom: 0;
+}
+
+.prose :where(h1, h2, h3, h4) {
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
+  line-height: 1.35;
+}
+
+.prose :where(h2) {
+  font-size: 1.25rem;
+}
+
+.prose :where(h3) {
+  font-size: 1.1rem;
+}
+
+.prose :where(h4) {
+  font-size: 1rem;
+}
+
+.prose :where(p, ul, ol) {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+}
+
+.prose :where(ul, ol) {
+  padding-left: var(--space-6);
+}
+
+/* note:
+ * li + li =
+ * select a list item that immediately follows another list item
+ */
+.prose li + li {
+  margin-top: var(--space-2);
+}
+
+.prose blockquote {
+  margin: var(--space-6) 0;
+  padding-left: var(--space-4);
+  color: var(--color-text-muted);
+  border-left: 2px solid var(--color-command);
+}
+
+.prose blockquote > :first-child {
+  margin-top: 0;
+}
+
+.prose blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* for inline codeblocks */
+.prose :not(pre) > code {
+  padding: 0.1em 0.35em;
+  color: var(--color-argument);
+  background-color: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-small);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+/* for actual code blocks */
+.prose pre {
+  max-width: 100%;
+  margin: var(--space-6) 0;
+  padding: var(--space-4);
+  overflow-x: auto;
+  background-color: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-small);
+  tab-size: 2;
+}
+
+.prose pre code {
+  padding: 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+.prose hr {
+  margin: var(--space-8) 0;
+  border: 0;
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.prose table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: var(--space-6) 0;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.prose th,
+.prose td {
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose th {
+  color: var(--color-argument);
+  background-color: var(--color-surface);
+  font-weight: 500;
+}
+
+.prose img {
+  margin-block: var(--space-6);
+  border-radius: var(--radius-small);
+}
