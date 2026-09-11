@@ -43,7 +43,7 @@
   --color-error: #eb6f92;
 
   /* Primary font stack */
-  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --font-mono: "Iosevka", monospace;
 
   /* Maximum width of the main site shell: 900px */
   --content-width: 56.25rem;

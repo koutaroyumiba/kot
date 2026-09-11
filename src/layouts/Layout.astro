@@ -1,34 +1,29 @@
 ---
 import Header from "../components/Header.astro";
+import "@fontsource/iosevka/400.css";
+import "@fontsource/iosevka/500.css";
+import "@fontsource/iosevka/600.css";
 import "../styles/global.css";
 import "../styles/prose.css";
 ---
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
-		<meta name="generator" content={Astro.generator} />
-		<title>Koutaro Yumiba</title>
-	</head>
-    <body>
-        <Header />
-        <section>
-            <slot />
-        </section>
-	</body>
-</html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Koutaro Yumiba</title>
+  </head>
 
-<style>
-    html,
-    body {
-        margin: 0;
-        height: 100%;
-    }
-    section {
-        margin: auto;
-        width: 80%;
-        padding-bottom: 30px;
-    }
-</style>
+  <body>
+    <a class="skip-link" href="#main-content">
+      Skip to content
+    </a>
+
+    <Header />
+
+    <main id="main-content" class="site-shell site-main">
+      <slot />
+    </main>
+  </body>
+</html>

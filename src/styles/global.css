@@ -120,6 +120,10 @@ a.underline-animation:hover::after {
   margin-inline: auto;
 }
 
+.site-main {
+  padding-block: var(--space-8) var(--space-12);
+}
+
 /* keyboard focus */
 :focus-visible {
   outline: 2px solid var(--color-focus);
