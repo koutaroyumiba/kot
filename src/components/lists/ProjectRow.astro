@@ -21,8 +21,14 @@ const formattedIndex = String(index).padStart(2, "0");
 const technologyLabel = technologies.join(" · ");
 ---
 
-<li class:list={["project-row", { "project-row--featured": featured }]}>
-  <a class="project-row__link" href={href}>
+<li
+  class:list={[
+    "structured-row",
+    "project-row",
+    { "project-row--featured": featured },
+  ]}
+>
+  <a class="structured-row__link project-row__link" href={href}>
     <span class="project-row__index" aria-hidden="true">
       {formattedIndex}
     </span>
@@ -42,39 +48,18 @@ const technologyLabel = technologies.join(" · ");
       <span class="project-row__technologies">{technologyLabel}</span>
     )}
 
-    <span class="project-row__arrow" aria-hidden="true">
+    <span class="structured-row__arrow project-row__arrow" aria-hidden="true">
       &#8594;
     </span>
   </a>
 </li>
 
 <style>
-  .project-row {
-    position: relative;
-    border-bottom: var(--border-width) solid var(--color-border);
-    transition: background-color var(--transition-fast);
-  }
-
-  .project-row:hover,
-  .project-row:focus-within {
-    background-color: var(--color-surface-hover);
-  }
-
   .project-row__link {
     display: grid;
     grid-template-columns: 2.5rem minmax(0, 1fr) minmax(7rem, auto) 1.5rem;
     align-items: center;
     gap: var(--space-4);
-    padding: var(--space-4) var(--space-2);
-    color: var(--color-text);
-    text-decoration: none;
-    transition: transform var(--transition-fast);
-  }
-
-  .project-row__link:hover,
-  .project-row__link:focus-visible {
-    color: var(--color-text);
-    transform: translateX(var(--space-1));
   }
 
   .project-row__index {
@@ -127,12 +112,6 @@ const technologyLabel = technologies.join(" · ");
   .project-row__arrow {
     grid-column: 4;
     justify-self: end;
-    color: var(--color-text-faint);
-  }
-
-  .project-row:hover .project-row__arrow,
-  .project-row:focus-within .project-row__arrow {
-    color: var(--color-path);
   }
 
   @media (max-width: 37.5rem) {
@@ -147,13 +126,6 @@ const technologyLabel = technologies.join(" · ");
 
     .project-row__arrow {
       grid-column: 3;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .project-row__link:hover,
-    .project-row__link:focus-visible {
-      transform: none;
     }
   }
 </style>

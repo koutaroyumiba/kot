@@ -135,6 +135,39 @@ a:hover {
   border-top: var(--border-width) solid var(--color-border);
 }
 
+.structured-row {
+  position: relative;
+  border-bottom: var(--border-width) solid var(--color-border);
+  transition: background-color var(--transition-fast);
+}
+
+.structured-row:hover,
+.structured-row:focus-within {
+  background-color: var(--color-surface-hover);
+}
+
+.structured-row__link {
+  padding: var(--space-4) var(--space-2);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: transform var(--transition-fast);
+}
+
+.structured-row__link:hover,
+.structured-row__link:focus-visible {
+  color: var(--color-text);
+  transform: translateX(var(--space-1));
+}
+
+.structured-row__arrow {
+  color: var(--color-text-faint);
+}
+
+.structured-row:hover .structured-row__arrow,
+.structured-row:focus-within .structured-row__arrow {
+  color: var(--color-path);
+}
+
 /* keyboard focus */
 :focus-visible {
   outline: 2px solid var(--color-focus);
@@ -189,5 +222,10 @@ a:hover {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
+  }
+
+  .structured-row__link:hover,
+  .structured-row__link:focus-visible {
+    transform: none;
   }
 }
