@@ -1,34 +1,10 @@
 ---
 import ThemeToggle from "./ThemeToggle.astro";
+import { navigationDestinations } from "../data/navigation";
 
-interface NavigationItem {
-  label: string;
-  href: string;
-  matchingPaths: string[];
-}
-
-const navigationItems: NavigationItem[] = [
-  {
-    label: "home",
-    href: "/",
-    matchingPaths: ["/"],
-  },
-  {
-    label: "work",
-    href: "/projects",
-    matchingPaths: ["/projects", "/work"],
-  },
-  {
-    label: "writing",
-    href: "/thoughts",
-    matchingPaths: ["/thoughts", "/writing"],
-  },
-  {
-    label: "reading",
-    href: "/books",
-    matchingPaths: ["/books", "/reading"],
-  },
-];
+const navigationItems = navigationDestinations.filter(
+  (destination) => destination.primary,
+);
 
 const normalizePath = (path: string) => {
   if (path === "/") {
@@ -40,14 +16,12 @@ const normalizePath = (path: string) => {
 
 const currentPath = normalizePath(Astro.url.pathname);
 
-const isActive = (item: NavigationItem) => {
-  return item.matchingPaths.some((path) => {
-    if (path === "/") {
-      return currentPath === "/";
-    }
+const isActive = (href: string) => {
+  if (href === "/") {
+    return currentPath === "/";
+  }
 
-    return currentPath === path || currentPath.startsWith(`${path}/`);
-  });
+  return currentPath === href || currentPath.startsWith(`${href}/`);
 };
 ---
 
@@ -73,9 +47,9 @@ const isActive = (item: NavigationItem) => {
             <a
               class="primary-nav__link underline-animation"
               href={item.href}
-              aria-current={isActive(item) ? "page" : undefined}
+              aria-current={isActive(item.href) ? "page" : undefined}
             >
-              {item.label}
+              {item.title}
             </a>
           </li>
         ))}
