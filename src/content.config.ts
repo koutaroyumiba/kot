@@ -54,6 +54,7 @@ const leetcode = defineCollection({
       .regex(/^\d+$/, "Question ID must contain only digits"),
     questionUrl: z.url(),
     difficulty: z.enum(["Easy", "Medium", "Hard"]),
+    type: z.enum(["daily", "neetcode-150", "random"]),
     topics: z.array(z.string().min(1)),
     solvedAt: z.coerce.date(),
     draft: z.boolean(),
