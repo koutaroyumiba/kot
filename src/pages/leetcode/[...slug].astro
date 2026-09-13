@@ -1,50 +1,88 @@
 ---
-import Layout from "../../layouts/Layout.astro"
+import { getCollection, render } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
 import { getLeetcodeEntries } from "../../utils/leetcodeUtils";
 
 export async function getStaticPaths() {
-    const allLeetcode = getLeetcodeEntries()
-    const something = allLeetcode.map(leetcode => {
-        return ({
-            params: {slug: leetcode.filename}
-        })
-    });
-    return something
+  const collectionEntries = await getCollection(
+    "leetcode",
+    ({ data }) => !data.draft,
+  );
+
+  const slugs = new Set([
+    ...getLeetcodeEntries().map((entry) => entry.filename),
+    ...collectionEntries.map((entry) => entry.id),
+  ]);
+
+  return [...slugs].map((slug) => ({
+    params: { slug },
+  }));
 }
 
-const allLeetcode = getLeetcodeEntries()
+const { slug } = Astro.params;
 
-const { slug } = Astro.params
+const collectionEntries = await getCollection(
+  "leetcode",
+  ({ data }) => !data.draft,
+);
 
-const currentLeetcode = allLeetcode.filter(leetcode => {
-    return leetcode.filename === slug;
-})[0];
+const migratedEntry = collectionEntries.find((entry) => entry.id === slug);
+const legacyEntry = migratedEntry
+  ? undefined
+  : getLeetcodeEntries().find((entry) => entry.filename === slug);
+
+if (!migratedEntry && !legacyEntry) {
+  throw new Error(`Leetcode entry not found: ${slug}`);
+}
+
+const metadata = migratedEntry
+  ? {
+      title: migratedEntry.data.title,
+      questionId: migratedEntry.data.questionId,
+      questionUrl: migratedEntry.data.questionUrl,
+      difficulty: migratedEntry.data.difficulty,
+    }
+  : {
+      title: legacyEntry!.frontmatter.title,
+      questionId: legacyEntry!.frontmatter.question_id,
+      questionUrl: legacyEntry!.frontmatter.question_link,
+      difficulty: legacyEntry!.frontmatter.difficulty,
+    };
+
+const { Content } = migratedEntry ? await render(migratedEntry) : legacyEntry!;
 ---
 
 <Layout>
-    <h1><a href="/leetcode">~/leetcode</a> <span class="span-header">$</span> <span>{currentLeetcode.frontmatter.question_id}.</span> {currentLeetcode.frontmatter.title}</h1>
-    <div class="frontmatter">
-        <a href={currentLeetcode.frontmatter.question_link} target="_blank">
-            Question Link
-        </a>
-        <p>Difficulty: <span>{currentLeetcode.frontmatter.difficulty}</span></p>
-    </div>
-    <currentLeetcode.Content />
+  <h1>
+    <a href="/leetcode">~/leetcode</a> <span class="span-header">$</span>{" "}
+    <span>{metadata.questionId}.</span> {metadata.title}
+  </h1>
+  <div class="frontmatter">
+    <a href={metadata.questionUrl} target="_blank">
+      Question Link
+    </a>
+    <p>
+      Difficulty: <span>{metadata.difficulty}</span>
+    </p>
+  </div>
+  <Content />
 </Layout>
 
 <style is:global>
-.frontmatter {
+  .frontmatter {
     margin: 20px;
-}
-.astro-code {
+  }
+  .astro-code {
     padding: 5px;
     margin: 10px;
-}
-blockquote, .frontmatter {
+  }
+  blockquote,
+  .frontmatter {
     border-left: 3px solid var(--primary-blue);
     border-radius: 0px;
     row-gap: 10px;
     padding-left: 20px;
     margin: 20px 0;
-}
+  }
 </style>
