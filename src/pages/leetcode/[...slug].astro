@@ -2,6 +2,7 @@
 import { getCollection, render, type CollectionEntry } from "astro:content";
 
 import Layout from "../../layouts/Layout.astro";
+import CommandHeading from "../../components/command/CommandHeading.astro";
 
 interface Props {
   entry: CollectionEntry<"leetcode">;
@@ -30,38 +31,134 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const metadata = entry.data;
 const { Content } = await render(entry);
+
+const solvedDate = metadata.solvedAt.toISOString().slice(0, 10);
 ---
 
-<Layout>
-  <h1>
-    <a href="/leetcode">~/leetcode</a> <span class="span-header">$</span>{" "}
-    <span>{metadata.questionId}.</span> {metadata.title}
-  </h1>
-  <div class="frontmatter">
-    <a href={metadata.questionUrl} target="_blank">
-      Question Link
-    </a>
-    <p>
-      Difficulty: <span>{metadata.difficulty}</span>
-    </p>
-  </div>
-  <Content />
+<Layout
+  title={`${metadata.questionId}. ${metadata.title}`}
+  description={`Solution for Leetcode ${metadata.questionId}: ${metadata.title}`}
+  prose
+>
+  <article class="leetcode-solution">
+    <nav class="leetcode-solution__nav" aria-label="Leetcode navigation">
+      <a href="/leetcode">&#8592; all solutions</a>
+    </nav>
+
+    <CommandHeading
+      level={1}
+      label={`Leetcode solution ${metadata.questionId}: ${metadata.title}`}
+      path="~/leetcode"
+      command="cat"
+      args={`${metadata.questionId}. ${metadata.title}`}
+    />
+
+    <dl class="leetcode-solution__metadata">
+      <div>
+        <dt>solved</dt>
+        <dd>
+          <time datetime={solvedDate}>{solvedDate}</time>
+        </dd>
+      </div>
+      <div>
+        <dt>difficulty</dt>
+        <dd>{metadata.difficulty}</dd>
+      </div>
+      <div>
+        <dt>type</dt>
+        <dd>{metadata.type}</dd>
+      </div>
+      <div>
+        <dt>question</dt>
+        <dd>
+          <a
+            href={metadata.questionUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            open on Leetcode <span aria-hidden="true">&#8599;</span>
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        </dd>
+      </div>
+      {metadata.topics.length > 0 && (
+        <div class="leetcode-solution__topics">
+          <dt>topics</dt>
+          <dd>
+            <ul>
+              {metadata.topics.map((topic) => (
+                <li>{topic}</li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+      )}
+    </dl>
+
+    <div class="leetcode-solution__body">
+      <Content />
+    </div>
+  </article>
 </Layout>
 
-<style is:global>
-  .frontmatter {
-    margin: 20px;
+<style>
+  .leetcode-solution__nav {
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-small);
   }
-  .astro-code {
-    padding: 5px;
-    margin: 10px;
+
+  .leetcode-solution__metadata {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: 0 0 var(--space-8);
+    padding-block: var(--space-4);
+    border-block: var(--border-width) solid var(--color-border);
   }
-  blockquote,
-  .frontmatter {
-    border-left: 3px solid var(--primary-blue);
-    border-radius: 0px;
-    row-gap: 10px;
-    padding-left: 20px;
-    margin: 20px 0;
+
+  .leetcode-solution__metadata > div {
+    min-width: 0;
+  }
+
+  .leetcode-solution__metadata dt {
+    margin-bottom: var(--space-1);
+    color: var(--color-text-faint);
+    font-size: var(--font-size-small);
+  }
+
+  .leetcode-solution__metadata dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .leetcode-solution__topics {
+    grid-column: 1 / -1;
+  }
+
+  .leetcode-solution__topics ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .leetcode-solution__topics li {
+    color: var(--color-argument);
+  }
+
+  .leetcode-solution__body > :first-child {
+    margin-top: 0;
+  }
+
+  @media (max-width: 37.5rem) {
+    .leetcode-solution__metadata {
+      grid-template-columns: 1fr;
+    }
+
+    .leetcode-solution__topics {
+      grid-column: auto;
+    }
   }
 </style>
