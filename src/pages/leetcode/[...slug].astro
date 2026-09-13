@@ -10,8 +10,23 @@ export async function getStaticPaths() {
     ({ data }) => !data.draft,
   );
 
+  for (const entry of collectionEntries) {
+    if (entry.id !== entry.data.questionId) {
+      throw new Error(
+        `Leetcode filename "${entry.id}" does not match questionId "${entry.data.questionId}"`,
+      );
+    }
+  }
+
+  const migratedQuestionIds = new Set(
+    collectionEntries.map((entry) => entry.data.questionId),
+  );
+  const legacySlugs = getLeetcodeEntries()
+    .filter((entry) => !migratedQuestionIds.has(entry.frontmatter.question_id))
+    .map((entry) => entry.filename);
+
   const slugs = new Set([
-    ...getLeetcodeEntries().map((entry) => entry.filename),
+    ...legacySlugs,
     ...collectionEntries.map((entry) => entry.id),
   ]);
 
