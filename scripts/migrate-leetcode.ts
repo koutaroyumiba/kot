@@ -1,4 +1,10 @@
-import { readdir, readFile, writeFile } from "node:fs/promises";
+/**
+ * One-time migration script to migrate leetcode entries to the new format.
+ *
+ * Retained for reference and not part of the normal dev workflow
+ */
+
+import { access, readdir, readFile, writeFile } from "node:fs/promises";
 
 type LeetcodeType = "daily" | "neetcode-150";
 type MigrationAction = "create" | "skip";
@@ -19,6 +25,14 @@ interface ParsedMarkdown {
 const sourceRoot = new URL("../public/leetcode/", import.meta.url);
 const targetRoot = new URL("../src/content/leetcode/", import.meta.url);
 const writeMode = process.argv.includes("--write");
+
+try {
+  await access(sourceRoot);
+} catch {
+  throw new Error(
+    "Legacy leetcode entries are unavailable. Restore public/leetcode from commit 25fa434 before running the migration",
+  );
+}
 
 const typeByMonth: Record<string, LeetcodeType> = {
   "2025-03": "daily",

@@ -1,8 +1,11 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection, render, type CollectionEntry } from "astro:content";
 
 import Layout from "../../layouts/Layout.astro";
-import { getLeetcodeEntries } from "../../utils/leetcodeUtils";
+
+interface Props {
+  entry: CollectionEntry<"leetcode">;
+}
 
 export async function getStaticPaths() {
   const collectionEntries = await getCollection(
@@ -18,54 +21,15 @@ export async function getStaticPaths() {
     }
   }
 
-  const migratedQuestionIds = new Set(
-    collectionEntries.map((entry) => entry.data.questionId),
-  );
-  const legacySlugs = getLeetcodeEntries()
-    .filter((entry) => !migratedQuestionIds.has(entry.frontmatter.question_id))
-    .map((entry) => entry.filename);
-
-  const slugs = new Set([
-    ...legacySlugs,
-    ...collectionEntries.map((entry) => entry.id),
-  ]);
-
-  return [...slugs].map((slug) => ({
-    params: { slug },
+  return collectionEntries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
   }));
 }
 
-const { slug } = Astro.params;
-
-const collectionEntries = await getCollection(
-  "leetcode",
-  ({ data }) => !data.draft,
-);
-
-const migratedEntry = collectionEntries.find((entry) => entry.id === slug);
-const legacyEntry = migratedEntry
-  ? undefined
-  : getLeetcodeEntries().find((entry) => entry.filename === slug);
-
-if (!migratedEntry && !legacyEntry) {
-  throw new Error(`Leetcode entry not found: ${slug}`);
-}
-
-const metadata = migratedEntry
-  ? {
-      title: migratedEntry.data.title,
-      questionId: migratedEntry.data.questionId,
-      questionUrl: migratedEntry.data.questionUrl,
-      difficulty: migratedEntry.data.difficulty,
-    }
-  : {
-      title: legacyEntry!.frontmatter.title,
-      questionId: legacyEntry!.frontmatter.question_id,
-      questionUrl: legacyEntry!.frontmatter.question_link,
-      difficulty: legacyEntry!.frontmatter.difficulty,
-    };
-
-const { Content } = migratedEntry ? await render(migratedEntry) : legacyEntry!;
+const { entry } = Astro.props;
+const metadata = entry.data;
+const { Content } = await render(entry);
 ---
 
 <Layout>

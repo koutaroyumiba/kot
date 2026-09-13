@@ -1,9 +1,16 @@
 ---
 title: ""
-question_id: ""
-question_link: ""
+questionId: ""
+questionUrl: ""
 difficulty: ""
+type: ""
+topics: []
+solvedAt: ""
+draft: true
 ---
+
+```
+```
 
 > Time Complexity: `O()`
 >
