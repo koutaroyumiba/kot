@@ -1,22 +1,43 @@
 ---
-import Layout from "../../layouts/Layout.astro"
-import { getLeetcodeEntries } from "../../utils/leetcodeUtils";
-import { type LeetcodeEntry } from "../../types/types"
+import { getCollection } from "astro:content";
 
-const allLeetcode = getLeetcodeEntries().reverse()
+import Layout from "../../layouts/Layout.astro";
+import CommandHeading from "../../components/command/CommandHeading.astro";
+import LeetcodeRow from "../../components/lists/LeetcodeRow.astro";
+
+const leetcodeEntries = await getCollection(
+  "leetcode",
+  ({ data }) => !data.draft,
+);
+
+leetcodeEntries.sort((a, b) => {
+  const dateDifference = b.data.solvedAt.getTime() - a.data.solvedAt.getTime();
+  if (dateDifference !== 0) {
+    return dateDifference;
+  }
+
+  return Number(a.data.questionId) - Number(b.data.questionId);
+});
 ---
-<Layout>
-    <h1><span class="span-header">~/leetcode</span> $ <span class="span-command">ls</span></h1>
-    <ul>
-        {allLeetcode.map((leetcode: LeetcodeEntry) => {
-        let number = leetcode.frontmatter.question_id;
-        number = "_".repeat(4 - number.length) + number
-        return (
-        <li>
-            <a href={`/leetcode/${leetcode.filename}`}>
-                {leetcode.filename} / {number} / {leetcode.frontmatter.title}
-            </a>
-        </li>
-        )})}
-    </ul>
+
+<Layout title="Leetcode" description="Leetcode solutions">
+  <CommandHeading
+    level={1}
+    label="Leetcode solutions"
+    path="~/leetcode"
+    command="ls"
+    args="--sort=solved"
+  />
+
+  <ul class="structured-list" aria-label="Leetcode solutions">
+    {leetcodeEntries.map((entry) => (
+      <LeetcodeRow
+        solvedAt={entry.data.solvedAt}
+        questionId={entry.data.questionId}
+        title={entry.data.title}
+        difficulty={entry.data.difficulty}
+        href={`/leetcode/${entry.id}`}
+      />
+    ))}
+  </ul>
 </Layout>

@@ -13,22 +13,16 @@ const { solvedAt, questionId, title, difficulty, href } = Astro.props;
 
 const formattedQuestionId = questionId.padStart(4, "_");
 const machineDate = solvedAt.toISOString().slice(0, 10);
-const displayDate = new Intl.DateTimeFormat("en-NZ", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-  timeZone: "UTC",
-}).format(solvedAt);
 const difficultyClass = `leetcode-row__difficulty--${difficulty.toLowerCase()}`;
 ---
 
 <li class="structured-row leetcode-row">
   <a class="structured-row__link leetcode-row__link" href={href}>
     <time class="leetcode-row__date" datetime={machineDate}>
-      {displayDate}
+      {machineDate} /
     </time>
     <span class="leetcode-row__question-id">{formattedQuestionId}</span>
-    <strong class="leetcode-row__title">{title}</strong>
+    <strong class="leetcode-row__title">&gt; {title}</strong>
     <span class:list={["leetcode-row__difficulty", difficultyClass]}>
       {difficulty}
     </span>
