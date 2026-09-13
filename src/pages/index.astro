@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import AsciiSignature from "../components/home/ASCIISignature.astro";
+import CommandHeading from "../components/command/CommandHeading.astro";
 
 const wdcc_link = "https://wdcc.co.nz/";
 const devs_link = "https://www.instagram.com/devsuoa/";
@@ -11,35 +12,14 @@ const tansa_link = "https://www.instagram.com/tansa.uoa/";
 <Layout>
   <AsciiSignature />
 
-  <h1>
-    <span class="span-header">~/about/me</span> ${" "}
-    <span class="span-command">cat desc</span>
-  </h1>
-
-  <p>
-    kot is a caffeine-charged twenty-something who swears he knows every decent
-    coffee spot in Auckland (and he's probably right). if he's not sipping on a
-    cold brew, he's probably buried somewhere in his terminal window, whispering
-    "neovim btw" like it's both a flex and lifestyle choice.
-  </p>
-  <p>
-    his room has been quietly overrun by smiskis (cutest beings on the planet),
-    and his headphones are 24/7 pumping out ONE OK ROCK, the greatest band on
-    earth (no debate necessary).
-  </p>
-  <p>
-    in his spare time, you’ll find him hovering over a coffee brew like it’s a
-    science experiment (a proper setup is coming soon, promise), scribbling
-    thoughts into pen and paper like it’s still 1923, or hammering away at his
-    alien-looking keyboard. when he’s not doing that, he’s usually diving
-    headfirst into some niche rabbit hole or sketching out the beginnings of his
-    next big community project.
-  </p>
-
-  <h1>
-    <span class="span-header">~/facts</span> ${" "}
-    <span class="span-command">grep fun</span>
-  </h1>
+  <CommandHeading
+    level={1}
+    id="facts"
+    label="Facts about me"
+    path="~/facts"
+    command="grep"
+    args="fun"
+  />
   <div class="sidebar">
     <ul>
       <li>
@@ -67,10 +47,15 @@ const tansa_link = "https://www.instagram.com/tansa.uoa/";
       </li>
     </ul>
   </div>
-  <h1>
-    <span class="span-header">~/work/experience</span> ${" "}
-    <span class="span-command">ls</span>
-  </h1>
+
+  <CommandHeading
+    level={1}
+    id="experience"
+    label="Work experience"
+    path="~/work/experience"
+    command="git log"
+    args="--oneline --filter=work"
+  />
   <div class="sidebar">
     <ul>
       <li>
@@ -104,10 +89,14 @@ const tansa_link = "https://www.instagram.com/tansa.uoa/";
     </ul>
   </div>
 
-  <h1>
-    <span class="span-header">~/leadership/roles</span> ${" "}
-    <span class="span-command">ls</span>
-  </h1>
+  <CommandHeading
+    level={1}
+    id="leadership"
+    label="Leadership roles"
+    path="~/leadership/roles"
+    command="git log"
+    args="--oneline --filter=leadership"
+  />
   <div class="sidebar">
     <ul>
       <li>
@@ -179,26 +168,25 @@ const tansa_link = "https://www.instagram.com/tansa.uoa/";
     </ul>
   </div>
 
-  <h1>
-    <span class="span-header">~/footnotes</span> ${" "}
-    <span class="span-command">echo</span>
-  </h1>
+  <CommandHeading
+    level={1}
+    id="footnotes"
+    label="Website footnotes"
+    path="~/footnotes"
+    command="cat"
+    args="footnotes"
+  />
   <p>
     this website is inspired by my friend's website (
     <a href="https://ericzheng.nz" target="_blank">
       ericzheng.nz
     </a>
-    ) and the writing style is 'inspired' also by my friend (
-    <a href="https://alanna.nz" target="blank">
-      alanna.nz
-    </a>{" "}
-    - questionable). the main reason why this page was created was kind of to
-    have a place to put my projects and (more importantly) my{" "}
-    <a href="/leetcode">leetcode</a> progress. it's also a nice place to test
-    new things (the website is using astro which I used for the first time) and
-    expand my web development skillset. hopefully, you find this website cool
-    and check out some of the projects that i've been cooking up in{" "}
-    <a href="/projects">./projects</a>!
+    ). the main reason why this page was created was kind of to have a place to
+    put my projects and (more importantly) my <a href="/leetcode">leetcode</a>{" "}
+    progress. it's also a nice place to test new things (the website is using
+    astro which I used for the first time) and expand my web development
+    skillset. hopefully, you find this website cool and check out some of the
+    projects that i've been cooking up in <a href="/projects">./projects</a>!
   </p>
   <p>
     feel free to reach out any time via any of my contacts in{" "}
