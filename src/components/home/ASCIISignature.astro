@@ -1,0 +1,58 @@
+<div class="ascii-signature">
+  <span class="sr-only">KOT</span>
+  <div class="ascii-signature__content">
+    <pre aria-hidden="true">{`██╗  ██╗  ██████╗  ████████╗
+██║ ██╔╝ ██╔═══██╗ ╚══██╔══╝
+█████╔╝  ██║   ██║    ██║
+██╔═██╗  ██║   ██║    ██║
+██║  ██╗ ╚██████╔╝    ██║
+╚═╝  ╚═╝  ╚═════╝     ╚═╝`}</pre>
+    <p>// TODO: drink caffeine, listen to OOR, stay curious</p>
+  </div>
+</div>
+
+<style>
+  .ascii-signature {
+    margin-top: var(--space-12);
+    padding: var(--space-6);
+    overflow: hidden;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: var(--space-1) var(--space-1) 0 var(--color-border);
+  }
+
+  .ascii-signature__content {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-3);
+  }
+
+  .ascii-signature pre {
+    max-width: 100%;
+    margin: 0;
+    color: var(--color-link);
+    font-family: var(--font-mono);
+    font-size: clamp(0.5rem, 2vw, 0.875rem);
+    line-height: 1.2;
+    white-space: pre;
+  }
+
+  .ascii-signature p {
+    margin: 0;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    font-size: var(--font-size-small);
+  }
+
+  @media (max-width: 37.5rem) {
+    .ascii-signature__content {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .ascii-signature p {
+      white-space: normal;
+    }
+  }
+</style>
