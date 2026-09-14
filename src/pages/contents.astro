@@ -1,72 +1,119 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import CommandHeading from "../components/command/CommandHeading.astro";
+import { navigationDestinations } from "../data/navigation";
+
+const internalDestinations = navigationDestinations.filter(
+  (destination) =>
+    !destination.href.startsWith("http") && destination.href !== "/contents",
+);
+const externalDestinations = navigationDestinations.filter((destination) =>
+  destination.href.startsWith("http"),
+);
+
+const sections = [
+  {
+    id: "internal-pages",
+    command: "ls | grep",
+    args: '"internal"',
+    destinations: internalDestinations,
+    external: false,
+  },
+  {
+    id: "external-links",
+    command: "ls | grep",
+    args: '"external"',
+    destinations: externalDestinations,
+    external: true,
+  },
+] as const;
 ---
 
 <Layout
   title="Contents"
   description="A directory of pages, projects, and contact links."
 >
-  <h1>
-    <span class="span-header">~/contents</span>$
-  </h1>
-  <h2>
-    <span class="span-header">~/contents</span>$
-    <span class="span-command">ls | grep</span>
-    <span>"internal"</span>
-  </h2>
-  <ul class="sidebar">
-    <li>
-      <a href="/">./home</a>
-      <p>&gt all about me #real</p>
-    </li>
-    <li>
-      <a href="/leetcode">./leetcode</a>
-      <p>&gt the grind never stops</p>
-    </li>
-    <li>
-      <a href="/projects">./projects</a>
-      <p>&gt some inspirational wisdom... (or a lack thereof)</p>
-    </li>
-    <li>
-      <a href="/friends">./friends</a>
-      <p>&gt who doesn't want to brag about their friends?!</p>
-    </li>
-    <li>
-      <a href="/checklist">./checklist</a>
-      <p>&gt while we wait for those future updates...</p>
-    </li>
-    <li>
-      <a href="/changelog">./changelog</a>
-      <p>&gt never miss a change on this website again!!!</p>
-    </li>
-  </ul>
-  <h2>
-    <span class="span-header">~/contents</span>$
-    <span class="span-command">ls | grep</span>
-    <span>"external"</span>
-  </h2>
-  <ul class="sidebar">
-    <li>
-      <a href="https://www.linkedin.com/in/koutaroyumiba/" target="_blank">
-        ./linkedin
-      </a>
-      <p>&gt lets connect!!</p>
-    </li>
-    <li>
-      <a href="https://github.com/koutaroyumiba" target="_blank">
-        ./github
-      </a>
-      <p>&gt where all the magic happens</p>
-    </li>
-  </ul>
+  <CommandHeading
+    level={1}
+    label="Site Directory"
+    path="~/contents"
+    command="find"
+    args=". -maxdepth 2"
+  />
+
+  {sections.map((section) => (
+    <section class="directory-section" aria-labelledby={section.id}>
+      <CommandHeading
+        level={2}
+        id={section.id}
+        label={section.external ? "External links" : "Internal pages"}
+        path="~/contents"
+        command={section.command}
+        args={section.args}
+      />
+
+      <ul class="structured-list">
+        {section.destinations.map((destination) => (
+          <li class="structured-row">
+            <a
+              class="structured-row__link directory-row"
+              href={destination.href}
+              target={section.external ? "_blank" : undefined}
+              rel={section.external ? "noopener noreferrer" : undefined}
+            >
+              <span class="directory-row__title">
+                ./{destination.title}
+                {section.external && (
+                  <span class="sr-only">(opens in a new tab)</span>
+                )}
+              </span>
+
+              <span class="directory-row__description">
+                > {destination.description}
+              </span>
+
+              <span class="structured-row__arrow" aria-hidden="true">
+                {section.external ? "↗" : "→"}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
 </Layout>
 
 <style>
-  ul {
-    list-style-type: none;
+  .directory-section {
+    margin-top: var(--space-8);
   }
 
-  li {
-    padding: 10px;
+  .directory-row {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.4fr) minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--space-4);
+  }
+
+  .directory-row__title {
+    color: var(--color-link);
+    font-weight: 500;
+  }
+
+  .directory-row__description {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  @media (max-width: 37.5rem) {
+    .directory-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-2);
+    }
+
+    .directory-row__description {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
   }
 </style>
