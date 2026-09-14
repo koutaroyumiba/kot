@@ -1,43 +1,127 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import CommandHeading from "../components/command/CommandHeading.astro";
+import Callout from "../components/content/Callout.astro";
 import { changelogReleases } from "../data/changelog";
 ---
 
-<Layout>
-  <h1>
-    <span class="span-header">~/changelog</span> ${" "}
-    <span class="span-command">cat log</span>
-  </h1>
-  <p>
-    Just like{" "}
-    <a href="https://ericzheng.nz/changelog.html" target="_blank">
-      Eric
-    </a>
-    , will change to RSS when time permits
-  </p>
-  <ul class="sidebar">
+<Layout title="Changelog" description="Release history of the website">
+  <CommandHeading
+    level={1}
+    label="Changelog"
+    path="~/changelog"
+    command="git log"
+    args="--sort=-version:refname"
+  />
+
+  <Callout>
+    <p>
+      Just like{" "}
+      <a
+        href="https://ericzheng.nz/changelog.html"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Eric<span class="sr-only"> (opens in a new tab)</span>
+      </a>
+      , will add RSS when time permits
+    </p>
+  </Callout>
+  <ol class="structured-list changelog" aria-label="Release history">
     {changelogReleases.map((release) => (
-      <li>
-        <span class="big-text">{release.version}</span>{" "}
-        {release.date && <time datetime={release.date}>{release.date}</time>}
-        <p>
-          <strong>{release.title}</strong> {release.summary}
-        </p>
+      <li class="structured-row">
+        <article class="release">
+          <span class="release__version">v{release.version}</span>
+
+          <div class="release__body">
+            <h2>{release.title}</h2>
+            <p>{release.summary}</p>
+
+            {release.changes && release.changes.length > 0 && (
+              <ul class="release__changes">
+                {release.changes.map((change) => (
+                  <li>{change}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {release.date && (
+            <time class="release__date" datetime={release.date}>
+              {release.date}
+            </time>
+          )}
+        </article>
       </li>
     ))}
-  </ul>
+  </ol>
 </Layout>
 
 <style>
-  .big-text {
-    font-size: 1.2rem;
+  .changelog {
+    margin-top: var(--space-8);
   }
 
-  li {
-    margin: 10px 0;
+  .release {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr) auto;
+    grid-template-areas: "version body date";
+    align-items: baseline;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-2);
   }
 
-  ul {
-    list-style-type: none;
+  .release__version {
+    grid-area: version;
+    color: var(--color-argument);
+    font-weight: 500;
+  }
+
+  .release__body {
+    grid-area: body;
+    min-width: 0;
+  }
+
+  .release__body h2 {
+    margin: 0;
+    color: var(--color-text);
+    font-size: var(--font-size-body);
+    font-weight: 500;
+  }
+
+  .release__body > p {
+    margin: var(--space-1) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  .release__date {
+    grid-area: date;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    white-space: nowrap;
+  }
+
+  .release__changes {
+    display: grid;
+    gap: var(--space-1);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    list-style: none;
+  }
+
+  .release__changes li::before {
+    content: "-> ";
+    color: var(--color-path);
+  }
+
+  @media (max-width: 37.5rem) {
+    .release {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: "version date" "body body";
+      gap: var(--space-2);
+    }
   }
 </style>
