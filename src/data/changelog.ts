@@ -20,7 +20,7 @@ export const changelogReleases = [
       "renamed the books section to reading with compatibility redirects",
       "rebuilt the dark and light themes using proper Rose Pine palette",
       "improved responsive layouts, keyboard navigation, metadata and error recovery",
-      "preserved existing URLs while drastically improving the maintainability of the site",
+      "drastically improved the maintainability of the site",
     ],
   },
   {
