@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <style>
-    circle { fill: #1e201e }
-    .path { fill: #9fca87 }
-    .name { fill: #dedbd2 }
+    circle { fill: #1f1d2e }
+    .path { fill: #9ccfd8 }
+    .name { fill: #e0def4 }
 
     @media (prefers-color-scheme: light) {
-      circle { fill: #f2e9e1 }
-      .path { fill: #5a7d4f }
+      circle { fill: #fffaf3 }
+      .path { fill: #286983 }
       .name { fill: #575279 }
     }
   </style>
