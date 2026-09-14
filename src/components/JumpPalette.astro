@@ -1,0 +1,188 @@
+---
+import { navigationDestinations } from "../data/navigation";
+---
+
+<dialog
+  id="jump-palette"
+  class="jump-palette"
+  aria-labelledby="jump-palette-title"
+>
+  <div class="jump-palette__shell">
+    <header class="jump-palette__header">
+      <h2 id="jump-palette-title">
+        <span>:</span>jump
+      </h2>
+
+      <form method="dialog">
+        <button type="submit" value="close" aria-label="Close jump palette">
+          esc
+        </button>
+      </form>
+    </header>
+
+    <label for="jump-palette-search">
+      <span>~/</span> find destination
+    </label>
+
+    <input
+      id="jump-palette-search"
+      type="search"
+      autocomplete="off"
+      spellcheck="false"
+      placeholder="projects, book, leetcode..."
+      aria-controls="jump-palette-results"
+      aria-describedby="jump-palette-help"
+    />
+
+    <p class="sr-only" data-jump-status aria-live="polite" aria-atomic="true">
+      {navigationDestinations.length} destinations available
+    </p>
+
+    <nav aria-label="Jump destinations">
+      <ul id="jump-palette-results" class="jump-palette__results">
+        {navigationDestinations.map((destination, index) => (
+          <li
+            data-jump-item
+            data-search={[
+              destination.title,
+              destination.description,
+              destination.href,
+              ...destination.keywords,
+            ]
+              .join(" ")
+              .toLowerCase()}
+          >
+            <a
+              href={destination.href}
+              data-jump-result
+              data-selected={index === 0 ? "true" : "false"}
+              aria-current={index === 0 ? "true" : undefined}
+            >
+              <span>
+                <strong>{destination.title}</strong>
+                <small>{destination.description}</small>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <p id="jump-palette-empty" class="jump-palette__empty" hidden>
+      no destinations found
+    </p>
+
+    <p id="jump-palette-help" class="jump-palette__help">
+      ↑/↓ select · enter open · esc close
+    </p>
+  </div>
+</dialog>
+
+<style>
+  .jump-palette {
+    width: min(36rem, calc(100% - var(--space-6)));
+    max-height: 76vh;
+    margin: 12vh auto auto;
+    padding: 0;
+    color: var(--color-text);
+    background: var(--color-bg);
+    border: var(--border-width) solid var(--color-path);
+  }
+
+  .jump-palette::backdrop {
+    background: rgb(0 0 0 / 75%);
+  }
+
+  .jump-palette__shell {
+    padding: var(--space-4);
+  }
+
+  .jump-palette__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .jump-palette__header h2 {
+    margin: 0;
+    font-size: var(--font-size-large);
+  }
+
+  .jump-palette__header h2 span {
+    color: var(--color-command);
+  }
+
+  .jump-palette__header button {
+    padding: var(--space-1) var(--space-2);
+    color: var(--color-text-muted);
+    background: transparent;
+    border: var(--border-width) solid var(--color-border);
+    cursor: pointer;
+  }
+
+  .jump-palette label {
+    display: block;
+    margin-bottom: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  .jump-palette label span {
+    color: var(--color-path);
+  }
+
+  .jump-palette input {
+    width: 100%;
+    padding: var(--space-3);
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+  }
+
+  .jump-palette__results {
+    max-height: 46vh;
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+  }
+
+  .jump-palette__results a {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3);
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .jump-palette__results a[data-selected="true"] {
+    color: var(--color-text);
+    background: var(--color-surface);
+    box-shadow: inset 2px 0 var(--color-path);
+  }
+
+  .jump-palette__results strong,
+  .jump-palette__results small {
+    display: block;
+  }
+
+  .jump-palette__results small,
+  .jump-palette__results code,
+  .jump-palette__help,
+  .jump-palette__empty {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  .jump-palette__results code {
+    flex: 0 0 auto;
+  }
+
+  .jump-palette__empty,
+  .jump-palette__help {
+    margin: var(--space-3) 0 0;
+  }
+</style>
