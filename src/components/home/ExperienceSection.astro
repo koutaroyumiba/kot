@@ -1,0 +1,240 @@
+---
+import CommandHeading from "../command/CommandHeading.astro";
+
+interface Experience {
+  start: {
+    datetime: string;
+    label: string;
+  };
+  end: {
+    datetime: string;
+    label: string;
+  };
+  title: string;
+  organisation: string;
+}
+
+const experience: Experience[] = [
+  {
+    start: { datetime: "2025-12", label: "Dec 2025" },
+    end: { datetime: "2026-02", label: "Feb 2026" },
+    title: "Software Engineering Intern",
+    organisation: "Optiver",
+  },
+  {
+    start: { datetime: "2025-06", label: "Jun 2025" },
+    end: { datetime: "2025-11", label: "Nov 2025" },
+    title: "Graduate Teaching Assistant",
+    organisation: "University of Auckland",
+  },
+  {
+    start: { datetime: "2024-02", label: "Feb 2024" },
+    end: { datetime: "2025-06", label: "Jun 2025" },
+    title: "Teaching Assistant",
+    organisation: "University of Auckland",
+  },
+  {
+    start: { datetime: "2024-11", label: "Nov 2024" },
+    end: { datetime: "2025-02", label: "Feb 2025" },
+    title: "Software Engineering Intern",
+    organisation: "NZPMC Ltd.",
+  },
+  {
+    start: { datetime: "2024-11", label: "Nov 2024" },
+    end: { datetime: "2025-02", label: "Feb 2025" },
+    title: "Summer Research Intern",
+    organisation: "University of Auckland",
+  },
+  {
+    start: { datetime: "2024-07", label: "Jul 2024" },
+    end: { datetime: "2024-07", label: "Jul 2024" },
+    title: "Jane Street SEE Program",
+    organisation: "Jane Street",
+  },
+];
+---
+
+<section aria-labelledby="experience">
+  <CommandHeading
+    level={1}
+    id="experience"
+    label="Work experience"
+    path="~/work/experience"
+    command="ls"
+    args="-lAh"
+  />
+
+  <p class="ls-total" aria-hidden="true">
+    total {experience.length}
+  </p>
+
+  <ol class="ls-list" aria-label="Work experience">
+    {experience.map((item) => (
+      <li class="ls-row">
+        <span class="ls-row__mode" aria-hidden="true">
+          -rw-r--r--
+        </span>
+        <span class="ls-row__refs" aria-hidden="true">
+          1
+        </span>
+        <span class="ls-row__owner" aria-hidden="true">
+          kot
+        </span>
+        <span class="ls-row__group" aria-hidden="true">
+          work
+        </span>
+
+        <span class="ls-row__meta">
+          <span aria-hidden="true">[</span>
+          <time datetime={item.start.datetime}>{item.start.label}</time>
+          <span aria-hidden="true"> - </span>
+          <span class="sr-only"> to </span>
+          <time datetime={item.end.datetime}>{item.end.label}</time>
+          <span aria-hidden="true">]</span>
+        </span>
+
+        <span class="ls-row__entry">
+          <strong>{item.title}</strong>
+          <span class="ls-row__arrow" aria-hidden="true">
+            {" "}
+            -&gt;{" "}
+          </span>
+          <span class="sr-only"> at </span>
+          <span class="ls-row__destination">{item.organisation}</span>
+        </span>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  section {
+    margin-top: var(--space-12);
+  }
+
+  section :global(.command-heading) {
+    margin-top: 0;
+  }
+
+  .ls-total {
+    margin: 0 0 var(--space-1);
+    color: var(--color-text-faint);
+    font-size: var(--font-size-small);
+  }
+
+  .ls-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 10ch max-content 3ch 9ch max-content minmax(0, 1fr);
+    column-gap: 1ch;
+    row-gap: 0;
+  }
+
+  .ls-row {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    grid-template-rows: auto auto;
+    align-items: baseline;
+  }
+
+  .ls-row__mode {
+    grid-column: 1;
+    color: var(--color-path);
+  }
+
+  .ls-row__refs {
+    grid-column: 2;
+    color: var(--color-argument);
+    text-align: right;
+    white-space: pre;
+  }
+
+  .ls-row__owner {
+    grid-column: 3;
+    color: var(--color-text-muted);
+  }
+
+  .ls-row__group {
+    grid-column: 4;
+    color: var(--color-accent-violet);
+  }
+
+  .ls-row__meta {
+    grid-column: 5;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  .ls-row__entry {
+    grid-column: 6;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ls-row__entry strong {
+    font-weight: 500;
+  }
+
+  .ls-row__arrow {
+    color: var(--color-command);
+  }
+
+  .ls-row__destination {
+    color: var(--color-link);
+  }
+
+  @media (max-width: 55rem) {
+    .ls-list {
+      grid-template-columns: 10ch max-content 3ch minmax(0, 1fr);
+    }
+
+    .ls-row {
+      grid-template-rows: repeat(4, auto);
+      row-gap: var(--space-1);
+    }
+
+    .ls-row__mode {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .ls-row__refs {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .ls-row__owner {
+      grid-column: 3;
+      grid-row: 1;
+    }
+
+    .ls-row__group {
+      grid-column: 4;
+      grid-row: 1;
+    }
+
+    .ls-row__meta {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    .ls-row__entry {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      padding-left: 2ch;
+    }
+  }
+
+  @media (max-width: 37.5rem) {
+    section {
+      margin-top: var(--space-8);
+    }
+
+    .ls-row + .ls-row {
+      margin-top: var(--space-2);
+    }
+  }
+</style>

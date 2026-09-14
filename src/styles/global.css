@@ -71,11 +71,6 @@ video {
   height: auto;
 }
 
-.sidebar {
-  padding-left: var(--space-4);
-  border-left: 3px solid var(--color-path);
-}
-
 a:hover {
   color: var(--color-accent-violet);
 }

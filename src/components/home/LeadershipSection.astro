@@ -1,0 +1,262 @@
+---
+import CommandHeading from "../command/CommandHeading.astro";
+
+interface CourseYear {
+  year: string;
+  courses: string[];
+}
+
+interface LeadershipRole {
+  count: number;
+  years: string[];
+  title: string;
+  courses?: CourseYear[];
+}
+
+interface LeadershipGroup {
+  organisation: string;
+  href: string;
+  roles: LeadershipRole[];
+}
+
+const leadershipGroups = [
+  {
+    organisation: "Web Development and Consulting Club",
+    href: "https://wdcc.co.nz",
+    roles: [
+      { count: 1, years: ["2026"], title: "Tech Director" },
+      { count: 1, years: ["2025"], title: "Education Executive" },
+    ],
+  },
+  {
+    organisation: "Developer's Society",
+    href: "https://devsuoa.com",
+    roles: [
+      { count: 1, years: ["2026"], title: "Treasurer" },
+      { count: 1, years: ["2025"], title: "Competitions Executive" },
+    ],
+  },
+  {
+    organisation: "University of Auckland Compsci Society",
+    href: "https://uoacs.co.nz",
+    roles: [
+      {
+        count: 3,
+        years: ["2024", "2025", "2026"],
+        title: "Senior Advisor",
+      },
+    ],
+  },
+  {
+    organisation: "Taiwanese and New Zealand Student Association",
+    href: "https://tansa.co.nz",
+    roles: [
+      { count: 1, years: ["2024"], title: "Public Relations Officer" },
+      { count: 1, years: ["2023"], title: "Activities Coordinator" },
+    ],
+  },
+  {
+    organisation: "University of Auckland",
+    href: "https://www.auckland.ac.nz/en.html",
+    roles: [
+      {
+        count: 1,
+        years: ["2024"],
+        title: "Computer Science Faculty Representative",
+      },
+      {
+        count: 12,
+        years: ["2022", "2023", "2024", "2025"],
+        title: "Class Representative",
+        courses: [
+          {
+            year: "2022",
+            courses: ["CS110", "CS120", "CS130"],
+          },
+          {
+            year: "2023",
+            courses: ["CS210", "CS220", "CS367"],
+          },
+          {
+            year: "2024",
+            courses: ["CS361", "CS340", "CS399"],
+          },
+          {
+            year: "2025",
+            courses: ["CS720", "CS747", "CS701"],
+          },
+        ],
+      },
+    ],
+  },
+] satisfies LeadershipGroup[];
+---
+
+<section aria-labelledby="leadership">
+  <CommandHeading
+    level={1}
+    id="leadership"
+    label="Leadership roles"
+    path="~/leadership"
+    command="tree"
+    args="--dirsfirst"
+  />
+
+  <div class="tree-output">
+    <p aria-hidden="true">.</p>
+    <ul aria-label="Leadership organisations">
+      {leadershipGroups.map((group, groupIndex) => (
+        <li>
+          <div class="tree-line tree-line--organisation">
+            <span class="tree-line__branch" aria-hidden="true">
+              {groupIndex === leadershipGroups.length - 1 ? "└──" : "├──"}
+            </span>
+
+            <a href={group.href} target="_blank" rel="noopener noreferrer">
+              {group.organisation}
+              <span class="sr-only"> (opens in a new tab)</span>
+            </a>
+          </div>
+
+          <ul class="tree-children">
+            {group.roles.map((role, roleIndex) => (
+              <li>
+                <div class="tree-line">
+                  <span class="tree-line__branch" aria-hidden="true">
+                    {roleIndex === group.roles.length - 1 ? "└──" : "├──"}
+                  </span>
+                  {role.courses ? (
+                    <span
+                      class="tree-line__count"
+                      aria-label={`${role.count} roles`}
+                    >
+                      [{role.count}x]
+                    </span>
+                  ) : (
+                    <span class="tree-line__date">
+                      <span aria-hidden="true">[</span>
+                      {role.years.map((year, yearIndex) => (
+                        <>
+                          {yearIndex > 0 && <span aria-hidden="true">, </span>}
+                          <time datetime={year}>{year}</time>
+                        </>
+                      ))}
+                      <span aria-hidden="true">]</span>
+                    </span>
+                  )}
+
+                  <span>{role.title}</span>
+                </div>
+
+                {role.courses && (
+                  <ul
+                    class="tree-children tree-courses"
+                    aria-label="Courses represented"
+                  >
+                    {role.courses.map((entry, courseIndex) => (
+                      <li class="tree-line">
+                        <span class="tree-line__branch" aria-hidden="true">
+                          {courseIndex === role.courses!.length - 1
+                            ? "└──"
+                            : "├──"}
+                        </span>
+
+                        <time datetime={entry.year}>[{entry.year}]</time>
+                        <span aria-hidden="true">--</span>
+                        <span>{entry.courses.join(", ")}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  section {
+    margin-top: var(--space-12);
+  }
+
+  section :global(.command-heading) {
+    margin-top: 0;
+  }
+
+  .tree-output ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tree-output > p {
+    margin: 0;
+    color: var(--color-text-faint);
+  }
+
+  .tree-output > ul {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .tree-line {
+    display: grid;
+    grid-template-columns: 3ch max-content minmax(0, 1fr);
+    gap: 1ch;
+    align-items: baseline;
+  }
+
+  .tree-line--organisation {
+    grid-template-columns: 3ch minmax(0, 1fr);
+    font-weight: 500;
+  }
+
+  .tree-line__branch {
+    color: var(--color-border);
+    white-space: nowrap;
+  }
+
+  .tree-children {
+    display: grid;
+    gap: var(--space-1);
+    margin-left: 4ch !important;
+  }
+
+  .tree-line__date {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    white-space: nowrap;
+  }
+
+  .tree-line__count {
+    color: var(--color-argument);
+    white-space: nowrap;
+  }
+
+  .tree-courses {
+    margin-top: var(--space-1) !important;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  .tree-courses .tree-line {
+    grid-template-columns: 3ch 3rem 2ch minmax(0, 1fr);
+  }
+
+  .tree-courses time {
+    color: var(--color-text-faint);
+  }
+
+  @media (max-width: 37.5rem) {
+    section {
+      margin-top: var(--space-8);
+    }
+
+    .tree-children {
+      margin-left: 2ch !important;
+    }
+  }
+</style>
