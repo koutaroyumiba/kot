@@ -1,0 +1,63 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import CommandHeading from "../command/CommandHeading.astro";
+
+interface Props {
+  title: string;
+  slug: string;
+}
+
+const { title, slug } = Astro.props;
+---
+
+<Layout title={title} description={`${title} project write-up pending`} noindex>
+  <article class="project-placeholder">
+    <nav class="project-placeholder__nav" aria-label="Project navigation">
+      <a href="/projects">&#8592; all projects</a>
+    </nav>
+
+    <CommandHeading
+      level={1}
+      label={`${title} project`}
+      path="~/projects"
+      command="cd"
+      args={slug}
+    />
+
+    <div class="project-placeholder__message">
+      <p>
+        <strong>[pending]</strong> write-up pending.
+      </p>
+      <p>This project page is being documented.</p>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .project-placeholder__nav {
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-small);
+  }
+
+  .project-placeholder__message {
+    margin-top: var(--space-6);
+    padding: var(--space-4);
+    color: var(--color-text-muted);
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-left: 3px solid var(--color-command);
+  }
+
+  .project-placeholder__message p {
+    margin: 0;
+  }
+
+  .project-placeholder__message p + p {
+    margin-top: var(--space-2);
+  }
+
+  .project-placeholder__message strong {
+    color: var(--color-argument);
+    font-weight: 500;
+  }
+</style>
