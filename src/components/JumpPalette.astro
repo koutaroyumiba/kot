@@ -78,6 +78,99 @@ import { navigationDestinations } from "../data/navigation";
   </div>
 </dialog>
 
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>("#jump-palette");
+  const searchInput = document.querySelector<HTMLInputElement>(
+    "#jump-palette-search",
+  );
+  const trigger = document.querySelector<HTMLElement>("[data-jump-trigger]");
+
+  if (
+    dialog &&
+    searchInput &&
+    trigger &&
+    typeof dialog.showModal === "function"
+  ) {
+    let opener: HTMLElement | null = null;
+    const openPalette = (requestedBy?: HTMLElement) => {
+      if (dialog.open) {
+        searchInput.focus();
+        return;
+      }
+
+      opener =
+        requestedBy ??
+        (document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null);
+
+      searchInput.value = "";
+      dialog.showModal();
+      searchInput.focus();
+    };
+
+    const isEditableTarget = (target: EventTarget | null) => {
+      if (!(target instanceof Element)) {
+        return false;
+      }
+
+      return Boolean(
+        target.closest(
+          'input, textarea, select, [contenteditable]:not([contenteditable="false"])',
+        ),
+      );
+    };
+
+    trigger.addEventListener("click", (event) => {
+      if (
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.altKey ||
+        event.shiftKey
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      openPalette(trigger);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.repeat) {
+        return;
+      }
+
+      const commandShortcut =
+        (event.metaKey || event.ctrlKey) &&
+        !event.altKey &&
+        !event.shiftKey &&
+        event.key.toLowerCase() === "k";
+      if (commandShortcut) {
+        event.preventDefault();
+        openPalette();
+        return;
+      }
+
+      const colonShortcut =
+        event.key === ":" && !event.metaKey && !event.ctrlKey && !event.altKey;
+      if (colonShortcut && !dialog.open && !isEditableTarget(event.target)) {
+        event.preventDefault();
+        openPalette();
+      }
+    });
+
+    dialog.addEventListener("close", () => {
+      const elementToRestore = opener;
+      opener = null;
+
+      if (elementToRestore?.isConnected) {
+        elementToRestore.focus();
+      }
+    });
+  }
+</script>
+
 <style>
   .jump-palette {
     width: min(36rem, calc(100% - var(--space-6)));
