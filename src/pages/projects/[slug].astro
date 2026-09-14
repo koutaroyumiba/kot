@@ -1,0 +1,150 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+import CommandHeading from "../../components/command/CommandHeading.astro";
+import ImageGallery from "../../components/media/ImageGallery.astro";
+
+interface Props {
+  entry: CollectionEntry<"projects">;
+}
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects", ({ data }) => !data.draft);
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const metadata = entry.data;
+const { Content } = await render(entry);
+---
+
+<Layout title={metadata.title} description={metadata.description} prose>
+  <article class="project-detail">
+    <nav class="project-detail__nav" aria-label="Project navigation">
+      <a href="/projects">&#8592; all projects</a>
+    </nav>
+
+    <CommandHeading
+      level={1}
+      label={`${metadata.title} project`}
+      path="~/projects"
+      command="cd"
+      args={entry.id}
+    />
+
+    <dl class="project-detail__metadata">
+      <div>
+        <dt>status</dt>
+        <dd>{metadata.status}</dd>
+      </div>
+
+      <div>
+        <dt>technologies</dt>
+        <dd>{metadata.technologies.join(" · ")}</dd>
+      </div>
+
+      {metadata.repository && (
+        <div>
+          <dt>repository</dt>
+          <dd>
+            <a
+              href={metadata.repository}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              view source <span aria-hidden="true">&#8599;</span>
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          </dd>
+        </div>
+      )}
+
+      {metadata.demo && (
+        <div>
+          <dt>demo</dt>
+          <dd>
+            <a href={metadata.demo} target="_blank" rel="noopener noreferrer">
+              open demo <span aria-hidden="true">&#8599;</span>
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          </dd>
+        </div>
+      )}
+    </dl>
+
+    <div class="project-detail__body">
+      <Content />
+    </div>
+
+    {metadata.screenshots.length > 0 && (
+      <section aria-labelledby="screenshots">
+        <CommandHeading
+          level={2}
+          id="screenshots"
+          label={`${metadata.title} screenshots`}
+          path={`~/projects/${entry.id}`}
+          command="open"
+          args="screenshots/"
+        />
+
+        <ImageGallery images={metadata.screenshots} />
+      </section>
+    )}
+  </article>
+</Layout>
+
+<style>
+  .project-detail__nav {
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-small);
+  }
+
+  .project-detail__metadata {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: 0 0 var(--space-8);
+    padding-block: var(--space-4);
+    border-block: var(--border-width) solid var(--color-border);
+  }
+
+  .project-detail__metadata > div {
+    min-width: 0;
+  }
+
+  .project-detail__metadata dt {
+    margin-bottom: var(--space-1);
+    color: var(--color-text-faint);
+    font-size: var(--font-size-small);
+  }
+
+  .project-detail__metadata dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .project-detail__body > :first-child {
+    margin-top: 0;
+  }
+
+  .project-detail__body :global(h2) {
+    padding-bottom: var(--space-2);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .project-detail__body :global(h2)::before {
+    margin-right: 0.6ch;
+    color: var(--color-command);
+    content: "##";
+  }
+
+  @media (max-width: 37.5rem) {
+    .project-detail__metadata {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
