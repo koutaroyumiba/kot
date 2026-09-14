@@ -17,6 +17,7 @@ export const changelogReleases = [
       "added structured project, writing, reading, and Leetcode collections",
       "migrated Leetcode solutions to typed content and question ID routes",
       "added the keyboard accessible :jump command palette",
+      "renamed the books section to reading with compatibility redirects",
       "rebuilt the dark and light themes using proper Rose Pine palette",
       "improved responsive layouts, keyboard navigation, metadata and error recovery",
       "preserved existing URLs while drastically improving the maintainability of the site",
