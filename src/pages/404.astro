@@ -1,18 +1,109 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import CommandHeading from "../components/command/CommandHeading.astro";
+import Callout from "../components/content/Callout.astro";
+
+const recoveryLinks = [
+  { title: "home", href: "/" },
+  { title: "projects", href: "/projects" },
+  { title: "books", href: "/books" },
+  { title: "leetcode", href: "/leetcode" },
+  { title: "contents", href: "/contents" },
+] as const;
 ---
 
-<Layout>
-    <h1><span>PAGE NOT FOUND</span></h1>
+<Layout
+  title="Page not found"
+  description="The requested page could not be found"
+  noindex
+>
+  <CommandHeading
+    level={1}
+    label="Page not found"
+    path="~/404"
+    command="./resolve-route"
+    args="requested-page"
+  />
+
+  <samp class="error-output">
+    [ERROR] resolve-route: requested-page returned nullptr
+  </samp>
+
+  <Callout>
+    <p>Looks like this page was piped straight into /dev/null</p>
+    <p>
+      The pointer came back null, but I checked before dereferencing it - so at
+      least nothing segfaulted
+    </p>
+  </Callout>
+
+  <CommandHeading
+    level={2}
+    id="recovery-heading"
+    label="Known paths"
+    path="~"
+    command="ls"
+  />
+
+  <nav aria-labelledby="recovery-heading">
+    <ul class="structured-list recovery-list">
+      {recoveryLinks.map((link) => (
+        <li class="structured-row">
+          <a class="structured-row__link recovery-row" href={link.href}>
+            <span>./{link.title}</span>
+            <code>{link.href}</code>
+            <span class="structured-row__arrow" aria-hidden="true">
+              &#8594;
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
 </Layout>
 
 <style>
-    body {
-        min-height: 100%;
+  .error-output {
+    display: block;
+    margin: 0 0 var(--space-6);
+    color: var(--color-error);
+  }
+
+  .recovery-list {
+    margin-top: var(--space-4);
+  }
+
+  .recovery-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: baseline;
+    gap: var(--space-4);
+  }
+
+  .recovery-row > span:first-child {
+    color: var(--color-link);
+    font-weight: 500;
+  }
+
+  .recovery-row code {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  @media (max-width: 37.5rem) {
+    .recovery-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-2);
     }
 
-    body > h1 {
-        white-space: nowrap;
-        font-size: 20pt;
+    .recovery-row code {
+      grid-column: 1;
+      grid-row: 2;
     }
+
+    .structured-row__arrow {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
 </style>
