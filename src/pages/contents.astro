@@ -38,7 +38,7 @@ const sections = [
     label="Site Directory"
     path="~/contents"
     command="find"
-    args=". -maxdepth 2"
+    args=". --maxdepth=2"
   />
 
   {sections.map((section) => (
