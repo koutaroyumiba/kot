@@ -27,6 +27,18 @@ const summary = {
   waiting: books.filter((book) => book.status === "unread").length,
 };
 
+const filterOptions = [
+  { value: "all", label: "all", count: books.length },
+  { value: "reading", label: "reading", count: summary.inProgress },
+  { value: "read", label: "read", count: summary.completed },
+  { value: "unread", label: "unread", count: summary.waiting },
+  {
+    value: "favourites",
+    label: "favourites",
+    count: books.filter((book) => book.rating === 5).length,
+  },
+];
+
 const parseDate = (date?: string) =>
   date ? new Date(`${date}T00:00:00Z`) : undefined;
 ---
@@ -65,11 +77,36 @@ const parseDate = (date?: string) =>
     id="catalogue"
     label="All books"
     path="~/books"
-    command="ls"
-    args="--all"
+    command="fzf [filter] |"
+    args='ls --filter="$1"'
   />
 
-  <ul class="structured-list" aria-labelledby="catalogue">
+  <div class="book-filters" data-book-filters hidden>
+    <div class="book-filters__controls" aria-label="Filter books">
+      {filterOptions.map((filter, index) => (
+        <button
+          type="button"
+          data-book-filter={filter.value}
+          aria-controls="book-catalogue"
+          aria-pressed={index === 0 ? "true" : "false"}
+        >
+          <span>{filter.label}</span>
+          <span class="book-filters__count">{filter.count}</span>
+        </button>
+      ))}
+    </div>
+
+    <p
+      class="book-filters__result"
+      data-book-filter-result
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      {books.length} books shown
+    </p>
+  </div>
+
+  <ul id="book-catalogue" class="structured-list" aria-labelledby="catalogue">
     {sortedBooks.map((book) => (
       <BookRow
         title={book.title}
@@ -83,6 +120,72 @@ const parseDate = (date?: string) =>
     ))}
   </ul>
 </Layout>
+
+<script>
+  type BookFilter = "all" | "reading" | "read" | "unread" | "favourites";
+
+  const isBookFilter = (value: string | undefined): value is BookFilter =>
+    value === "all" ||
+    value === "reading" ||
+    value === "read" ||
+    value === "unread" ||
+    value === "favourites";
+
+  const filterContainer = document.querySelector<HTMLElement>(
+    "[data-book-filters]",
+  );
+  const catalogue = document.querySelector<HTMLUListElement>("#book-catalogue");
+  const result = document.querySelector<HTMLElement>(
+    "[data-book-filter-result]",
+  );
+
+  if (filterContainer && catalogue && result) {
+    const buttons = Array.from(
+      filterContainer.querySelectorAll<HTMLButtonElement>("[data-book-filter]"),
+    );
+    const rows = Array.from(
+      catalogue.querySelectorAll<HTMLElement>("[data-status][data-favourite]"),
+    );
+
+    const applyFilter = (filter: BookFilter) => {
+      let visibleCount = 0;
+
+      for (const row of rows) {
+        const matches =
+          filter === "all" ||
+          (filter === "favourites"
+            ? row.dataset.favourite === "true"
+            : row.dataset.status === filter);
+
+        row.hidden = !matches;
+        if (matches) {
+          visibleCount += 1;
+        }
+      }
+
+      for (const button of buttons) {
+        button.setAttribute(
+          "aria-pressed",
+          String(button.dataset.bookFilter === filter),
+        );
+      }
+
+      const noun = visibleCount === 1 ? "book" : "books";
+      result.textContent = `${visibleCount} ${noun} shown`;
+    };
+
+    for (const button of buttons) {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.bookFilter;
+        if (isBookFilter(filter)) {
+          applyFilter(filter);
+        }
+      });
+    }
+
+    filterContainer.hidden = false;
+  }
+</script>
 
 <style>
   .book-summary {
@@ -116,6 +219,52 @@ const parseDate = (date?: string) =>
     color: var(--color-argument);
     font-size: var(--font-size-large);
     font-weight: 500;
+  }
+
+  .book-filters {
+    margin-block: var(--space-6);
+  }
+
+  .book-filters[hidden],
+  :global(#book-catalogue > [hidden]) {
+    display: none;
+  }
+
+  .book-filters__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .book-filters button {
+    display: inline-flex;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-text-muted);
+    background: transparent;
+    border: var(--border-width) solid var(--color-border);
+    cursor: pointer;
+  }
+
+  .book-filters button:hover {
+    color: var(--color-text);
+    border-color: var(--color-path);
+  }
+
+  .book-filters button[aria-pressed="true"] {
+    color: var(--color-bg);
+    background: var(--color-path);
+    border-color: var(--color-path);
+  }
+
+  .book-filters__count {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .book-filters__result {
+    margin: var(--space-3) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
   }
 
   @media (max-width: 37.5rem) {
