@@ -1,47 +1,81 @@
 ---
-import Layout from "../../layouts/Layout.astro"
+import Layout from "../../layouts/Layout.astro";
+import CommandHeading from "../../components/command/CommandHeading.astro";
+import { thoughts } from "../../data/thoughts";
 ---
 
-<Layout>
-    <h1>Shower Thoughts</h1>
-    <ul class="sidebar">
-        <li>1. Paradox of Tolerance</li>
-        <li>2. On the Importance of Reading</li>
-        <li>3. Thoughts on Nietzsche's theory on the Will to Power</li>
-        <li>4. The Importance in the Attainment of New Knowledge</li>
-        <li>5, On the Importance of Education</li>
-        <li>6. On the Difficulty of Pursuing "Truth"</li>
-        <li>7. On the Pleasures and Joys of Mankind</li>
-        <li>8. The Grounds of Justice as Questioned by Plato</li>
-        <li>9. On the Fundamental Structure of Economic Infrastructure</li>
-        <li>10. On the Importance of Writing</li>
-        <li>11. On the Importance of Ambiguity in Language</li>
-        <li>12. On the Modern View of Entertainment</li>
-        <li>13. On the Dichotomy between Thinking and Experience</li>
-        <li>14. On the Ideal Way of Combatting "Evil"</li>
-        <li>15. View of Suffering as Empowerment</li>
-        <li>16. Trust as a Resource and the Foundation of a Successful Relationship</li>
-        <li>17. On Self-Awareness and lack thereof, and our Powerlessness to View Life Objectively</li>
-        <li>18. On Teachers and Mentors, and the Roles of Students</li>
-        <li>19. On the Freedom of Individuals or the Perceived Freedom</li>
-        <li>20. On the Dichotomy between Instrinct and Reason</li>
-        <li>21. On Virtue and the Cardinal Good</li>
-        <li>22. On Vices and the Cardinal Bad</li>
-        <li>23. On the Concept of Free Will and its Consequences</li>
-        <li>24. On the Utmost Importance of Knowledge and Honesty in Democracy</li>
-        <li>25. On Self-Esteem and it's Rivalry to Self-Respect</li>
-        <li>26. A Selfish Comment on the Ignorant and the "Special"</li>
-        <li>27. A Political Perspective on the Realm of Ideas</li>
-        <li>28. On the Similarities and Lessons for Life from Water</li>
-        <li>29. On Sympathy and the Balance between Competition and Collaboration</li>
-        <li>30. Time Takes Away the Pain</li>
-        <li>31. Racism as a Determinant of Culture</li>
-        <li>32. Views of Relationshipws through the Concept of Home</li>
-    </ul>
+<Layout title="Thoughts" description="Unfinished ideas and writings">
+  <CommandHeading
+    level={1}
+    label="Thoughts and unfinished ideas"
+    path="~/thoughts"
+    command="grep"
+    args={'-R "unfinished ideas"'}
+  />
+
+  <p class="thoughts-introduction">
+    These are not declarations of certainty. They are checkpoints: attempts to
+    give a thought enough structure that someone - including future me - can
+    argue with it.
+  </p>
+
+  <CommandHeading
+    level={2}
+    label="Ideas backlog"
+    path="~/thoughts"
+    command="cat"
+    args="backlog.txt"
+  />
+
+  <p class="thoughts-count">{thoughts.length} unfinished ideas</p>
+  <ol class="thoughts-backlog">
+    {thoughts.map((idea) => (
+      <li value={idea.id}>
+        <span class="thoughts-backlog__index" aria-hidden="true">
+          {String(idea.id).padStart(2, "0")}
+        </span>
+        <span>{idea.title}</span>
+      </li>
+    ))}
+  </ol>
 </Layout>
- 
+
 <style>
-ul {
-   list-style-type: none;
-}
+  .thoughts-introduction {
+    max-width: var(--reading-width);
+    color: var(--color-text-muted);
+  }
+
+  .thoughts-count {
+    margin-bottom: var(--space-3);
+    color: var(--color-text-faint);
+    font-size: var(--font-size-small);
+  }
+
+  .thoughts-backlog {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .thoughts-backlog li {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-2);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .thoughts-backlog__index {
+    color: var(--color-text-faint);
+    font-size: var(--font-size-small);
+  }
+
+  @media (max-width: 37.5rem) {
+    .thoughts-backlog li {
+      grid-template-columns: 2rem minmax(0, 1fr);
+      gap: var(--space-2);
+    }
+  }
 </style>
