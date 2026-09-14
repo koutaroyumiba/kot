@@ -5,6 +5,17 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
   site: "https://koutaroyumiba.com",
 
+  redirects: {
+    "/books": {
+      status: 301,
+      destination: "/reading",
+    },
+    "/books/hall-of-fame": {
+      status: 301,
+      destination: "/reading/hall-of-fame",
+    },
+  },
+
   markdown: {
     shikiConfig: {
       themes: {

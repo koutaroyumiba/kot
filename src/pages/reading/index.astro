@@ -43,18 +43,18 @@ const parseDate = (date?: string) =>
   date ? new Date(`${date}T00:00:00Z`) : undefined;
 ---
 
-<Layout title="Books" description="Books read and collected">
+<Layout title="Reading" description="Books read and collected">
   <CommandHeading
     level={1}
     label="Book catalogue"
-    path="~/books"
+    path="~/reading"
     command="sqlite3"
     args={'library.db "select * from books"'}
   />
   <Callout>
     <p>&gt; officially keeping track since 2025-07-08</p>
     <p>
-      &gt; check out the <a href="/books/hall-of-fame">Hall of Fame</a>
+      &gt; check out the <a href="/reading/hall-of-fame">Hall of Fame</a>
     </p>
   </Callout>
   <dl class="book-summary" aria-label="Book catalogue summary">
@@ -76,7 +76,7 @@ const parseDate = (date?: string) =>
     level={2}
     id="catalogue"
     label="All books"
-    path="~/books"
+    path="~/reading"
     command="fzf [filter] |"
     args='ls --filter="$1"'
   />
