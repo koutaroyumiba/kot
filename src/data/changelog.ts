@@ -8,6 +8,21 @@ export interface ChangelogRelease {
 
 export const changelogReleases = [
   {
+    version: "3.0.0",
+    title: "complete site redesign",
+    summary:
+      "complete overhaul while keeping the site fast, static and unmistakably personal",
+    changes: [
+      "redesigned all pages",
+      "added structured project, writing, reading, and Leetcode collections",
+      "migrated Leetcode solutions to typed content and question ID routes",
+      "added the keyboard accessible :jump command palette",
+      "rebuilt the dark and light themes using proper Rose Pine palette",
+      "improved responsive layouts, keyboard navigation, metadata and error recovery",
+      "preserved existing URLs while drastically improving the maintainability of the site",
+    ],
+  },
+  {
     version: "2.0.0",
     date: "2025-09-30",
     title: "complete theme rework",
