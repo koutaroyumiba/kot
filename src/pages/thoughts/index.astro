@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import CommandHeading from "../../components/command/CommandHeading.astro";
+import Callout from "../../components/content/Callout.astro";
 import { thoughts } from "../../data/thoughts";
 ---
 
@@ -13,11 +14,13 @@ import { thoughts } from "../../data/thoughts";
     args={'-R "unfinished ideas"'}
   />
 
-  <p class="thoughts-introduction">
-    These are not declarations of certainty. They are checkpoints: attempts to
-    give a thought enough structure that someone - including future me - can
-    argue with it.
-  </p>
+  <Callout>
+    <p>
+      These are not declarations of certainty. They are checkpoints: attempts to
+      give a thought enough structure that someone - including future me - can
+      argue with it.
+    </p>
+  </Callout>
 
   <CommandHeading
     level={2}
@@ -41,11 +44,6 @@ import { thoughts } from "../../data/thoughts";
 </Layout>
 
 <style>
-  .thoughts-introduction {
-    max-width: var(--reading-width);
-    color: var(--color-text-muted);
-  }
-
   .thoughts-count {
     margin-bottom: var(--space-3);
     color: var(--color-text-faint);

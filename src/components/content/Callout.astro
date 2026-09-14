@@ -1,0 +1,27 @@
+<div class="callout">
+  <slot />
+</div>
+
+<style>
+  .callout {
+    margin-block: var(--space-6);
+    padding: var(--space-4);
+    color: var(--color-text-muted);
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-left: 3px solid var(--color-command);
+  }
+
+  .callout :global(p) {
+    margin: 0;
+  }
+
+  .callout :global(p + p) {
+    margin-top: var(--space-2);
+  }
+
+  .callout :global(strong) {
+    color: var(--color-argument);
+    font-weight: 500;
+  }
+</style>

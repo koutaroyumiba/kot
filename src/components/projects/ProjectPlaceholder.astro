@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import CommandHeading from "../command/CommandHeading.astro";
+import Callout from "../content/Callout.astro";
 
 interface Props {
   title: string;
@@ -24,12 +25,12 @@ const { title, slug } = Astro.props;
       args={slug}
     />
 
-    <div class="project-placeholder__message">
+    <Callout>
       <p>
         <strong>[pending]</strong> write-up pending.
       </p>
       <p>This project page is being documented.</p>
-    </div>
+    </Callout>
   </article>
 </Layout>
 
@@ -37,27 +38,5 @@ const { title, slug } = Astro.props;
   .project-placeholder__nav {
     margin-bottom: var(--space-4);
     font-size: var(--font-size-small);
-  }
-
-  .project-placeholder__message {
-    margin-top: var(--space-6);
-    padding: var(--space-4);
-    color: var(--color-text-muted);
-    background-color: var(--color-surface);
-    border: var(--border-width) solid var(--color-border);
-    border-left: 3px solid var(--color-command);
-  }
-
-  .project-placeholder__message p {
-    margin: 0;
-  }
-
-  .project-placeholder__message p + p {
-    margin-top: var(--space-2);
-  }
-
-  .project-placeholder__message strong {
-    color: var(--color-argument);
-    font-weight: 500;
   }
 </style>
