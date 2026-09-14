@@ -57,7 +57,15 @@ const isActive = (href: string) => {
     </nav>
 
     <div class="header-actions">
-      <a class="jump-link" href="/contents" data-jump-trigger>
+      <a
+        class="jump-link"
+        href="/contents"
+        data-jump-trigger
+        aria-haspopup="dialog"
+        aria-controls="jump-palette"
+        aria-expanded="false"
+        aria-keyshortcuts="Control+K Meta+K"
+      >
         <span aria-hidden="true">:</span>jump
       </a>
 

@@ -183,6 +183,7 @@ import { navigationDestinations } from "../data/navigation";
 
       searchInput.value = "";
       dialog.showModal();
+      trigger.setAttribute("aria-expanded", "true");
       filterResults();
       searchInput.focus();
     };
@@ -263,12 +264,28 @@ import { navigationDestinations } from "../data/navigation";
           }
 
           break;
+        case "Escape":
+          event.preventDefault();
+          dialog.close();
+          break;
       }
     });
+
+    for (const item of items) {
+      const link = item.querySelector<HTMLAnchorElement>("[data-jump-result]");
+      link?.addEventListener("focus", () => {
+        const index = visibleItems.indexOf(item);
+        if (index >= 0) {
+          setSelection(index);
+        }
+      });
+    }
 
     dialog.addEventListener("close", () => {
       const elementToRestore = opener;
       opener = null;
+
+      trigger.setAttribute("aria-expanded", "false");
 
       if (elementToRestore?.isConnected) {
         elementToRestore.focus();
@@ -314,6 +331,8 @@ import { navigationDestinations } from "../data/navigation";
   }
 
   .jump-palette__header button {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
     padding: var(--space-1) var(--space-2);
     color: var(--color-text-muted);
     background: transparent;
