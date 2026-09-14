@@ -1,57 +1,210 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from "../../layouts/Layout.astro";
+import CommandHeading from "../../components/command/CommandHeading.astro";
+import Callout from "../../components/content/Callout.astro";
+import { books } from "../../data/books";
+
+const selections = [
+  {
+    slug: "the-giver",
+    reason: "first book",
+    notes: [
+      "first ever book that got me into reading",
+      "good introduction to the more utopia/dystopia novels",
+      "makes you think deeply about the importance of colour and emotion",
+    ],
+  },
+  {
+    slug: "1984",
+    reason: "personal favourite novel",
+    notes: [
+      "personal favourite book of all time",
+      "newspeak (importance of language) and the concept of being a slave to freedom",
+      "control by fear and power (in contrast to Brave New World)",
+    ],
+  },
+  {
+    slug: "the-alchemist",
+    reason: "reflection of my general mindset",
+    notes: [
+      "everyone has their own Personal Legends and the world will conspire to help you",
+      "makes you want to think about your own potential and urges you to strive for it",
+    ],
+  },
+  {
+    slug: "brave-new-world",
+    reason: "another perspective of 'dystopia'",
+    notes: [
+      "the concept of utopia as a 'good place that does not exist'",
+      "most probable dystopian society that could occur in the modern world",
+      "the dialogue between John and Mustapha Mond might be one of the greatest dialogues",
+    ],
+  },
+  {
+    slug: "the-love-song-of-j-alfred-prufrock",
+    reason: "personal favourite poem",
+    notes: [
+      "my favourite poem (definitely not biased for analyzing it the most)",
+      "presents the modernistic view of society",
+    ],
+  },
+  {
+    slug: "notes-from-underground",
+    reason: "the best argument against utopia",
+    notes: [
+      "a story of a spiteful man - challenges the fundamental need of an utopia",
+      "give a man the ultimate utopia and they will ruin it just to see something unexpected happen",
+    ],
+  },
+  {
+    slug: "12-rules-for-life",
+    reason: "personal favourite non-fiction",
+    notes: [
+      "the only non-fiction book on this list",
+      "provides principles to which you can translate to action",
+    ],
+  },
+] as const;
+
+const hallOfFame = selections.map(({ slug, reason, notes }) => {
+  const book = books.find((book) => book.slug === slug);
+  if (!book) {
+    throw new Error(`Hall of Fame book not found: ${slug}`);
+  }
+
+  if (book.status !== "read" || book.rating !== 5) {
+    throw new Error(`Hall of Fame book must be read and rated 5: ${slug}`);
+  }
+
+  return { book, reason, notes };
+});
 ---
 
-<Layout>
-    <h1><span class="span-header">~/books</span> $ <span class="span-command">hall of fame</span></h1>
+<Layout title="Books Hall of Fame" description="Great books">
+  <CommandHeading
+    level={1}
+    label="Books Hall of Fame"
+    path="~/books"
+    command="cat"
+    args="hall-of-fame.md"
+  />
+
+  <Callout>
     <p>Basically all the books that got a 5/5 on <a href="/books">my all book list</a></p>
-    <ul class="sidebar">
-        <li>1. <span>The Giver</span> - Lois Lowry</li>
-        <ul>
-            <li>=&gt first ever book that got me into reading the classic novels (first read in year 8)</li>
-            <li>=&gt good introduction to the more utopia/dystopia novels</li>
-            <li>=&gt makes you think deeply about the importance of colour and emotion</li>
+  </Callout>
+
+  <ol class="hall-of-fame">
+    {hallOfFame.map(({ book, reason, notes }, index) => (
+    <li class="hall-of-fame__entry">
+      <article aria-labelledby={`book-${book.slug}`}>
+        <header class="hall-of-fame__header">
+          <span class="hall-of-fame__number" aria-hidden="true">
+            [{String(index + 1).padStart(2, "0")}]
+          </span>
+
+          <div>
+            <div class="hall-of-fame__title-line">
+              <h2 id={`book-${book.slug}`}>{book.title}</h2>
+              <span class="hall-of-fame__reason">{reason}</span>
+            </div>
+            <p class="hall-of-fame__author">by {book.author}</p>
+          </div>
+        </header>
+
+        <ul class="hall-of-fame__notes">
+          {notes.map((note) => (
+          <li>
+            <span aria-hidden="true">=&gt; </span>
+            <span>{note}</span>
+          </li>
+          ))}
         </ul>
-        <li>2. <span>1984</span> - George Orwell</li>
-        <ul>
-            <li>=&gt personal favourite book of all time</li>
-            <li>=&gt newspeak (importance of language) and the concept of freedom being slavery</li>
-            <li>=&gt control by fear and power (in contrast to Brave New World)</li>
-        </ul>
-        <li>3. <span>The Alchemist</span> - Paulo Coelho</li>
-        <ul>
-            <li>=&gt everyone has their own Personal Legends and the world will conspire to help you</li>
-            <li>=&gt makes you want to think about your own Personal Legends</li>
-        </ul>
-        <li>4. <span>Brave New World</span> - Aldous Huxley</li>
-        <ul>
-            <li>=&gt the concept of utopia as a "good place that does not exist"</li>
-            <li>=&gt most probable dystopian society that could occur in modern society</li>
-            <li>=&gt the dialogue between John (the savage) and Mustapha Mond (the controller) might be one of the greatest</li>
-        </ul>
-        <li>5. <span>The Love Song of J Alfred Prufrock</span> - TS. Eliot</li>
-        <ul>
-            <li>=&gt my favourite poem (probably biased because its the poem that i analysed the most)</li>
-            <li>=&gt presents the modernistic view of society - "pool that stands and drains"</li>
-        </ul>
-        <li>6. <span>Notes From Underground</span> - Fyodor Dostoyevsky</li>
-        <ul>
-            <li>=&gt a story of a spiteful man... challenges the fundamental needs of utopia</li>
-            <li>=&gt give a man the ultimate utopia and they will ruin it just to see something unexpected</li>
-        </ul>
-        <li>7. <span>12 Rules For Life</span> - Jordan B Peterson</li>
-        <ul>
-            <li>=&gt the only non-fiction book on this list</li>
-            <li>=&gt provides principles to which you can translate into action</li>
-        </ul>
-    </ul>
+      </article>
+    </li>
+    ))}
+  </ol>
 </Layout>
 
 <style>
-ul {
-   list-style-type: none;
-}
-li {
-    padding: 5px;
-}
+  .hall-of-fame {
+    display: grid;
+    gap: var(--space-8);
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hall-of-fame__entry {
+    padding-bottom: var(--space-8);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .hall-of-fame__header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .hall-of-fame__number {
+    flex: 0 0 auto;
+    color: var(--color-argument);
+  }
+
+  .hall-of-fame__title-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .hall-of-fame__title-line h2 {
+    margin: 0;
+    color: var(--color-text);
+    font-size: var(--font-size-large);
+    font-weight: 500;
+  }
+
+  .hall-of-fame__reason {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-1);
+    max-width: 100%;
+    padding-inline: var(--space-1);
+    color: var(--color-bg);
+    background-color: var(--color-link);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .hall-of-fame__author {
+    margin: var(--space-2) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  .hall-of-fame__notes {
+    display: grid;
+    gap: var(--space-2);
+    margin: var(--space-4) 0 0;
+    padding: 0 0 0 var(--space-8);
+    list-style: none;
+  }
+
+  .hall-of-fame__notes li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+  }
+
+  .hall-of-fame__notes li > span:first-child {
+    color: var(--color-path);
+  }
+
+  @media (max-width: 37.5rem) {
+    .hall-of-fame__notes {
+      padding-left: 0;
+    }
+  }
 </style>
