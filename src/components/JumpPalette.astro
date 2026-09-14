@@ -84,14 +84,91 @@ import { navigationDestinations } from "../data/navigation";
     "#jump-palette-search",
   );
   const trigger = document.querySelector<HTMLElement>("[data-jump-trigger]");
+  const emptyMessage = document.querySelector<HTMLElement>(
+    "#jump-palette-empty",
+  );
+  const status = document.querySelector<HTMLElement>("[data-jump-status]");
 
   if (
     dialog &&
     searchInput &&
     trigger &&
+    emptyMessage &&
+    status &&
     typeof dialog.showModal === "function"
   ) {
+    const items = Array.from(
+      dialog.querySelectorAll<HTMLElement>("[data-jump-item]"),
+    );
+
+    let visibleItems = [...items];
+    let selectedIndex = 0;
     let opener: HTMLElement | null = null;
+
+    const setSelection = (requestedIndex: number, announce = false) => {
+      if (visibleItems.length === 0) {
+        selectedIndex = -1;
+      } else {
+        selectedIndex = Math.max(
+          0,
+          Math.min(requestedIndex, visibleItems.length - 1),
+        );
+      }
+
+      const selectedItem =
+        selectedIndex >= 0 ? visibleItems[selectedIndex] : undefined;
+
+      for (const item of items) {
+        const link =
+          item.querySelector<HTMLAnchorElement>("[data-jump-result]");
+        const isSelected = item === selectedItem;
+
+        if (!link) {
+          continue;
+        }
+
+        link.dataset.selected = String(isSelected);
+
+        if (isSelected) {
+          link.setAttribute("aria-current", "true");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      }
+
+      const selectedLink =
+        selectedItem?.querySelector<HTMLAnchorElement>("[data-jump-result]");
+      selectedLink?.scrollIntoView({ block: "nearest" });
+
+      if (announce && selectedLink) {
+        const title = selectedLink.querySelector("strong")?.textContent?.trim();
+        status.textContent = `${title ?? "Result"}, ${selectedIndex + 1} of ${visibleItems.length}`;
+      }
+    };
+
+    const filterResults = () => {
+      const queryTokens = searchInput.value
+        .trim()
+        .toLowerCase()
+        .split(/\s+/)
+        .filter(Boolean);
+
+      visibleItems = items.filter((item) => {
+        const searchableText = item.dataset.search ?? "";
+        const matches = queryTokens.every((token) =>
+          searchableText.includes(token),
+        );
+        item.hidden = !matches;
+        return matches;
+      });
+
+      emptyMessage.hidden = visibleItems.length !== 0;
+      setSelection(0);
+
+      const noun = visibleItems.length === 1 ? "destination" : "destinations";
+      status.textContent = `${visibleItems.length} ${noun} available`;
+    };
+
     const openPalette = (requestedBy?: HTMLElement) => {
       if (dialog.open) {
         searchInput.focus();
@@ -106,6 +183,7 @@ import { navigationDestinations } from "../data/navigation";
 
       searchInput.value = "";
       dialog.showModal();
+      filterResults();
       searchInput.focus();
     };
 
@@ -157,6 +235,34 @@ import { navigationDestinations } from "../data/navigation";
       if (colonShortcut && !dialog.open && !isEditableTarget(event.target)) {
         event.preventDefault();
         openPalette();
+      }
+    });
+
+    searchInput.addEventListener("input", filterResults);
+    searchInput.addEventListener("keydown", (event) => {
+      switch (event.key) {
+        case "ArrowDown":
+          event.preventDefault();
+          setSelection(selectedIndex + 1, true);
+          break;
+        case "ArrowUp":
+          event.preventDefault();
+          setSelection(selectedIndex - 1, true);
+          break;
+        case "Enter":
+          const selectedItem =
+            selectedIndex >= 0 ? visibleItems[selectedIndex] : undefined;
+          const selectedLink =
+            selectedItem?.querySelector<HTMLAnchorElement>(
+              "[data-jump-result]",
+            );
+
+          if (selectedLink) {
+            event.preventDefault();
+            selectedLink.click();
+          }
+
+          break;
       }
     });
 
