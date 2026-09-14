@@ -6,6 +6,11 @@ featured: false
 order: 1
 technologies: ["Lua"]
 repository: "https://github.com/koutaroyumiba/nvim"
+screenshots:
+  - src: "../../assets/neovim.png"
+    alt: "Neovim editing a Python file inside a tmux session"
+  - src: "../../assets/telescope.png"
+    alt: "Telescope search results in Neovim with a Go source preview"
 draft: false
 ---
 

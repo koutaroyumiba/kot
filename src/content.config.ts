@@ -8,19 +8,23 @@ const projects = defineCollection({
     pattern: "**/*.md",
   }),
 
-  schema: z.object({
-    title: z.string().min(1),
-    description: z.string().min(1),
-    publishedAt: z.coerce.date().optional(),
-    updatedAt: z.coerce.date().optional(),
-    status: z.enum(["active", "complete", "archived", "prototype"]),
-    featured: z.boolean(),
-    order: z.number().int().nonnegative().optional(),
-    technologies: z.array(z.string().min(1)),
-    repository: z.url().optional(),
-    demo: z.url().optional(),
-    draft: z.boolean(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string().min(1),
+      description: z.string().min(1),
+      publishedAt: z.coerce.date().optional(),
+      updatedAt: z.coerce.date().optional(),
+      status: z.enum(["active", "complete", "archived", "prototype"]),
+      featured: z.boolean(),
+      order: z.number().int().nonnegative().optional(),
+      technologies: z.array(z.string().min(1)),
+      repository: z.url().optional(),
+      demo: z.url().optional(),
+      screenshots: z
+        .array(z.object({ src: image(), alt: z.string().min(1) }))
+        .default([]),
+      draft: z.boolean(),
+    }),
 });
 
 const writing = defineCollection({
