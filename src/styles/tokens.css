@@ -10,33 +10,33 @@
   color-scheme: dark;
 
   /* Main page background */
-  --color-bg: #171817;
+  --color-bg: #191724;
   /* Background for contained elements (e.g. code blocks) */
-  --color-surface: #1e201e;
+  --color-surface: #1f1d2e;
   /* Surface background shown during hover/focus */
-  --color-surface-hover: #222522;
+  --color-surface-hover: #26233a;
   /* Primary text used for headings and body */
-  --color-text: #dedbd2;
+  --color-text: #e0def4;
   /* Secondary text used for metadata, dates */
-  --color-text-muted: #8f948b;
+  --color-text-muted: #908caa;
   /* Tertiary, low priority text */
-  --color-text-faint: #7c8279;
+  --color-text-faint: #8883a5;
   /* Subtle borders between sections, rows, and containers */
-  --color-border: #353a34;
+  --color-border: #403d52;
   /* Paths in command headings */
-  --color-path: #9fca87;
+  --color-path: #9ccfd8;
   /* Commands in command headings */
-  --color-command: #e09a8d;
+  --color-command: #ebbcba;
   /* Command arguments, highlights */
-  --color-argument: #e6b86f;
+  --color-argument: #f6c177;
   /* Standard links and interactive text */
   --color-link: #9ccfd8;
   /* Restrained accent used for secondary categories */
   --color-accent-violet: #c4a7e7;
   /* Visible keyboard focus outlines */
-  --color-focus: #9fca87;
+  --color-focus: #9ccfd8;
   /* Positive states such as completed or successful */
-  --color-success: #98be82;
+  --color-success: #9ccfd8;
   /* Warning states */
   --color-warning: #f6c177;
   /* Error and destructive states */
@@ -78,19 +78,21 @@
   color-scheme: light;
 
   --color-bg: #faf4ed;
-  --color-surface: #f2e9e1;
-  --color-surface-hover: #e8ded5;
+  --color-surface: #fffaf3;
+  --color-surface-hover: #f2e9e1;
   --color-text: #575279;
   --color-text-muted: #625e78;
-  --color-text-faint: #716c84;
+  --color-text-faint: #686379;
   --color-border: #cecacd;
-  --color-path: #5a7d4f;
-  --color-command: #d7827e;
+
+  --color-path: #286983;
+  --color-command: #b4637a;
   --color-argument: #ea9d34;
-  --color-link: #56949f;
+  --color-link: #286983;
   --color-accent-violet: #79558f;
-  --color-focus: #907aa9;
-  --color-success: #56949f;
+
+  --color-focus: #286983;
+  --color-success: #286983;
   --color-warning: #ea9d34;
   --color-error: #b42318;
 }
