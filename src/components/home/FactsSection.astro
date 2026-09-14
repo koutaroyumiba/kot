@@ -1,0 +1,138 @@
+---
+import CommandHeading from "../command/CommandHeading.astro";
+---
+
+<section aria-labelledby="facts">
+  <CommandHeading
+    level={1}
+    id="facts"
+    label="Facts about me"
+    path="~/facts"
+    command="grep"
+    args={'-n "^-" fun.md'}
+  />
+
+  <ol class="grep-output" aria-label="Facts about me">
+    <li>
+      <span class="grep-output__line" aria-hidden="true">
+        1
+      </span>
+      <span class="grep-output__separator" aria-hidden="true">
+        :
+      </span>
+      <span class="grep-output__marker" aria-hidden="true">
+        -
+      </span>
+      <span>
+        I use neovim, btw (with a{" "}
+        <a
+          href="https://github.com/koutaroyumiba/nvim"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          custom config<span class="sr-only"> (opens in a new tab)</span>
+        </a>
+        ?!?)
+      </span>
+    </li>
+    <li>
+      <span class="grep-output__line" aria-hidden="true">
+        2
+      </span>
+      <span class="grep-output__separator" aria-hidden="true">
+        :
+      </span>
+      <span class="grep-output__marker" aria-hidden="true">
+        -
+      </span>
+      <span>First in Course Sweep (Semester 1 2025)</span>
+    </li>
+    <li>
+      <span class="grep-output__line" aria-hidden="true">
+        3
+      </span>
+      <span class="grep-output__separator" aria-hidden="true">
+        :
+      </span>
+      <span class="grep-output__marker" aria-hidden="true">
+        -
+      </span>
+      <span>
+        Chief Entertainment Officer (CEO) at{" "}
+        <a
+          href="https://github.com/agroupforcoders"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          AGFC<span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      </span>
+    </li>
+    <li>
+      <span class="grep-output__line" aria-hidden="true">
+        4
+      </span>
+      <span class="grep-output__separator" aria-hidden="true">
+        :
+      </span>
+      <span class="grep-output__marker" aria-hidden="true">
+        -
+      </span>
+      <span>
+        Lead Contributor of{" "}
+        <a
+          href="https://instagram.com/ericzhengfanpage"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Eric Zheng's Fan Page
+          <span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      </span>
+    </li>
+  </ol>
+</section>
+
+<style>
+  section {
+    margin-top: var(--space-12);
+  }
+
+  section :global(.command-heading) {
+    margin-top: 0;
+  }
+
+  .grep-output {
+    display: grid;
+    row-gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .grep-output li {
+    display: grid;
+    grid-template-columns: max-content 2ch 2ch minmax(0, 1fr);
+    align-items: baseline;
+    line-height: 1.5;
+  }
+
+  .grep-output__line {
+    color: var(--color-argument);
+    text-align: right;
+  }
+
+  .grep-output__separator {
+    color: var(--color-text-faint);
+  }
+
+  .grep-output__marker {
+    color: var(--color-command);
+  }
+
+  @media (max-width: 37.5rem) {
+    section {
+      margin-top: var(--space-8);
+    }
+  }
+</style>
