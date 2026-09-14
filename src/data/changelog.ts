@@ -12,6 +12,7 @@ export const changelogReleases = [
     date: "2025-09-30",
     title: "complete theme rework",
     summary: "(colour scheme changed to rose pine)",
+    changes: [],
   },
   {
     version: "1.1.0",
@@ -23,6 +24,6 @@ export const changelogReleases = [
     version: "1.0.0",
     date: "2025-05-22",
     title: "official launch",
-    summary: "of the site!",
+    summary: "version 1 release!",
   },
 ] satisfies ChangelogRelease[];
