@@ -35,6 +35,7 @@
 <script>
   const root = document.documentElement;
   const button = document.querySelector("#theme-toggle");
+  const themeColor = document.querySelector<HTMLMetaElement>("#theme-color");
 
   if (button instanceof HTMLButtonElement) {
     const getCurrentTheme = () => {
@@ -56,14 +57,26 @@
       }
     };
 
+    const updateThemeColor = (theme: "light" | "dark") => {
+      const color =
+        theme === "light"
+          ? themeColor?.dataset.lightColor
+          : themeColor?.dataset.darkColor;
+      if (themeColor && color) {
+        themeColor.content = color;
+      }
+    };
+
     button.addEventListener("click", () => {
       const currentTheme = getCurrentTheme();
       const nextTheme = currentTheme === "light" ? "dark" : "light";
       root.dataset.theme = nextTheme;
+      updateThemeColor(nextTheme);
       saveTheme(nextTheme);
       updateButton();
     });
 
+    updateThemeColor(getCurrentTheme());
     updateButton();
   }
 </script>
