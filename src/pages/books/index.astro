@@ -1,6 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import BookList from "../../components/books/BookList";
+import CommandHeading from "../../components/command/CommandHeading.astro";
+import BookRow from "../../components/lists/BookRow.astro";
+import Callout from "../../components/content/Callout.astro";
 import { books } from "../../data/books";
 
 // note to self:
@@ -10,27 +12,120 @@ import { books } from "../../data/books";
 // 2: maybe not recommend
 // 1: poopoo
 
-const sortedBooks = [...books].sort((firstBook, secondBook) =>
-  firstBook.author.localeCompare(secondBook.author),
-);
+const sortedBooks = [...books].sort((firstBook, secondBook) => {
+  const authorDifference = firstBook.author.localeCompare(secondBook.author);
+  if (authorDifference !== 0) {
+    return authorDifference;
+  }
+
+  return firstBook.title.localeCompare(secondBook.title);
+});
+
+const summary = {
+  completed: books.filter((book) => book.status === "read").length,
+  inProgress: books.filter((book) => book.status === "reading").length,
+  waiting: books.filter((book) => book.status === "unread").length,
+};
+
+const parseDate = (date?: string) =>
+  date ? new Date(`${date}T00:00:00Z`) : undefined;
 ---
 
-<Layout>
-  <h1>
-    <span class="span-header">~/books</span> ${" "}
-    <span class="span-command">cat info</span>
-  </h1>
-  <ul class="list-no-style">
-    <li>&gt officially keeping track since 08/07/2025</li>
-    <li>
-      &gt check out the <a href="/books/hall-of-fame">Hall of Fame</a>
-    </li>
+<Layout title="Books" description="Books read and collected">
+  <CommandHeading
+    level={1}
+    label="Book catalogue"
+    path="~/books"
+    command="sqlite3"
+    args={'library.db "select * from books"'}
+  />
+  <Callout>
+    <p>&gt; officially keeping track since 2025-07-08</p>
+    <p>
+      &gt; check out the <a href="/books/hall-of-fame">Hall of Fame</a>
+    </p>
+  </Callout>
+  <dl class="book-summary" aria-label="Book catalogue summary">
+    <div>
+      <dt>completed</dt>
+      <dd>{summary.completed}</dd>
+    </div>
+    <div>
+      <dt>in progress</dt>
+      <dd>{summary.inProgress}</dd>
+    </div>
+    <div>
+      <dt>waiting patiently</dt>
+      <dd>{summary.waiting}</dd>
+    </div>
+  </dl>
+
+  <CommandHeading
+    level={2}
+    id="catalogue"
+    label="All books"
+    path="~/books"
+    command="ls"
+    args="--all"
+  />
+
+  <ul class="structured-list" aria-labelledby="catalogue">
+    {sortedBooks.map((book) => (
+      <BookRow
+        title={book.title}
+        author={book.author}
+        status={book.status}
+        rating={book.rating}
+        completedAt={parseDate(book.completedAt)}
+        favourite={book.rating === 5}
+        note={book.note}
+      />
+    ))}
   </ul>
-  <BookList books={sortedBooks} client:load />
 </Layout>
 
 <style>
-  li {
-    padding: 5px;
+  .book-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: var(--space-8) 0;
+    padding-block: var(--space-4);
+    border-block: var(--border-width) solid var(--color-border);
+  }
+
+  .book-summary > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding-inline: var(--space-4);
+    border-left: var(--border-width) solid var(--color-border);
+  }
+
+  .book-summary > div:first-child {
+    border-left: 0;
+  }
+
+  .book-summary dt {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  .book-summary dd {
+    order: -1;
+    margin: 0;
+    color: var(--color-argument);
+    font-size: var(--font-size-large);
+    font-weight: 500;
+  }
+
+  @media (max-width: 37.5rem) {
+    .book-summary {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+
+    .book-summary > div {
+      border-left: 0;
+    }
   }
 </style>

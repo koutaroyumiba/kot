@@ -22,6 +22,7 @@ export const books = [
     startedAt: "2025-07-08",
     completedAt: "2025-07-08",
     rating: 5,
+    note: "amazing book",
   },
   {
     slug: "mans-search-for-meaning",

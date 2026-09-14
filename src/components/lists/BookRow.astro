@@ -38,6 +38,17 @@ const ratingLabel = rating ? `${rating} out of 5 stars` : "Not rated";
 const visibleRating = rating
   ? "*".repeat(rating) + ".".repeat(5 - rating)
   : "[nil]";
+
+const statusCheckbox = (status: BookStatus) => {
+  switch (status) {
+    case "unread":
+      return "- [ ]";
+    case "reading":
+      return "- [~]";
+    case "read":
+      return "- [x]";
+  }
+};
 ---
 
 <li
@@ -46,8 +57,7 @@ const visibleRating = rating
   data-favourite={String(favourite)}
 >
   <span class:list={["book-row__status", `book-row__status--${status}`]}>
-    <span aria-hidden="true">&middot;</span>
-    {status}
+    <span aria-hidden="true">{statusCheckbox(status)}</span> {status}
   </span>
 
   <span class="book-row__title-line">
