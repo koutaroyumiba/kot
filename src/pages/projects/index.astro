@@ -1,27 +1,46 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import { getCollection } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+import CommandHeading from "../../components/command/CommandHeading.astro";
+import ProjectRow from "../../components/lists/ProjectRow.astro";
+
+const projects = await getCollection("projects", ({ data }) => !data.draft);
+projects.sort((a, b) => {
+  const orderA = a.data.order ?? Number.MAX_SAFE_INTEGER;
+  const orderB = b.data.order ?? Number.MAX_SAFE_INTEGER;
+  if (orderA !== orderB) {
+    return orderA - orderB;
+  }
+
+  const dateA = (a.data.updatedAt ?? a.data.publishedAt)?.getTime() ?? 0;
+  const dateB = (b.data.updatedAt ?? b.data.publishedAt)?.getTime() ?? 0;
+  if (dateA !== dateB) {
+    return dateB - dateA;
+  }
+
+  return a.data.title.localeCompare(b.data.title);
+});
 ---
 
-<Layout>
-    <h1><span class="span-header">~/projects</span> $ <span class="span-command">ls</span></h1>
-    <ul class="sidebar">
-        <li><a href="/projects/neovim">./projects/neovim</a></li>
-        <li><a href="/projects/project-allocation-script">./projects/project-allocation-script</a></li>
-        <li><a href="/projects/interpreters">./projects/interpreters</a></li>
-        <li><a href="/projects/terminal-wordle">./projects/terminal-wordle</a></li>
-        <li><a href="/projects/registration-platform">./projects/registration-platform</a></li>
-        <li><a href="/projects/var-namer">./projects/var-namer</a></li>
-        <li><a href="/projects/vps">./projects/vps</a></li>
-        <li><a href="/projects/yoyos-amazing-bingo">./projects/yoyos-amazing-bingo</a></li>
-        <li><a href="/projects/wdcc">./projects/wdcc</a></li>
-    </ul>
+<Layout title="Projects" description="Personal Projects">
+  <CommandHeading
+    level={1}
+    label="Projects"
+    path="~/projects"
+    command="ls"
+    args="--sort=impact"
+  />
+  <ol class="structured-list" aria-label="Projects">
+    {projects.map((project, index) => (
+      <ProjectRow
+        index={index + 1}
+        title={project.data.title}
+        description={project.data.description}
+        technologies={project.data.technologies}
+        featured={project.data.featured}
+        href={`/projects/${project.id}`}
+      />
+    ))}
+  </ol>
 </Layout>
-
-<style>
-ul {
-   list-style-type: none;
-}
-li {
-    padding: 5px;
-}
-</style>
