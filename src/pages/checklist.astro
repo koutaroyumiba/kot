@@ -1,48 +1,181 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import CommandHeading from "../components/command/CommandHeading.astro";
+import Callout from "../components/content/Callout.astro";
+
+type ChecklistStatus = "pending" | "completed";
+
+interface ChecklistItem {
+  title: string;
+  status: ChecklistStatus;
+  note?: string;
+  href?: string;
+  completedAt?: string;
+}
+
+const checklistItems: ChecklistItem[] = [
+  {
+    title: "finish the write-ups for all projects",
+    status: "pending",
+    href: "/projects",
+    note: "what happened to showcasing all my grand projects to the wider community??",
+  },
+  {
+    title: "set up an RSS feed for changelog",
+    status: "pending",
+    note: "what happened to knowing what even is an RSS feed??",
+  },
+  {
+    title: "verify the mobile layout",
+    status: "pending",
+    note: "what happened to mobile first development??",
+  },
+  {
+    title: "implement light and dark mode",
+    status: "completed",
+    completedAt: "2025-05-23",
+    note: "what happened to accessibility (i dont want to be blinded)??",
+  },
+  {
+    title: "publish the first travel log",
+    status: "pending",
+    note: "what happened to being a curious tourist??",
+  },
+  {
+    title: "publish the first blog",
+    status: "pending",
+    note: "what happened to sharing knowledge to fans??",
+  },
+  {
+    title: "start a new books page",
+    status: "completed",
+    completedAt: "2025-07-09",
+    note: "what happened to reading in this economy??",
+  },
+];
 ---
 
-<Layout>
-    <h1><span class="span-header">~/checklist</span> $ <span class="span-command">find</span> <span class="span-accent">"future"</span></h1>
-    <p>Just like <a href="https://ericzheng.nz/checklist.html" target="_blank">Eric</a>, todo-list of all future additions I am currently thinking about</p>
-    <ul class="sidebar">
-        <li>
-            <p>- [ ] finish the projects page</p>
-            <span>\t &gt what happened to showcasing all my grand projects to the wider community??</span>
-        </li>
-        <li>
-            <p>- [ ] set up an RSS feed for changelog</p>
-            <span>\t &gt what happened to knowing what even is an RSS feed??</span>
-        </li>
-        <li>
-            <p>- [ ] fix mobile view</p>
-            <span>\t &gt what happened to mobile first development??</span>
-        </li>
-        <li>
-            <p>- [x] <s>implement light and dark mode</s> [completed 23/05/2025]</p>
-            <span>\t &gt what happened to accessibility (i dont want to be blinded)??</span>
-        </li>
-        <li>
-            <p>- [ ] start a new blog page</p>
-            <span>\t &gt what happened to sharing knowledge to fans??</span>
-        </li>
-        <li>
-            <p>- [x] <s>start a new book page</s> [completed 09/07/2025]</p>
-            <span>\t &gt what happened to reading in this economy??</span>
-        </li>
-    </ul>
+<Layout
+  title="Checklist"
+  description="Current and future improvements planned for this website"
+>
+  <CommandHeading
+    level={1}
+    label="Website checklist"
+    path="~/checklist"
+    command="find"
+    args='"future"'
+  />
+  <Callout>
+    Just like{" "}
+    <a
+      href="https://ericzheng.nz/checklist.html"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Eric<span class="sr-only"> (opens in a new tab)</span>
+    </a>
+    , todo-list of all future additions I am currently thinking about
+  </Callout>
+
+  <ul class="structured-list checklist">
+    {checklistItems.map((item) => (
+      <li
+        class:list={[
+          "structured-row",
+          "checklist__item",
+          `checklist__item--${item.status}`,
+        ]}
+      >
+        <span class="checklist__status">
+          <span aria-hidden="true">
+            {item.status === "completed" ? "- [x]" : "- [ ]"}
+          </span>
+          <span class="sr-only">
+            {item.status === "completed" ? "completed:" : "pending:"}
+          </span>
+        </span>
+
+        <p class="checklist__title">
+          {item.href ? (
+            <a href={item.href}>{item.title}</a>
+          ) : (
+            <span>{item.title}</span>
+          )}
+        </p>
+
+        {item.completedAt && (
+          <span class="checklist__date">
+            [completed{" "}
+            <time datetime={item.completedAt}>{item.completedAt}</time>]
+          </span>
+        )}
+
+        {item.note && <p class="checklist__note">&gt; {item.note}</p>}
+      </li>
+    ))}
+  </ul>
 </Layout>
 
 <style>
-.big-text {
-    font-size: 1.2rem;
-}
+  .checklist {
+    margin-top: var(--space-8);
+  }
 
-li {
-    margin: 10px 0;
-}
+  .checklist__item {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr) auto;
+    grid-template-areas: "status title date" ". note note";
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-4) var(--space-2);
+  }
 
-ul {
-    list-style-type: none;
-}
+  .checklist__status {
+    grid-area: status;
+    color: var(--color-text-muted);
+  }
+
+  .checklist__item--completed .checklist__status {
+    color: var(--color-success);
+  }
+
+  .checklist__title {
+    grid-area: title;
+    margin: 0;
+  }
+
+  .checklist__title a {
+    color: var(--color-link);
+  }
+
+  .checklist__item--completed .checklist__title {
+    color: var(--color-text-muted);
+    text-decoration: line-through;
+  }
+
+  .checklist__date {
+    grid-area: date;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    white-space: nowrap;
+  }
+
+  .checklist__note {
+    grid-area: note;
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  @media (max-width: 37.5rem) {
+    .checklist__item {
+      grid-template-columns: 4rem minmax(0, 1fr);
+      grid-template-areas: "status title" ". date" ". note";
+    }
+
+    .checklist__date {
+      white-space: normal;
+    }
+  }
 </style>
