@@ -10,6 +10,17 @@ export interface ChecklistItem {
 
 export const checklistItems = [
   {
+    title: "add search and sorting to leetcode/projects/reading",
+    status: "pending",
+    note: "what happened to finding the book I was reading??",
+  },
+  {
+    title:
+      "expand :jump to search headings and entries and to execute commands",
+    status: "pending",
+    note: "what happened to navigating at blazingly fast speed",
+  },
+  {
     title: "finish the write-ups for all projects",
     status: "pending",
     href: "/projects",
