@@ -18,6 +18,39 @@ leetcodeEntries.sort((a, b) => {
 
   return Number(a.data.questionId) - Number(b.data.questionId);
 });
+
+const difficultyOptions = [
+  { value: "all", count: leetcodeEntries.length },
+  {
+    value: "easy",
+    count: leetcodeEntries.filter((entry) => entry.data.difficulty === "Easy")
+      .length,
+  },
+  {
+    value: "medium",
+    count: leetcodeEntries.filter((entry) => entry.data.difficulty === "Medium")
+      .length,
+  },
+  {
+    value: "hard",
+    count: leetcodeEntries.filter((entry) => entry.data.difficulty === "Hard")
+      .length,
+  },
+] as const;
+
+const collectionOptions = [
+  { value: "all", count: leetcodeEntries.length },
+  {
+    value: "daily",
+    count: leetcodeEntries.filter((entry) => entry.data.type === "daily")
+      .length,
+  },
+  {
+    value: "neetcode-150",
+    count: leetcodeEntries.filter((entry) => entry.data.type === "neetcode-150")
+      .length,
+  },
+] as const;
 ---
 
 <Layout title="Leetcode" description="Leetcode solutions">
@@ -29,15 +62,456 @@ leetcodeEntries.sort((a, b) => {
     args="--sort=solved"
   />
 
-  <ul class="structured-list" aria-label="Leetcode solutions">
+  <div class="leetcode-discovery" data-leetcode-discovery hidden>
+    <form class="leetcode-search" role="search" data-leetcode-search>
+      <label for="leetcode-query">search solutions</label>
+
+      <div class="leetcode-search__input">
+        <span aria-hidden="true">$ fzf</span>
+        <input
+          id="leetcode-query"
+          type="search"
+          name="q"
+          autocomplete="off"
+          placeholder="title or question ID"
+          data-leetcode-query
+        />
+      </div>
+
+      <fieldset class="leetcode-filter">
+        <legend>difficulty</legend>
+        <div class="leetcode-filter__controls">
+          {difficultyOptions.map((option, index) => (
+            <button
+              type="button"
+              data-leetcode-difficulty={option.value}
+              aria-controls="leetcode-catalogue"
+              aria-pressed={index === 0 ? "true" : "false"}
+            >
+              <span>{option.value}</span>
+              <span class="leetcode-filter__count">[{option.count}]</span>
+            </button>
+          ))}
+        </div>
+      </fieldset>
+      <fieldset class="leetcode-filter">
+        <legend>collection</legend>
+        <div class="leetcode-filter__controls">
+          {collectionOptions.map((option, index) => (
+            <button
+              type="button"
+              data-leetcode-collection={option.value}
+              aria-controls="leetcode-catalogue"
+              aria-pressed={index === 0 ? "true" : "false"}
+            >
+              <span>{option.value}</span>
+              <span class="leetcode-filter__count">[{option.count}]</span>
+            </button>
+          ))}
+        </div>
+      </fieldset>
+
+      <div class="leetcode-discovery__actions">
+        <button
+          class="leetcode-discovery__clear"
+          type="button"
+          aria-controls="leetcode-catalogue"
+          data-leetcode-clear
+          disabled
+        >
+          <span aria-hidden="true">$</span>
+          clear
+        </button>
+      </div>
+    </form>
+
+    <p
+      class="leetcode-discovery__result"
+      aria-live="polite"
+      aria-atomic="true"
+      data-leetcode-result
+    >
+      {leetcodeEntries.length} solutions shown
+    </p>
+
+    <p class="leetcode-discovery__empty" data-leetcode-empty hidden>
+      No solutions match the current search and filters.
+    </p>
+  </div>
+
+  <ul
+    id="leetcode-catalogue"
+    class="structured-list"
+    aria-label="Leetcode solutions"
+    data-leetcode-catalogue
+  >
     {leetcodeEntries.map((entry) => (
       <LeetcodeRow
         solvedAt={entry.data.solvedAt}
         questionId={entry.data.questionId}
         title={entry.data.title}
         difficulty={entry.data.difficulty}
+        type={entry.data.type}
+        topics={entry.data.topics}
         href={`/leetcode/${entry.id}`}
       />
     ))}
   </ul>
 </Layout>
+
+<script>
+  type DifficultyFilter = "all" | "easy" | "medium" | "hard";
+  type CollectionFilter = "all" | "daily" | "neetcode-150";
+
+  const isDifficultyFilter = (
+    value: string | undefined | null,
+  ): value is DifficultyFilter =>
+    value === "all" ||
+    value === "easy" ||
+    value === "medium" ||
+    value === "hard";
+
+  const isCollectionFilter = (
+    value: string | undefined | null,
+  ): value is CollectionFilter =>
+    value === "all" || value === "daily" || value === "neetcode-150";
+
+  const discovery = document.querySelector<HTMLElement>(
+    "[data-leetcode-discovery]",
+  );
+  const form = document.querySelector<HTMLFormElement>(
+    "[data-leetcode-search]",
+  );
+  const searchInput = document.querySelector<HTMLInputElement>(
+    "[data-leetcode-query]",
+  );
+  const catalogue = document.querySelector<HTMLUListElement>(
+    "[data-leetcode-catalogue]",
+  );
+  const result = document.querySelector<HTMLElement>("[data-leetcode-result]");
+  const emptyMessage = document.querySelector<HTMLElement>(
+    "[data-leetcode-empty]",
+  );
+  const clearButton = document.querySelector<HTMLButtonElement>(
+    "[data-leetcode-clear]",
+  );
+
+  if (
+    discovery &&
+    form &&
+    searchInput &&
+    catalogue &&
+    result &&
+    emptyMessage &&
+    clearButton
+  ) {
+    const rows = Array.from(
+      catalogue.querySelectorAll<HTMLElement>("[data-leetcode-row]"),
+    );
+
+    const difficultyButtons = Array.from(
+      discovery.querySelectorAll<HTMLButtonElement>(
+        "[data-leetcode-difficulty]",
+      ),
+    );
+    const collectionButtons = Array.from(
+      discovery.querySelectorAll<HTMLButtonElement>(
+        "[data-leetcode-collection]",
+      ),
+    );
+
+    let activeDifficulty: DifficultyFilter = "all";
+    let activeCollection: CollectionFilter = "all";
+
+    const normalise = (value: string) =>
+      value
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, " ")
+        .trim();
+
+    const readUrlState = () => {
+      const parameters = new URLSearchParams(window.location.search);
+      searchInput.value = parameters.get("q") ?? "";
+      const difficulty = parameters.get("difficulty");
+      activeDifficulty = isDifficultyFilter(difficulty) ? difficulty : "all";
+      const collection = parameters.get("collection");
+      activeCollection = isCollectionFilter(collection) ? collection : "all";
+    };
+
+    const updatePressedStates = () => {
+      for (const button of difficultyButtons) {
+        button.setAttribute(
+          "aria-pressed",
+          String(button.dataset.leetcodeDifficulty === activeDifficulty),
+        );
+      }
+      for (const button of collectionButtons) {
+        button.setAttribute(
+          "aria-pressed",
+          String(button.dataset.leetcodeCollection === activeCollection),
+        );
+      }
+    };
+
+    const syncUrl = () => {
+      const url = new URL(window.location.href);
+      const query = searchInput.value.trim();
+
+      if (query) {
+        url.searchParams.set("q", query);
+      } else {
+        url.searchParams.delete("q");
+      }
+
+      if (activeDifficulty !== "all") {
+        url.searchParams.set("difficulty", activeDifficulty);
+      } else {
+        url.searchParams.delete("difficulty");
+      }
+      if (activeCollection !== "all") {
+        url.searchParams.set("collection", activeCollection);
+      } else {
+        url.searchParams.delete("collection");
+      }
+
+      window.history.replaceState(
+        null,
+        "",
+        `${url.pathname}${url.search}${url.hash}`,
+      );
+    };
+
+    const applyDiscovery = () => {
+      const queryTokens = normalise(searchInput.value)
+        .split(/\s+/)
+        .filter(Boolean);
+
+      let visibleCount = 0;
+
+      for (const row of rows) {
+        const questionId = row.dataset.questionId ?? "";
+        const title = row.dataset.title ?? "";
+        const searchableText = normalise(`${questionId} ${title}`);
+
+        const matchesQuery = queryTokens.every((token) =>
+          searchableText.includes(token),
+        );
+        const matchesDifficulty =
+          activeDifficulty === "all" ||
+          row.dataset.difficulty === activeDifficulty;
+        const matchesCollection =
+          activeCollection === "all" || row.dataset.type === activeCollection;
+        const matches = matchesQuery && matchesDifficulty && matchesCollection;
+
+        row.hidden = !matches;
+        if (matches) {
+          visibleCount++;
+        }
+      }
+
+      const noun = visibleCount === 1 ? "solution" : "solutions";
+      result.textContent = `${visibleCount} ${noun} shown`;
+      emptyMessage.hidden = visibleCount !== 0;
+
+      const hasActiveDiscovery =
+        searchInput.value.trim() !== "" ||
+        activeDifficulty !== "all" ||
+        activeCollection !== "all";
+      clearButton.disabled = !hasActiveDiscovery;
+
+      syncUrl();
+    };
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+    });
+    searchInput.addEventListener("input", applyDiscovery);
+
+    for (const button of difficultyButtons) {
+      button.addEventListener("click", () => {
+        const difficulty = button.dataset.leetcodeDifficulty;
+        if (!isDifficultyFilter(difficulty)) {
+          return;
+        }
+
+        activeDifficulty = difficulty;
+        updatePressedStates();
+        applyDiscovery();
+      });
+    }
+
+    for (const button of collectionButtons) {
+      button.addEventListener("click", () => {
+        const collection = button.dataset.leetcodeCollection;
+        if (!isCollectionFilter(collection)) {
+          return;
+        }
+
+        activeCollection = collection;
+        updatePressedStates();
+        applyDiscovery();
+      });
+    }
+
+    clearButton.addEventListener("click", () => {
+      searchInput.value = "";
+      activeDifficulty = "all";
+      activeCollection = "all";
+
+      updatePressedStates();
+      applyDiscovery();
+    });
+
+    window.addEventListener("popstate", () => {
+      readUrlState();
+      updatePressedStates();
+      applyDiscovery();
+    });
+
+    readUrlState();
+    updatePressedStates();
+    applyDiscovery();
+    discovery.hidden = false;
+  }
+</script>
+
+<style>
+  .leetcode-discovery {
+    margin-block: var(--space-6);
+    padding-block: var(--space-4);
+    border-block: var(--border-width) solid var(--color-border);
+  }
+
+  .leetcode-discovery[hidden],
+  .leetcode-discovery__empty[hidden],
+  :global([data-leetcode-row][hidden]) {
+    display: none;
+  }
+
+  .leetcode-search label {
+    display: block;
+    margin-bottom: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  .leetcode-search__input {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: center;
+    gap: 1ch;
+  }
+
+  .leetcode-search__input > span {
+    color: var(--color-path);
+    font-weight: 500;
+  }
+
+  .leetcode-search input {
+    width: 100%;
+    min-width: 0;
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-small);
+  }
+
+  .leetcode-search input:hover {
+    border-color: var(--color-path);
+  }
+
+  .leetcode-search input::placeholder {
+    color: var(--color-text-faint);
+    opacity: 1;
+  }
+
+  .leetcode-filter {
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .leetcode-filter legend {
+    margin-bottom: var(--space-2);
+    padding: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  .leetcode-filter__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .leetcode-filter button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-text-muted);
+    background-color: transparent;
+    border: var(--border-width) solid var(--color-border);
+    cursor: pointer;
+  }
+
+  .leetcode-filter button:hover {
+    color: var(--color-text);
+    border-color: var(--color-path);
+  }
+
+  .leetcode-filter button[aria-pressed="true"] {
+    color: var(--color-bg);
+    background-color: var(--color-path);
+    border-color: var(--color-path);
+  }
+
+  .leetcode-filter__count {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .leetcode-discovery__actions {
+    margin-top: var(--space-4);
+  }
+
+  .leetcode-discovery__clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 1ch;
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-link);
+    background-color: transparent;
+    border: var(--border-width) solid var(--color-border);
+    cursor: pointer;
+  }
+
+  .leetcode-discovery__clear > span {
+    color: var(--color-path);
+  }
+
+  .leetcode-discovery__clear:hover:not(:disabled) {
+    color: var(--color-text);
+    border-color: var(--color-path);
+  }
+
+  .leetcode-discovery__clear:disabled {
+    color: var(--color-text-faint);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .leetcode-discovery__result {
+    margin: var(--space-3) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  .leetcode-discovery__empty {
+    margin: var(--space-2) 0 0;
+    color: var(--color-warning);
+    font-size: var(--font-size-small);
+  }
+</style>
