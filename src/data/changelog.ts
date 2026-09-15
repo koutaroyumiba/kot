@@ -12,7 +12,7 @@ export const changelogReleases = [
     date: "2026-09-15",
     title: "complete site redesign",
     summary:
-      "complete overhaul while keeping the site fast, static and unmistakably personal",
+      "complete overhaul while keeping the site fast, static and personal",
     changes: [
       "redesigned all pages",
       "added structured project, writing, reading, and Leetcode collections",

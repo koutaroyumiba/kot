@@ -6,3 +6,7 @@ A little fun project to showcase all my other projects and log my experiences...
 Hopefully, I can start a blog page or something to talk about some of the cool things I find
 
 ![LeetCode Stats](https://leetcard.jacoblin.cool/Kot66?theme=dark&font=Ubuntu%20Mono&ext=heatmap)
+
+## Versioning
+
+This site uses curated product releases rather than versioning every content update. See [VERSIONING.md](./VERSIONING.md).

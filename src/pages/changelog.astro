@@ -16,6 +16,10 @@ import { changelogReleases } from "../data/changelog";
 
   <Callout>
     <p>
+      This changelog tracks meaningful website releases; routine content updates
+      are not versioned.
+    </p>
+    <p>
       Just like{" "}
       <a
         href="https://ericzheng.nz/changelog.html"
@@ -48,7 +52,7 @@ import { changelogReleases } from "../data/changelog";
 
           {release.date && (
             <time class="release__date" datetime={release.date}>
-              {release.date}
+              [{release.date}]
             </time>
           )}
         </article>
