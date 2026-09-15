@@ -30,7 +30,7 @@ Example `3.0.0` → `3.1.0`
 
 Increment the patch version for meaningful user-facing fixes:
 
-- broken links or redicrects
+- broken links or redirects
 - accessibility problems
 - mobile layout bugs
 - theme or interaction bugs
@@ -47,7 +47,7 @@ Ordinary content and internal maintenance can be deployed without updating the v
 - new Leetcode solutions
 - project write-ups
 - thoughts and articles
-- readingstatus updates
+- reading status updates
 - personal information updates
 - minor spelling corrections
 - dependency updates without visible effects
