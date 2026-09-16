@@ -8,6 +8,19 @@ export interface ChangelogRelease {
 
 export const changelogReleases = [
   {
+    version: "3.1.0",
+    date: "2026-09-16",
+    title: "new travel journal",
+    summary:
+      "added a new home for travel memories, itineraries, and recommendations",
+    changes: [
+      "added a collection-backed travel archive and individual trip pages",
+      "published a ten-day Vietnam travel journal with structured daily itineraries",
+      "added activity ratings, trip routes, dates, and travel summary statistics",
+      "added travel to the site directory and :jump navigation",
+    ],
+  },
+  {
     version: "3.0.0",
     date: "2026-09-15",
     title: "complete site redesign",
