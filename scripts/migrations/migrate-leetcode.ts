@@ -22,8 +22,8 @@ interface ParsedMarkdown {
   body: string;
 }
 
-const sourceRoot = new URL("../public/leetcode/", import.meta.url);
-const targetRoot = new URL("../src/content/leetcode/", import.meta.url);
+const sourceRoot = new URL("../../public/leetcode/", import.meta.url);
+const targetRoot = new URL("../../src/content/leetcode/", import.meta.url);
 const writeMode = process.argv.includes("--write");
 
 try {
