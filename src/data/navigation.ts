@@ -45,6 +45,13 @@ export const navigationDestinations = [
   //   primary: false,
   // },
   {
+    title: "travel",
+    href: "/travel",
+    description: "trips, itineraries, and memories of the world",
+    keywords: [],
+    primary: false,
+  },
+  {
     title: "reading",
     href: "/reading",
     description: "wisdom from external sources",

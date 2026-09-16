@@ -1,0 +1,77 @@
+---
+import type { CollectionEntry } from "astro:content";
+import {
+  formatTravelDateRange,
+  formatTravelRoute,
+} from "../../utils/pages/travel.ts";
+
+interface Props {
+  trip: CollectionEntry<"travel">;
+}
+
+const { trip } = Astro.props;
+---
+
+<li class="travel-card">
+  <a class="travel-card__link" href={`/travel/${trip.id}`}>
+    <span class="travel-card__heading">
+      <strong>{trip.data.title}</strong>
+      {trip.data.draft && <span class="travel-card__badge">draft</span>}
+      {trip.data.status === "upcoming" && (
+        <span class="travel-card__badge">upcoming</span>
+      )}
+    </span>
+
+    <span class="travel-card__dates">
+      {formatTravelDateRange(trip.data.startDate, trip.data.endDate)}
+    </span>
+    <span class="travel-card__route">
+      {formatTravelRoute(trip.data.cities)}
+    </span>
+    <span class="travel-card__description">{trip.data.description}</span>
+  </a>
+</li>
+
+<style>
+  .travel-card {
+    margin: 0;
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .travel-card__link {
+    display: grid;
+    gap: var(--space-2);
+    padding-block: var(--space-4);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .travel-card__link:hover strong,
+  .travel-card__link:focus-visible strong {
+    color: var(--color-link);
+  }
+
+  .travel-card__heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .travel-card__badge {
+    padding-inline: var(--space-1);
+    color: var(--color-bg);
+    background: var(--color-warning);
+    font-size: 0.75rem;
+  }
+
+  .travel-card__dates,
+  .travel-card__route {
+    color: var(--color-text-faint);
+    font-size: var(--font-size-small);
+  }
+
+  .travel-card__description {
+    color: var(--color-text-muted);
+  }
+</style>

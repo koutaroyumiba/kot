@@ -65,8 +65,71 @@ const leetcode = defineCollection({
   }),
 });
 
+const travel = defineCollection({
+  loader: glob({
+    base: "./src/content/travel",
+    pattern: "**/index.md",
+  }),
+
+  schema: ({ image }) =>
+    z.object({
+      title: z.string().min(1),
+      description: z.string().min(1),
+      startDate: z.coerce.date(),
+      endDate: z.coerce.date(),
+      status: z.enum(["upcoming", "complete"]),
+      countries: z.array(z.string().min(1)),
+      cities: z.array(z.string().min(1)),
+      cover: z
+        .object({
+          src: image(),
+          alt: z.string().min(1),
+        })
+        .optional(),
+      activities: z
+        .array(
+          z.object({
+            name: z.string().min(1),
+            location: z.string().min(1),
+            category: z.enum(["cafe", "food", "activities", "other"]),
+            rating: z.number().min(0).max(10),
+            note: z.string().optional(),
+            url: z.url().optional(),
+          }),
+        )
+        .default([]),
+      photos: z
+        .array(
+          z.object({
+            src: image(),
+            alt: z.string().min(1),
+            caption: z.string().optional(),
+          }),
+        )
+        .default([]),
+      featured: z.boolean().default(false),
+      draft: z.boolean(),
+    }),
+});
+
+const itinerary = defineCollection({
+  loader: glob({
+    base: "./src/content/travel",
+    pattern: "**/itinerary/*.md",
+  }),
+
+  schema: z.object({
+    day: z.number().int().positive(),
+    date: z.coerce.date().optional(),
+    location: z.string().min(1),
+    stops: z.array(z.string().min(1)).default([]),
+  }),
+});
+
 export const collections = {
   projects,
   writing,
   leetcode,
+  travel,
+  itinerary,
 };

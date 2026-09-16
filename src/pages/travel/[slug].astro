@@ -1,0 +1,141 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import { formatDate } from "../../utils/common/date.ts";
+import {
+  formatTravelDateRange,
+  formatTravelRoute,
+} from "../../utils/pages/travel.ts";
+
+import Layout from "../../layouts/Layout.astro";
+import CommandHeading from "../../components/command/CommandHeading.astro";
+import ActivityRatings from "../../components/travel/ActivityRatings.astro";
+import Itinerary from "../../components/travel/Itinerary.astro";
+
+interface Props {
+  entry: CollectionEntry<"travel">;
+  itinerary: CollectionEntry<"itinerary">[];
+}
+
+export async function getStaticPaths() {
+  const [trips, itinerary] = await Promise.all([
+    getCollection("travel", ({ data }) => import.meta.env.DEV || !data.draft),
+    getCollection("itinerary"),
+  ]);
+
+  return trips.map((entry) => {
+    const prefix = `${entry.id}/itinerary/`;
+
+    const matchingDays = itinerary
+      .filter((day) => day.id.startsWith(prefix))
+      .sort((left, right) => left.data.day - right.data.day);
+
+    return {
+      params: { slug: entry.id },
+      props: {
+        entry,
+        itinerary: matchingDays,
+      },
+    };
+  });
+}
+
+const { entry, itinerary } = Astro.props;
+const metadata = entry.data;
+const { Content } = await render(entry);
+
+const dateRange = formatTravelDateRange(metadata.startDate, metadata.endDate);
+const route = formatTravelRoute(metadata.cities);
+---
+
+<Layout title={metadata.title} description={metadata.description} prose>
+  <article class="travel-detail">
+    <nav aria-label="Travel navigation">
+      <a href="/travel">&#8592; all travels</a>
+    </nav>
+
+    <CommandHeading
+      level={1}
+      label={`${metadata.title} travel log`}
+      path="~/travel"
+      command="open"
+      args={entry.id}
+    />
+
+    <dl class="travel-detail__metadata">
+      <div>
+        <dt>dates</dt>
+        <dd>{dateRange}</dd>
+      </div>
+      <div>
+        <dt>route</dt>
+        <dd>{route}</dd>
+      </div>
+      <div>
+        <dt>status</dt>
+        <dd>{metadata.status}</dd>
+      </div>
+    </dl>
+
+    {metadata.cover && (
+      <Image src={metadata.cover.src} alt={metadata.cover.alt} width={1200} />
+    )}
+
+    <div class="travel-detail__body">
+      <Content />
+    </div>
+
+    {itinerary.length > 0 && (
+      <section aria-labelledby="itinerary-heading">
+        <CommandHeading
+          level={2}
+          id="itinerary-heading"
+          label={`${metadata.title} itinerary`}
+          path={`~/travel/${entry.id}`}
+          command="cat"
+          args="itinerary.log"
+        />
+
+        <Itinerary days={itinerary} />
+      </section>
+    )}
+
+    {metadata.activities.length > 0 && (
+      <section aria-labelledby="activities-heading">
+        <CommandHeading
+          level={2}
+          id="activities-heading"
+          label={`${metadata.title} activity ratings`}
+          path={`~/travel/${entry.id}`}
+          command="cat"
+          args="activities.log"
+        />
+        <ActivityRatings activities={metadata.activities} />
+      </section>
+    )}
+  </article>
+</Layout>
+
+<style>
+  .travel-detail nav {
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-small);
+  }
+
+  .travel-detail__metadata {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0 0 var(--space-8);
+    padding-block: var(--space-4);
+    border-block: var(--border-width) solid var(--color-border);
+  }
+
+  .travel-detail__metadata dt {
+    color: var(--color-text-faint);
+    font-size: var(--font-size-small);
+  }
+
+  .travel-detail__metadata dd {
+    margin: 0;
+  }
+</style>

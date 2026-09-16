@@ -1,0 +1,110 @@
+---
+import { getCollection } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+import CommandHeading from "../../components/command/CommandHeading.astro";
+import TravelCard from "../../components/travel/TravelCard.astro";
+
+const trips = await getCollection(
+  "travel",
+  ({ data }) => import.meta.env.DEV || !data.draft,
+);
+
+const sortedTrips = [...trips].sort(
+  (left, right) =>
+    right.data.startDate.getTime() - left.data.startDate.getTime(),
+);
+
+const completedTrips = sortedTrips.filter(
+  ({ data }) => data.status === "complete",
+);
+const countriesVisited = new Set(
+  completedTrips.flatMap(({ data }) => data.countries),
+).size;
+const citiesVisited = new Set(completedTrips.flatMap(({ data }) => data.cities))
+  .size;
+const mostRecentTrip = completedTrips[0]?.data.title ?? "none";
+---
+
+<Layout
+  title="Travel"
+  description="Travel journals, itineraries, and memorable places"
+>
+  <CommandHeading
+    level={1}
+    label="Travel journal"
+    path="~/travel"
+    command="ls"
+    args="--sort=date"
+  />
+
+  <p>Notes, itineraries, and memories from places I have travelled.</p>
+
+  <dl class="travel-summary" aria-label="Travel summary">
+    <div>
+      <dt>completed trips</dt>
+      <dd>{completedTrips.length}</dd>
+    </div>
+    <div>
+      <dt>countries visited</dt>
+      <dd>{countriesVisited}</dd>
+    </div>
+    <div>
+      <dt>cities visited</dt>
+      <dd>{citiesVisited}</dd>
+    </div>
+    <div>
+      <dt>most recent</dt>
+      <dd>{mostRecentTrip}</dd>
+    </div>
+  </dl>
+
+  {sortedTrips.length === 0 ? (
+    <p class="travel-empty">No published trips yet.</p>
+  ) : (
+    <ol class="travel-list" aria-label="Trips">
+      {sortedTrips.map((trip) => (
+        <TravelCard trip={trip} />
+      ))}
+    </ol>
+  )}
+</Layout>
+
+<style>
+  .travel-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-block: var(--space-8);
+    padding-block: var(--space-4);
+    border-block: var(--border-width) solid var(--color-border);
+  }
+
+  .travel-summary dt {
+    color: var(--color-text-faint);
+    font-size: var(--font-size-small);
+  }
+
+  .travel-summary dd {
+    margin: var(--space-1) 0 0;
+    overflow-wrap: anywhere;
+  }
+
+  .travel-empty {
+    margin-top: var(--space-8);
+    color: var(--color-text-muted);
+  }
+
+  .travel-list {
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    border-top: var(--border-width) solid var(--color-border);
+    list-style: none;
+  }
+
+  @media (max-width: 37.5rem) {
+    .travel-summary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
