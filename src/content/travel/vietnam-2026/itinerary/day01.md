@@ -6,7 +6,7 @@ location: "Sydney -> Ho Chi Minh City"
 
 #### lunar new year doom
 
-We arrived at 4:26am and I wanted to ***... I think we slept for like 3 hours to go to the main part of the city...
+We arrived at 4:26am and I wanted to d**... I think we slept for like 3 hours to go to the main part of the city...
 
 We went to the market but everything was closed because of Lunar New Year.
 Many many motorcycle go vroom vroom. We wanted to go to this Banh Mi place but everything was closed cuz Lunar New Year. Lunar New Year sucks. Me and Eric ditched Joohui and Bethany for egg coffee (it was the other way around, they went shopping) - it was pretty yermy.

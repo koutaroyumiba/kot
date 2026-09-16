@@ -21,4 +21,4 @@ draft: false
 
 I'm so bad at giving TL:DR. Basically, Vietnam is goat travellig spot, I recommend Hoi An and Ha Giang Loop big thumbs up, Ho Chi Minh is okay but a bit too city and too dirty, BIG THUMBS DOWN on the food poisoning.
 
-Went with Eric, Bethany and JooHui, good gang :kjD
+Went with Eric, Bethany and JooHui, good gang :D

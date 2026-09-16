@@ -8,7 +8,7 @@ location: "Hoi An"
 
 I woke up to Eric being a slut. Why does bro have his phone inside his shirt and like peeling his shirt back like what that mean bro, I ain't gay.
 
-Lwk Hoi An is pretty nice, reminds me of my hometown bang, the wops (thank you alanna santoso for the correction) :D. Saw a bunch of boats, pretty aura, the wood bridges are like super impromptu, i lwk like, 10/10 for the architectural design.
+Lwk Hoi An is pretty nice, reminds me of my hometown bang, the wops :D. Saw a bunch of boats, pretty aura, the wood bridges are like super impromptu, i lwk like, 10/10 for the architectural design.
 
 #### vietnamese coffee wisdom
 
