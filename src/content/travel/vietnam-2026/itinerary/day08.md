@@ -8,7 +8,7 @@ location: "Ha Giang"
 
 Today was the day of the Chinese border... We could actually like see the wall that acts as the border between China and Vietnam.
 
-I was joking about Eric jumping over the wall, and this other girl from our group called me austistic, chat isn't that just an insult, chat what that mean if a stanger calls you austistic.
+I was joking about Eric jumping over the wall, and this other girl from our group said I might have special needs, what that mean, chat isn't that just an insult, chat am i doomed?
 
 We went up like this whole flight of stairs to get to this tower thing that you could go up and you could see this castle(?) off in the distance. It was pretty cool. My driver also came up the stairs so you bet I took a selfie with him, it was beautiful.
 

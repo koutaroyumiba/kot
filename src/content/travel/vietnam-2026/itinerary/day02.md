@@ -10,13 +10,13 @@ Locked in on the independence palace in Ho Chi Minh, learnt about the history an
 
 #### oxtail pho and coffee
 
-We again locked in good food, JooHui (I think?) recommended this pho place that was michelin selected and we all got the ox-tail pho (which was the recommended one). It was so yermy, best pho I've ever had, lwk been sleeping on that pho, pho HIGHKEY so yermy.
+We again locked in good food, JooHui (I think?) recommended this pho place that was michelin selected and we all got the ox-tail pho (which was the recommended one) [edit: apparently, it was nnot JooHui, it was one of my friend - who the helly plz lemme know i need more recs] (plz . It was so yermy, best pho I've ever had, lwk been sleeping on that pho, pho HIGHKEY so yermy.
 
 Then we went to Sipply Coffee (WHAT A BANGER FIND BY ME, SELF-GLAZE), very hidden tho, we walked past it like a few times... Stayed there for a while and these two people travelling together were talking to the barista about coffee and lwk it was interesting, so I was like lemme join them and turns out they were from Australia (now living in Singapore), it was some good yaps - wish I got a photo with them tho (at least I got their insta bang).
 
 #### flight to hoi an
 
 We had a flight to catch. Bruv, we spent 2 days here what the helly, why so short bang.
-We catch flight to Da Nang so that we can go to Hoi An. Bang. Lwk it was pretty messy, we had to like get on a bus to the flight and it was like packed af, lwk dodge.
+We catch flight to Da Nang so that we can go to Hoi An. Bang. Lwk it was pretty messy, we had to like get on a bus to the flight and it was like packed af, lwk dodge. JooHui edit: our flight got delayed by like 3 hours holy doom.
 
 At least, we made it to Hoi An in one piece.
