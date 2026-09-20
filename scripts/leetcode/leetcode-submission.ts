@@ -44,7 +44,7 @@ function markdownLanguage(language: string): string {
     csharp: "csharp",
     java: "java",
     python: "python",
-    python3: "python3",
+    python3: "python",
     javascript: "javascript",
     typescript: "typescript",
     golang: "go",
