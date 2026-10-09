@@ -4,15 +4,16 @@ import { defineConfig } from "astro/config";
 // https://astro.build/config
 export default defineConfig({
   site: "https://koutaroyumiba.com",
+  trailingSlash: "always",
 
   redirects: {
     "/books": {
       status: 301,
-      destination: "/reading",
+      destination: "/reading/",
     },
     "/books/hall-of-fame": {
       status: 301,
-      destination: "/reading/hall-of-fame",
+      destination: "/reading/hall-of-fame/",
     },
   },
 

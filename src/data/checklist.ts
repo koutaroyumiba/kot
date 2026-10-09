@@ -23,7 +23,7 @@ export const checklistItems = [
   {
     title: "finish the write-ups for all projects",
     status: "pending",
-    href: "/projects",
+    href: "/projects/",
     note: "what happened to showcasing all my grand projects to the wider community??",
   },
   {

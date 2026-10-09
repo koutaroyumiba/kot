@@ -17,11 +17,16 @@ const normalizePath = (path: string) => {
 const currentPath = normalizePath(Astro.url.pathname);
 
 const isActive = (href: string) => {
-  if (href === "/") {
+  const normalizedHref = normalizePath(href);
+
+  if (normalizedHref === "/") {
     return currentPath === "/";
   }
 
-  return currentPath === href || currentPath.startsWith(`${href}/`);
+  return (
+    currentPath === normalizedHref ||
+    currentPath.startsWith(`${normalizedHref}/`)
+  );
 };
 ---
 
@@ -59,7 +64,7 @@ const isActive = (href: string) => {
     <div class="header-actions">
       <a
         class="jump-link"
-        href="/contents"
+        href="/contents/"
         data-jump-trigger
         aria-haspopup="dialog"
         aria-controls="jump-palette"

@@ -13,7 +13,7 @@ const { trip } = Astro.props;
 ---
 
 <li class="travel-card">
-  <a class="travel-card__link" href={`/travel/${trip.id}`}>
+  <a class="travel-card__link" href={`/travel/${trip.id}/`}>
     <span class="travel-card__heading">
       <strong>{trip.data.title}</strong>
       {trip.data.draft && <span class="travel-card__badge">draft</span>}

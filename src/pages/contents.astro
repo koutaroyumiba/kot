@@ -5,7 +5,7 @@ import { navigationDestinations } from "../data/navigation";
 
 const internalDestinations = navigationDestinations.filter(
   (destination) =>
-    !destination.href.startsWith("http") && destination.href !== "/contents",
+    !destination.href.startsWith("http") && destination.href !== "/contents/",
 );
 const externalDestinations = navigationDestinations.filter((destination) =>
   destination.href.startsWith("http"),
