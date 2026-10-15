@@ -23,6 +23,13 @@ export const navigationDestinations = [
     primary: true,
   },
   {
+    title: "writing",
+    href: "/writing/",
+    description: "articles, notes, and things I have learned",
+    keywords: ["blog", "articles", "posts"],
+    primary: true,
+  },
+  {
     title: "leetcode",
     href: "/leetcode/",
     description: "the grind never stops",

@@ -8,6 +8,19 @@ export interface ChangelogRelease {
 
 export const changelogReleases = [
   {
+    version: "3.2.0",
+    date: "2026-10-15",
+    title: "new writing section",
+    summary:
+      "finally added a home for articles, guides, and things I learn along the way",
+    changes: [
+      "added a collection-backed writing archive and individual article pages",
+      "added reading-time estimates, topics, tags, and publication metadata",
+      "published a beginner's guide to learning Vim motions from scratch",
+      "added writing to the main navigation, site directory, and :jump palette",
+    ],
+  },
+  {
     version: "3.1.0",
     date: "2026-09-16",
     title: "new travel journal",

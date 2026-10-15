@@ -1,0 +1,61 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+import CommandHeading from "../../components/command/CommandHeading.astro";
+import WritingRow from "../../components/lists/WritingRow.astro";
+
+function getPublishedAt(entry: CollectionEntry<"writing">): Date {
+  if (!entry.data.publishedAt) {
+    throw new Error(`Published writing "${entry.id}" is missing publishedAt`);
+  }
+
+  return entry.data.publishedAt;
+}
+
+function estimateReadingMinutes(markdown: string): number {
+  const wordCount = markdown
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`[^`]*`/g, " ")
+    .replace(/[#>*_[\]()-]/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+
+  return Math.max(1, Math.ceil(wordCount / 200));
+}
+
+const posts = await getCollection("writing", ({ data }) => !data.draft);
+posts.sort((a, b) => getPublishedAt(b).getTime() - getPublishedAt(a).getTime());
+---
+
+<Layout
+  title="Writing"
+  description="Articles, notes, and things I have learned."
+>
+  <CommandHeading
+    level={1}
+    label="Writing"
+    path="~/writing"
+    command="ls"
+    args="--sort=published"
+  />
+
+  {posts.length > 0 ? (
+    <ol class="structured-list" aria-label="Writing">
+      {posts.map((post, index) => (
+        <WritingRow
+          index={index + 1}
+          title={post.data.title}
+          description={post.data.description}
+          topic={post.data.topic}
+          readingMinutes={estimateReadingMinutes(post.body ?? "")}
+          publishedAt={getPublishedAt(post)}
+          href={`/writing/${post.id}/`}
+        />
+      ))}
+    </ol>
+  ) : (
+    <p>No published articles yet.</p>
+  )}
+</Layout>

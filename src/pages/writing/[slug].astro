@@ -1,0 +1,176 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, render, type CollectionEntry } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+import CommandHeading from "../../components/command/CommandHeading.astro";
+
+interface Props {
+  entry: CollectionEntry<"writing">;
+}
+
+export async function getStaticPaths() {
+  const posts = await getCollection("writing", ({ data }) => !data.draft);
+  for (const post of posts) {
+    if (!post.data.publishedAt) {
+      throw new Error(`Published writing "${post.id}" is missing publishedAt`);
+    }
+  }
+
+  return posts.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const metadata = entry.data;
+const { Content } = await render(entry);
+
+if (!metadata.publishedAt) {
+  throw new Error(`Published writing "${entry.id}" is missing publishedAt`);
+}
+
+const publishedDate = metadata.publishedAt.toISOString().slice(0, 10);
+const updatedDate = metadata.updatedAt?.toISOString().slice(0, 10);
+---
+
+<Layout title={metadata.title} description={metadata.description} prose>
+  <article class="writing-detail">
+    <nav class="writing-detail__nav" aria-label="Writing navigation">
+      <a href="/writing/">&#8592; all writing</a>
+    </nav>
+
+    <CommandHeading
+      level={1}
+      label={metadata.title}
+      path="~/writing"
+      command="cat"
+      args={entry.id}
+    />
+
+    <p class="writing-detail__description">{metadata.description}</p>
+
+    <dl class="writing-detail__metadata">
+      <div>
+        <dt>published</dt>
+        <dd>
+          <time datetime={publishedDate}>{publishedDate}</time>
+        </dd>
+
+        {updatedDate && (
+          <div>
+            <dt>updated</dt>
+            <dd>
+              <time datetime={updatedDate}>{updatedDate}</time>
+            </dd>
+          </div>
+        )}
+
+        <div>
+          <dt>topic</dt>
+          <dd>{metadata.topic}</dd>
+        </div>
+
+        {metadata.tags.length > 0 && (
+          <div class="writing-detail__tags">
+            <dt>tags</dt>
+            <dd>
+              <ul>
+                {metadata.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        )}
+      </div>
+    </dl>
+
+    <div class="writing-detail__body">
+      <Content />
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .writing-detail__nav {
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-small);
+  }
+
+  .writing-detail__description {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-large);
+  }
+
+  .writing-detail__metadata {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: 0 0 var(--space-8);
+    padding-block: var(--space-4);
+    border-block: var(--border-width) solid var(--color-border);
+  }
+
+  .writing-detail__metadata > div {
+    .min-width: 0;
+  }
+
+  .writing-detail__metadata dt {
+    margin-bottom: var(--space-1);
+    color: var(--color-text-faint);
+    font-size: var(--font-size-small);
+  }
+
+  .writing-detail__metadata dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .writing-detail__tags {
+    grid-column: 1 / -1;
+  }
+
+  .writing-detail__tags ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .writing-detail__tags li {
+    color: var(--color-argument);
+  }
+
+  .writing-detail__tags li::before {
+    content: "#";
+  }
+
+  .writing-detail__body > :first-child {
+    margin-top: 0;
+  }
+
+  .writing-detail__body :global(h2) {
+    padding-bottom: var(--space-2);
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .writing-detail__body :global(h2)::before {
+    margin-right: 0.6ch;
+    color: var(--color-command);
+    content: "##";
+  }
+
+  @media (max-width: 37.5rem) {
+    .writing-detail__metadata {
+      grid-template-columns: 1fr;
+    }
+
+    .writing-detail__tags {
+      grid-column: auto;
+    }
+  }
+</style>
