@@ -105,12 +105,12 @@ These are the classic movement that vim is known for. These are useful but it do
 The above things are for navigating a file. The things below are editing or "doing things" (I'm so good at explaining) to text.
 
 ```
-[Normal] d
-[Normal] c
-[Normal] y
-[Normal] p
-[Normal] u
-[Normal] Ctrl-r
+[Normal] d      -> delete operation
+[Normal] c      -> change operation (delete and go into insert mode)
+[Normal] y      -> yank (copy) operation
+[Normal] p      -> paste operation
+[Normal] u      -> undo
+[Normal] Ctrl-r -> redo
 ```
 
 These command should be combined with motions you already know. If `w` moves forward a word, then `dw` deletes forward a word (deletes from the current cursor up to the next word). This is the key part of vim motions - you are reusing the intuitive grammar rather than having to memorise unrelated shortcuts.
